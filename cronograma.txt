@@ -1,0 +1,39 @@
+CRONOGRAMA I3	                   TAREAS	 RECURSOS				SEMANAS														
+Desglose		R1	R2	R3	R4	SEMANA 1					SEMANA 2					SEMANA 3				
+						1	2	3	4	5	6	7	8	9	10	11	12	13	14	15
+T0	Coordinación Semanal	X	X	X	X															
+T1	Módulo Inventory: estructura	X		X																
+T1	Inventory: create, destroy		X		X															
+T1	Inventory: set, get, add, del			X																
+T1	Inventory: print				X															
+T2	Player: añadir backpack	X		X																
+T2	Player: modificar funciones		X		X															
+T3	Modificar módulos que usan Player		X		X															
+T4	Módulo Link: estructura	X		X																
+T4	Link: create, destroy		X		X															
+T4	Link: set, get			X																
+T4	Link: print				X															
+T5	Game: array de enlaces	X		X																
+T5	Game: game_get_connection		X		X															
+T5	Game: game_connection_is_open			X																
+T6	GameReader: cargar datos		X		X															
+T6	Game: ajustar carga espacios			X																
+T7	Modificar fichero datos				X															
+T8	Comando move	X		X																
+T9	Comando inspect		X		X															
+T10	Comando drop modificado			X																
+T11	Game: múltiples jugadores				X															
+T11	Game: campo turn	X		X																
+T12	Space: campo discovered		X		X															
+T13	Visualización: enlaces y espacios			X																
+T13	Visualización: solo descubiertos				X															
+T14	Game_loop: fichero LOG	X		X																
+T15	Depuración de errores		X		X															
+T16	Revisión general			X																
+T17	Entrega				X															
+																				
+IDENTIFICACIÓN DE RECURSOS																				
+R1	Alejandro González																			
+R2	Izan Robles																			
+R3	Daniel Martin																			
+R4	Rodrigo Cruz																			
