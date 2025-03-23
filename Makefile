@@ -2,9 +2,9 @@ EXE=anthill
 CFLAGS = -Wall -pedantic -ansi
 CC=gcc
 
-all: anthill space_test set_test character_test
+all: $(EXE) space_test set_test character_test
 
-anthill: game_loop.o game.o command.o graphic_engine.o space.o game_actions.o objects.o game_reader.o player.o set.o character.o
+$(EXE): game_loop.o game.o command.o graphic_engine.o space.o game_actions.o objects.o game_reader.o player.o set.o character.o inventory.o
 	$(CC) -o $@ $^ -lscreen -L.
 
 game_loop.o: game_loop.c game.h graphic_engine.h command.h game_actions.h game_reader.h
@@ -40,6 +40,9 @@ set.o: set.c set.h types.h
 character.o: character.c character.h types.h
 	$(CC) $(CFLAGS) -o $@ -c $<
 
+inventory.o: inventory.c inventory.h types.h objects.h set.h
+	$(CC) $(CFLAGS) -o $@ -c $<
+
 space_test.o: space_test.c space.h test.h
 	$(CC) $(CFLAGS) -o $@ -c $<
 
@@ -48,7 +51,7 @@ space_test: space_test.o space.o set.o
 
 set_test.o: set_test.c set.h test.h
 	$(CC) $(CFLAGS) -o $@ -c $<
-    
+
 set_test: set_test.o set.o
 	$(CC) -o $@ $^
 
