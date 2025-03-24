@@ -37,9 +37,9 @@ Inventory *inventory_create();
 /**
  * @brief Frees the memory allocated for an inventory.
  * @author Rodrigo Cruz Asensio
- * @param inventory Pointer to the inventory to be destroyed.
+ * @param inventory Destroy the inventory.
  */
-void inventory_destroy(Inventory*inventory);
+Status inventory_destroy(Inventory*inventory);
 
 /**
  * @brief Adds an object to the inventory.

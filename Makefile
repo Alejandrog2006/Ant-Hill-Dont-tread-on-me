@@ -55,11 +55,20 @@ set_test.o: set_test.c set.h test.h
 set_test: set_test.o set.o
 	$(CC) -o $@ $^
 
+character_test.o: character_test.c character.h test.h
+	$(CC) $(CFLAGS) -o $@ -c $<
+
 character_test: character_test.o character.o
 	$(CC) -o $@ $^
 
+inventory_test.o: inventory_test.c inventory.h test.h
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+inventory_test: inventory_test.o inventory.o set.o objects.o
+	$(CC) -o $@ $^
+
 clean:
-	rm -f anthill space_test set_test character_test *.o
+	rm -f anthill space_test set_test character_test inventory_test *.o
 
 run:
 	./anthill anthill.dat
@@ -67,7 +76,11 @@ run:
 runv:
 	valgrind --leak-check=full ./anthill anthill.dat
 
-test: space_test set_test character_test
+test: space_test set_test character_test inventory_test
+	./space_test
+	./set_test
+	./character_test
+	./inventory_test
 	
 testv:
 	valgrind --leak-check=full ./space_test

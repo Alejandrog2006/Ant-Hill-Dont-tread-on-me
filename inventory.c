@@ -33,11 +33,14 @@ Inventory *inventory_create() {
     return inventory;
 }
 
-void inventory_destroy(Inventory *inventory) {
-    if (!inventory) return;
+Status inventory_destroy(Inventory *inventory) {
+    if (!inventory) {
+    return ERROR;
+    }
 
     set_destroy(inventory->objs);
     free(inventory);
+    return OK;
 }
 
 Status inventory_add_object(Inventory *inventory, Id id_object) {
