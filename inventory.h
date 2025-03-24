@@ -11,7 +11,7 @@
 #ifndef INVENTORY_H
 #define INVENTORY_H
 
-#define MAXBACKPACK_SIZE 3  /* Default maximum backpack size */
+#define BACKPACK_SIZE 3  /* Default maximum backpack size */
 
 
 #include <stdio.h>
@@ -27,12 +27,12 @@ typedef struct _Inventory Inventory;
 /**
  * @brief Creates an inventory with a maximum capacity of objects.
  * @author Rodrigo Cruz Asensio
- * @param max_objs Maximum number of objects the inventory can hold.
+ * 
  * @return 
  * Pointer to the `Inventory` structure
  * or NULL if an error occurs.
  */
-Inventory *inventory_create(int max_objs);
+Inventory *inventory_create();
 
 /**
  * @brief Frees the memory allocated for an inventory.
