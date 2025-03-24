@@ -289,6 +289,7 @@ void game_actions_attack(Game *game)
         if (random == 0) {
           character_set_health(character_array[i], character_get_health(character_array[i]) - 10);
           strcpy(temp, character_get_name(character_array[i]));
+<<<<<<< HEAD
           strcat(temp, " - 10");
           game_set_temporal_feedback(game, temp);
         }
@@ -297,6 +298,33 @@ void game_actions_attack(Game *game)
           game_set_temporal_feedback(game, "Player - 10");
         }
         
+=======
+          if (character_get_health(character_array[i]) > 0)
+          {
+            strcat(temp, " - 10");
+            game_set_temporal_feedback(game, temp);
+          }
+          else
+          {
+            strcat (temp, " is dead");
+            game_set_temporal_feedback(game, temp);
+          }
+        }
+        else {
+          
+          if (character_get_health(character_array[i]) > 0)
+          {
+            player_set_health(player, player_get_health(player) - 10 );
+            game_set_temporal_feedback(game, "Player - 10");
+          }
+          else
+          {
+            strcpy(temp, character_get_name(character_array[i]));
+            strcat(temp, " is dead");
+            game_set_temporal_feedback(game, temp);
+          }
+        }
+>>>>>>> main
       }
     }
   }
