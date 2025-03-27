@@ -18,7 +18,7 @@ struct _Player {
   Id id; /*Player's id*/
   char name[WORD_SIZE + 1]; /*Player's name*/
   Id location; /*Player's location*/
-  Bool object; /*Player's object*/
+  Inventory *backpack; /*Player's objects*/
   int player_health; /*Player's health*/
 };
 
@@ -35,7 +35,7 @@ Player* player_create(Id id) {
   newPlayer->id = id;
   newPlayer->name[0] = '\0';
   newPlayer->location = NO_ID;
-  newPlayer->object = FALSE;
+  newPlayer->backpack = inventory_create(BACKPACK_SIZE);
   newPlayer->player_health = 100;
 
   return newPlayer;
@@ -45,7 +45,8 @@ Status player_destroy(Player *player) {
   if (!player) {
     return ERROR;
   }
-
+  
+  inventory_destroy(player->backpack);
   free(player);
   player = NULL;
   return OK;
@@ -76,21 +77,26 @@ const char* player_get_name(Player* player) {
   return player->name;
 }
 
-Status player_set_object(Player* player, Bool value) {
-  if ((player) == NULL) {
+Status player_add_object(Player* player, Id id) {
+  if ((player) == NULL || id == NO_ID) {
     return ERROR;
   }
-  player->object = value;
-  return OK;
+  
+  return inventory_add_object(player->backpack, id);
 }
-
-Bool player_get_object(Player* player) {
-  if ((player) == NULL) {
-    return FALSE;
+Status player_del_object(Player* player, Id id) {
+  if ((player) == NULL || id == NO_ID) {
+    return ERROR;
   }
   
-  return player->object;  
-  /*return TRUE;*/
+  return inventory_del_object(player->backpack, id);
+}
+
+Bool player_has_object(Player* player, Id id) {
+  if ((player) == NULL || id == NO_ID) {
+    return FALSE;
+  }
+  return inventory_contains_object(player->backpack, id);
 }
 
 Status player_print(Player* player) {
@@ -100,10 +106,8 @@ Status player_print(Player* player) {
 
   fprintf(stdout, "--> Player (Id: %ld; Name: %s)\n", player->id, player->name);
 
-  if (player_get_object(player)) {
-    fprintf(stdout, "---> Object in the space.\n");
-  } else {
-    fprintf(stdout, "---> No object in the space.\n");
+  if(inventory_print(player->backpack) == ERROR){
+    return ERROR;
   }
 
   return OK;
@@ -138,4 +142,11 @@ int player_get_health(Player* player) {
   }
 
   return player->player_health;
+}
+
+Inventory *player_get_inventory(Player *player) {
+  if (!player) {
+    return NULL;
+  }
+  return player->backpack;
 }

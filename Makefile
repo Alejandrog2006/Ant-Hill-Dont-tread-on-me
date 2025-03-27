@@ -2,15 +2,9 @@ EXE=anthill
 CFLAGS = -Wall -pedantic -ansi
 CC=gcc
 
-<<<<<<< HEAD
-all: anthill space_test set_test character_test
-
-anthill: game_loop.o game.o command.o graphic_engine.o space.o game_actions.o objects.o game_reader.o player.o set.o character.o
-=======
 all: $(EXE) space_test set_test character_test
 
 $(EXE): game_loop.o game.o command.o graphic_engine.o space.o game_actions.o objects.o game_reader.o player.o set.o character.o inventory.o
->>>>>>> main
 	$(CC) -o $@ $^ -lscreen -L.
 
 game_loop.o: game_loop.c game.h graphic_engine.h command.h game_actions.h game_reader.h
@@ -37,7 +31,7 @@ objects.o: objects.c objects.h types.h
 game_reader.o: game_reader.c game_reader.h game.h space.h types.h
 	$(CC) $(CFLAGS) -o $@ -c $<
 
-player.o: player.c player.h types.h
+player.o: player.c player.h types.h inventory.h
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 set.o: set.c set.h types.h
@@ -46,12 +40,9 @@ set.o: set.c set.h types.h
 character.o: character.c character.h types.h
 	$(CC) $(CFLAGS) -o $@ -c $<
 
-<<<<<<< HEAD
-=======
 inventory.o: inventory.c inventory.h types.h objects.h set.h
 	$(CC) $(CFLAGS) -o $@ -c $<
 
->>>>>>> main
 space_test.o: space_test.c space.h test.h
 	$(CC) $(CFLAGS) -o $@ -c $<
 
@@ -60,19 +51,24 @@ space_test: space_test.o space.o set.o
 
 set_test.o: set_test.c set.h test.h
 	$(CC) $(CFLAGS) -o $@ -c $<
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> main
 set_test: set_test.o set.o
 	$(CC) -o $@ $^
+
+character_test.o: character_test.c character.h test.h
+	$(CC) $(CFLAGS) -o $@ -c $<
 
 character_test: character_test.o character.o
 	$(CC) -o $@ $^
 
+inventory_test.o: inventory_test.c inventory.h test.h
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+inventory_test: inventory_test.o inventory.o set.o objects.o
+	$(CC) -o $@ $^
+
 clean:
-	rm -f anthill space_test set_test character_test *.o
+	rm -f anthill space_test set_test character_test inventory_test *.o
 
 run:
 	./anthill anthill.dat
@@ -80,7 +76,11 @@ run:
 runv:
 	valgrind --leak-check=full ./anthill anthill.dat
 
-test: space_test set_test character_test
+test: space_test set_test character_test inventory_test
+	./space_test
+	./set_test
+	./character_test
+	./inventory_test
 	
 testv:
 	valgrind --leak-check=full ./space_test

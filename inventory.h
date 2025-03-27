@@ -11,7 +11,7 @@
 #ifndef INVENTORY_H
 #define INVENTORY_H
 
-#define MAXBACKPACK_SIZE 3  /* Default maximum backpack size */
+#define BACKPACK_SIZE 3  /* Default maximum backpack size */
 
 
 #include <stdio.h>
@@ -27,7 +27,7 @@ typedef struct _Inventory Inventory;
 /**
  * @brief Creates an inventory with a maximum capacity of objects.
  * @author Rodrigo Cruz Asensio
- * @param max_objs Maximum number of objects the inventory can hold.
+ * 
  * @return 
  * Pointer to the `Inventory` structure
  * or NULL if an error occurs.
@@ -37,9 +37,9 @@ Inventory *inventory_create(int max_objs);
 /**
  * @brief Frees the memory allocated for an inventory.
  * @author Rodrigo Cruz Asensio
- * @param inventory Pointer to the inventory to be destroyed.
+ * @param inventory Destroy the inventory.
  */
-void inventory_destroy(Inventory*inventory);
+Status inventory_destroy(Inventory *inventory);
 
 /**
  * @brief Adds an object to the inventory.
@@ -50,7 +50,7 @@ void inventory_destroy(Inventory*inventory);
  * OK if successfully added
  * ERROR otherwise.
  */
-Status inventory_add_object(Inventory*inventory, Id id_object);
+Status inventory_add_object(Inventory *inventory, Id id_object);
 
 /**
  * @brief Deletes an object from the inventory.
@@ -61,7 +61,7 @@ Status inventory_add_object(Inventory*inventory, Id id_object);
  * OK if successfully deleted
  * ERROR otherwise.
  */
-Status inventory_del_object(Inventory*inventory, Id id_object);
+Status inventory_del_object(Inventory *inventory, Id id_object);
 
 /**
  * @brief Checks if an object is in the inventory.
@@ -72,7 +72,7 @@ Status inventory_del_object(Inventory*inventory, Id id_object);
  * TRUE if the object is in the inventory
  * FALSE otherwise.
  */
-Bool inventory_contains_object(Inventory*inventory, Id id_object);
+Bool inventory_contains_object(Inventory *inventory, Id id_object);
 
 /**
  * @brief Prints the contents of the inventory.
@@ -82,6 +82,25 @@ Bool inventory_contains_object(Inventory*inventory, Id id_object);
  * OK if the print operation was successful
  * ERROR otherwise.
  */
-Status inventory_print(Inventory*inventory);
+Status inventory_print(Inventory *inventory);
+
+/**
+ * @brief Gets the objects in the inventory.
+ * @author Alejandro Gonzalez
+ * @param inventory Pointer to the inventory.
+ * @return 
+ * Number of objects in the inventory
+ * or -1 if an error occurs.
+ */
+Set *inventory_get_objects(Inventory *inventory);
+
+/**
+ * @brief Gets the number of objects in the inventory.
+ * @author Alejandro Gonzalez
+ * @param inventory Pointer to the inventory.
+ * @return
+ * Number of objects in the inventory
+ */
+int inventory_get_count(Inventory *inventory);
 
 #endif

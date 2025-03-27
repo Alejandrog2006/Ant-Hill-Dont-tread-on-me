@@ -70,13 +70,20 @@ Status set_print(Set* set) {
     if (!set) {
         return ERROR;
     }
+
+    if(set->n_ids == 0){
+        printf("The set is empty\n");
+        return OK;
+    }
     printf("Set contains %d ids:\n", set->n_ids);
     for (i = 0; i < set->n_ids; i++) {
         printf("%ld ", set->ids[i]);
     }
     printf("\n");
     return OK;
-}int set_get_count(Set* set) {
+}
+
+int set_get_count(Set* set) {
     if (!set) {
         return -1;
     }

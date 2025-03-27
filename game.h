@@ -247,5 +247,14 @@ const char *game_get_temporal_feedback(Game *game);
  */
 Status game_set_temporal_feedback(Game *game, const char *feedback);
 
+/**
+ * @brief Gets an object by its ID from the game structure.
+ * @author Alejandro Gonzalez
+ * 
+ * @param game A pointer to the game structure.
+ * @param id The ID of the object to retrieve.
+ * @return A pointer to the object if found, NULL otherwise.
+ */
+Object *game_get_object_by_id(Game *game, Id id);
 
 #endif

@@ -206,53 +206,90 @@ void game_actions_back(Game *game) {
 
 void game_actions_take(Game *game) {
   Id object_id = NO_ID;
-  Id player_id = NO_ID;
+  Id player_location_id = NO_ID;
   const char *obj_name = NULL;
   int i = 0;
   Command *cmd = game_get_last_command(game);
-
+  
   if (!cmd) return;
-
 
   obj_name = command_get_arg(cmd);
   if (!obj_name || obj_name[0] == '\0') {
     return;
   }
 
-  player_id = game_get_player_location(game);
-  
-  if (player_get_object(game_get_player(game)) == FALSE) {
-    for (i = 0; i < *(game_get_n_objects(game)); i++) {
-      object_id = game_get_object_location(game, i);
+  player_location_id = game_get_player_location(game);
 
-      if (object_id == player_id && 
-          strcasecmp(object_get_name(game_get_objects(game)[i]), obj_name) == 0) {
-        game_set_object_location(game, NO_ID, i);
-        player_set_object(game_get_player(game), TRUE);
-        break;
+  for (i = 0; i < *(game_get_n_objects(game)); i++) {
+    object_id = game_get_object_location(game, i);
+
+    if (object_id == player_location_id && 
+        strcasecmp(object_get_name(game_get_objects(game)[i]), obj_name) == 0) {
+      if (player_add_object(game_get_player(game), object_get_id(game_get_objects(game)[i])) == OK) {
+        game_set_object_location(game, NO_ID, i); 
+        printf("Object taken successfully\n");
+      } else {
+        printf("Error taking object\n");
       }
-    }    
+      return;
+    }
   }
+
+  printf("Object not found in the current location\n");
+  
 }
 
 void game_actions_drop(Game *game) {
-  Id object_id = NO_ID;
-  Id player_id = NO_ID;
+  Id player_location_id = NO_ID;
+  Object *object = NULL;
+  const char *obj_name = NULL;
   int i;
+  Command *cmd = NULL;
+  if (!game) return;
 
-  player_id = game_get_player_location(game);
-
-  if ((player_get_object(game_get_player(game)) == TRUE)) {
-
-    for (i = 0; i < *(game_get_n_objects(game)); i++) {
-      object_id = game_get_object_location(game, i);
-
-      if (object_id == NO_ID) {
-        game_set_object_location(game, player_id, i);  
-        player_set_object(game_get_player(game), FALSE); 
-      }
-    }      
+  cmd = game_get_last_command(game);
+  if (!cmd) {
+    printf("No command found\n");
+    return;
   }
+
+  obj_name = command_get_arg(cmd);
+  if (!obj_name || obj_name[0] == '\0') {
+    printf("No object name provided\n");
+    return;
+  }
+
+  printf("Attempting to drop: %s\n", obj_name);
+
+  player_location_id = game_get_player_location(game);
+  if (player_location_id == NO_ID) {
+    printf("Invalid player location\n");
+    return;
+  }
+
+  for (i = 0; i < *(game_get_n_objects(game)); i++) {
+    object = game_get_objects(game)[i];
+    if (object == NULL) continue;
+
+    printf("Checking object at index %d: %s (ID: %ld)\n", i, object_get_name(object), object_get_id(object));
+
+    if (strcasecmp(object_get_name(object), obj_name) == 0 &&
+        player_has_object(game_get_player(game), object_get_id(object)) == TRUE) {
+      printf("Match found: %s (ID: %ld)\n", object_get_name(object), object_get_id(object));
+      if (player_del_object(game_get_player(game), object_get_id(object)) == OK) {
+        printf("Object %s removed from inventory\n", object_get_name(object)); 
+        if (game_set_object_location(game, player_location_id, i) == OK) {
+          printf("Object %s dropped successfully at location %ld\n", object_get_name(object), player_location_id); 
+        } else {
+          printf("Error placing object %s in location\n", object_get_name(object));
+        }
+      } else {
+        printf("Error dropping object %s from inventory\n", object_get_name(object));
+      }
+      return;
+    }
+  }
+  printf("Object not found in player's inventory\n");
 }
 
 void game_actions_attack(Game *game)
@@ -289,16 +326,6 @@ void game_actions_attack(Game *game)
         if (random == 0) {
           character_set_health(character_array[i], character_get_health(character_array[i]) - 10);
           strcpy(temp, character_get_name(character_array[i]));
-<<<<<<< HEAD
-          strcat(temp, " - 10");
-          game_set_temporal_feedback(game, temp);
-        }
-        else {
-          player_set_health(player, player_get_health(player) - 10 );
-          game_set_temporal_feedback(game, "Player - 10");
-        }
-        
-=======
           if (character_get_health(character_array[i]) > 0)
           {
             strcat(temp, " - 10");
@@ -324,7 +351,6 @@ void game_actions_attack(Game *game)
             game_set_temporal_feedback(game, temp);
           }
         }
->>>>>>> main
       }
     }
   }

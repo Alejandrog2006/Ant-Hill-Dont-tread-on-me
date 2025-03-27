@@ -90,11 +90,13 @@ Status command_get_user_input(Command* command) {
     
     command_set_code(command, cmd);
 
-    if (cmd == TAKE) {
+    if (cmd == TAKE || cmd == DROP) {
       token = strtok(NULL, "\n");
       if (token) {
-        while (*token == ' ') token++;
+        while (*token == ' ') token++; 
         command_set_arg(command, token);
+      } else {
+        command_set_arg(command, ""); 
       }
     }
 

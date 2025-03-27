@@ -34,7 +34,7 @@ Object* object_create(Id id){
 
    newObject->id = id;
    newObject->location = NO_ID;
-   newObject->name[0] = '\0';
+   strcpy(newObject->name, "");
 
    return newObject;
 
