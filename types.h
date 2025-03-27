@@ -54,6 +54,7 @@
   * This enumeration defines the possible cardinal directions: North, South, East, and West.
   */
  typedef enum { 
+     NONE = -1, /**< Represents no direction. */
      N,  /**< Represents the North direction. */
      S,  /**< Represents the South direction. */
      E,  /**< Represents the East direction. */
