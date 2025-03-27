@@ -1,80 +1,94 @@
-EXE=anthill 
-CFLAGS = -Wall -pedantic -ansi
-CC=gcc
+##########  Variables & Directorios  ##########
+EXE = anthill
+CFLAGS = -Wall -pedantic -ansi -Iheaders
+CC = gcc
 
-all: $(EXE) space_test set_test character_test
+C_DIR = ./src
+H_DIR = ./headers
+O_DIR = ./objects
+R_DIR = ./resources
 
-$(EXE): game_loop.o game.o command.o graphic_engine.o space.o game_actions.o objects.o game_reader.o player.o set.o character.o inventory.o
-	$(CC) -o $@ $^ -lscreen -L.
+##########  General rules  ##########
+all: new_folder $(EXE) space_test set_test character_test inventory_test
 
-game_loop.o: game_loop.c game.h graphic_engine.h command.h game_actions.h game_reader.h
-	$(CC) $(CFLAGS) -o $@ -c $< 
+$(EXE): $(O_DIR)/game_loop.o $(O_DIR)/game.o $(O_DIR)/command.o $(O_DIR)/graphic_engine.o $(O_DIR)/space.o $(O_DIR)/game_actions.o $(O_DIR)/objects.o $(O_DIR)/game_reader.o $(O_DIR)/player.o $(O_DIR)/set.o $(O_DIR)/character.o $(O_DIR)/inventory.o
+	$(CC) -o $@ $^ -lscreen -L $(R_DIR)
 
-game.o: game.c game.h space.h types.h objects.h player.h command.h
-	$(CC) $(CFLAGS) -o $@ -c $<
-
-command.o: command.c command.h types.h
-	$(CC) $(CFLAGS) -o $@ -c $<
-
-graphic_engine.o: graphic_engine.c graphic_engine.h game.h command.h libscreen.h space.h types.h
-	$(CC) $(CFLAGS) -o $@ -c $<
-
-space.o: space.c space.h types.h objects.h set.h
-	$(CC) $(CFLAGS) -o $@ -c $<
-
-game_actions.o: game_actions.c game_actions.h game.h command.h types.h
-	$(CC) $(CFLAGS) -o $@ -c $<
-
-objects.o: objects.c objects.h types.h
-	$(CC) $(CFLAGS) -o $@ -c $<
-
-game_reader.o: game_reader.c game_reader.h game.h space.h types.h
-	$(CC) $(CFLAGS) -o $@ -c $<
-
-player.o: player.c player.h types.h
-	$(CC) $(CFLAGS) -o $@ -c $<
-
-set.o: set.c set.h types.h
-	$(CC) $(CFLAGS) -o $@ -c $<
-
-character.o: character.c character.h types.h
-	$(CC) $(CFLAGS) -o $@ -c $<
-
-inventory.o: inventory.c inventory.h types.h objects.h set.h
-	$(CC) $(CFLAGS) -o $@ -c $<
-
-space_test.o: space_test.c space.h test.h
-	$(CC) $(CFLAGS) -o $@ -c $<
-
-space_test: space_test.o space.o set.o
+space_test: $(O_DIR)/space_test.o $(O_DIR)/space.o $(O_DIR)/set.o
 	$(CC) -o $@ $^
 
-set_test.o: set_test.c set.h test.h
-	$(CC) $(CFLAGS) -o $@ -c $<
-
-set_test: set_test.o set.o
+set_test: $(O_DIR)/set_test.o $(O_DIR)/set.o
 	$(CC) -o $@ $^
 
-character_test.o: character_test.c character.h test.h
-	$(CC) $(CFLAGS) -o $@ -c $<
-
-character_test: character_test.o character.o
+character_test: $(O_DIR)/character_test.o $(O_DIR)/character.o
 	$(CC) -o $@ $^
 
-inventory_test.o: inventory_test.c inventory.h test.h
+inventory_test: $(O_DIR)/inventory_test.o $(O_DIR)/inventory.o $(O_DIR)/set.o $(O_DIR)/objects.o
+	$(CC) -o $@ $^
+	
+# Create object folder
+new_folder:
+	mkdir -p $(O_DIR)
+
+##########  Object creation  ##########
+$(O_DIR)/game_loop.o: $(C_DIR)/game_loop.c $(H_DIR)/game.h $(H_DIR)/graphic_engine.h $(H_DIR)/command.h $(H_DIR)/game_actions.h $(H_DIR)/game_reader.h $(O_DIR)
 	$(CC) $(CFLAGS) -o $@ -c $<
 
-inventory_test: inventory_test.o inventory.o set.o objects.o
-	$(CC) -o $@ $^
+$(O_DIR)/game.o: $(C_DIR)/game.c $(H_DIR)/game.h $(H_DIR)/space.h $(H_DIR)/types.h $(H_DIR)/objects.h $(H_DIR)/player.h $(H_DIR)/command.h $(O_DIR)
+	$(CC) $(CFLAGS) -o $@ -c $<
 
+$(O_DIR)/command.o: $(C_DIR)/command.c $(H_DIR)/command.h $(H_DIR)/types.h
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(O_DIR)/graphic_engine.o: $(C_DIR)/graphic_engine.c $(H_DIR)/graphic_engine.h $(H_DIR)/game.h $(H_DIR)/command.h $(H_DIR)/libscreen.h $(H_DIR)/space.h $(H_DIR)/types.h $(O_DIR)
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(O_DIR)/space.o: $(C_DIR)/space.c $(H_DIR)/space.h $(H_DIR)/types.h $(H_DIR)/objects.h $(H_DIR)/set.h $(O_DIR)
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(O_DIR)/game_actions.o: $(C_DIR)/game_actions.c $(H_DIR)/game_actions.h $(H_DIR)/game.h $(H_DIR)/command.h $(H_DIR)/types.h $(O_DIR)
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(O_DIR)/objects.o: $(C_DIR)/objects.c $(H_DIR)/objects.h $(H_DIR)/types.h $(O_DIR)
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(O_DIR)/game_reader.o: $(C_DIR)/game_reader.c $(H_DIR)/game_reader.h $(H_DIR)/game.h $(H_DIR)/space.h $(H_DIR)/types.h $(O_DIR)
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(O_DIR)/player.o: $(C_DIR)/player.c $(H_DIR)/player.h $(H_DIR)/types.h $(O_DIR)
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(O_DIR)/set.o: $(C_DIR)/set.c $(H_DIR)/set.h $(H_DIR)/types.h $(O_DIR)
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(O_DIR)/character.o: $(C_DIR)/character.c $(H_DIR)/character.h $(H_DIR)/types.h $(O_DIR)
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(O_DIR)/inventory.o: $(C_DIR)/inventory.c $(H_DIR)/inventory.h $(H_DIR)/types.h $(H_DIR)/objects.h $(H_DIR)/set.h $(O_DIR)
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(O_DIR)/space_test.o: $(C_DIR)/space_test.c $(H_DIR)/space.h $(H_DIR)/test.h $(O_DIR)
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(O_DIR)/set_test.o: $(C_DIR)/set_test.c $(H_DIR)/set.h $(H_DIR)/test.h $(O_DIR)
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(O_DIR)/character_test.o: $(C_DIR)/character_test.c $(H_DIR)/character.h $(H_DIR)/test.h $(O_DIR)
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(O_DIR)/inventory_test.o: $(C_DIR)/inventory_test.c $(H_DIR)/inventory.h $(H_DIR)/test.h $(O_DIR)
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+
+##########  Cleaning and execution  ##########
 clean:
-	rm -f anthill space_test set_test character_test inventory_test *.o
+	rm -f -r $(EXE) space_test set_test character_test inventory_test $(O_DIR)
 
 run:
-	./anthill anthill.dat
+	./$(EXE) $(R_DIR)/anthill.dat
 
 runv:
-	valgrind --leak-check=full ./anthill anthill.dat
+	valgrind --leak-check=full ./$(EXE) $(R_DIR)/anthill.dat
 
 test: space_test set_test character_test inventory_test
 	./space_test
@@ -85,3 +99,5 @@ test: space_test set_test character_test inventory_test
 testv:
 	valgrind --leak-check=full ./space_test
 	valgrind --leak-check=full ./set_test
+	valgrind --leak-check=full ./character_test
+	valgrind --leak-check=full ./inventory_test
