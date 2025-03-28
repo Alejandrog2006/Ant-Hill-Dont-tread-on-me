@@ -81,6 +81,9 @@ Status game_create(Game **game) {
   if ((*game)->player == NULL) {
     return ERROR;
   }
+  for (i = 0; i < MAX_OBJECTS; i++) {
+    (*game)->objects[i] = NULL;
+  }
   /*(*game)->object[0] = object_create(NO_ID);
   if ((*game)->object[0] == NULL) {
     return ERROR;
@@ -344,4 +347,20 @@ Status game_set_temporal_feedback(Game *game, const char *feedback) {
   strncpy(game->temporal_feedback, feedback, MESSAGE_SIZE - 1);
   game->temporal_feedback[MESSAGE_SIZE - 1] = '\0';
   return OK;
+}
+
+Object *game_get_object_by_id(Game *game, Id id) {
+  int i;
+
+  if (!game || id == NO_ID) {
+    return NULL;
+  }
+
+  for (i = 0; i < *(game_get_n_objects(game)); i++) {
+    if (object_get_id(game->objects[i]) == id) {
+      return game->objects[i];
+    }
+  }
+
+  return NULL;
 }

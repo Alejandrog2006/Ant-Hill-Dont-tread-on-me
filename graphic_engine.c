@@ -89,6 +89,10 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   Bool friendly; 
   const char *temporal_feedback;
   Status cmd_status;
+  Set *player_objects;
+  int num_objects;
+  Id obj_id;
+  Object *current_obj;
 
   screen_area_clear(ge->map);
   if ((id_act = game_get_player_location(game)) != NO_ID) {
@@ -321,6 +325,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
       screen_area_puts(ge->map, str);
       sprintf(str, "_");
       screen_area_puts(ge->map, str);
+      sprintf(str, "_");
+      screen_area_puts(ge->map, str);
       sprintf(str, "  +---------------+   +---------------+   +---------------+");
       screen_area_puts(ge->map, str);
       sprintf(str, "  |        %s %3d|   | m0^    %s %3d|   |        %s %3d|", ch, (int)id_left, ch1, (int)id_act, ch2, (int)id_right);
@@ -393,9 +399,11 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
       screen_area_puts(ge->map, str);
       sprintf(str, "_");
       screen_area_puts(ge->map, str);
+      sprintf(str, "_");
+      screen_area_puts(ge->map, str);
       sprintf(str, "  +---------------+   +---------------+");
       screen_area_puts(ge->map, str);
-      sprintf(str, "  |        %s% 3d|   | m0^    %s% 3d|", ch1, (int)id_left, ch, (int)id_act);
+      sprintf(str, "  |        %s% 3d|   | m0^     %s% 3d|", ch1, (int)id_left, ch, (int)id_act);
       screen_area_puts(ge->map, str);
       sprintf(str, "  |               |   |               |");
       screen_area_puts(ge->map, str);
@@ -493,24 +501,33 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   sprintf(str, "  Objects:");
   screen_area_puts(ge->descript, str);
 
-  for (i = 0; i < game_n_objects; i++) {
-    if (objects[i] != NULL) {
+  for (i = 0; i < MAX_OBJECTS; i++) {
+    
         obj_loc = game_get_object_location(game, i);
         obj_name = object_get_name(objects[i]);
-        
+      
         if (obj_loc != NO_ID && obj_name != NULL) {
             sprintf(str, "  %s --> %d", obj_name, (int)obj_loc);
             screen_area_puts(ge->descript, str);
         }
     }
-  }
   
-  if (player_get_object(game_get_player(game)) == TRUE) {
-    for (i = 0; i < game_n_objects; i++) {
-      if (game_get_object_location(game, i) == NO_ID) {
-        sprintf(str, "  Player objects: %s", object_get_name(objects[i]));
-        screen_area_puts(ge->descript, str);
-        break;
+  player_objects = inventory_get_objects(player_get_inventory(game_get_player(game)));
+  
+  num_objects = inventory_get_count(player_get_inventory(game_get_player(game)));
+
+  if (num_objects > 0) {
+    sprintf(str, "  Player objects:");
+    screen_area_puts(ge->descript, str);
+
+    for (i = 0; i < num_objects; i++) {
+      obj_id = set_get_id_at(player_objects, i);
+      if (obj_id != NO_ID) {
+        current_obj = game_get_object_by_id(game, obj_id);
+        if (current_obj) {
+          sprintf(str, "  - %s", object_get_name(current_obj));
+          screen_area_puts(ge->descript, str);
+        }
       }
     }
   } else {

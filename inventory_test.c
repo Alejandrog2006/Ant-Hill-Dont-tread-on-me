@@ -58,24 +58,24 @@ int main(int argc, char** argv) {
 }
 
 void test_inventory_create() {
-    Inventory *inventory = inventory_create();
+    Inventory *inventory = inventory_create(3);
     PRINT_TEST_RESULT(inventory != NULL);
     inventory_destroy(inventory);
 }
 
 void test_inventory_destroy() {
-    Inventory *inventory = inventory_create();
+    Inventory *inventory = inventory_create(3);
     PRINT_TEST_RESULT(inventory_destroy(inventory) == OK);
 }
 
 void test1_inventory_add_object() {
-    Inventory *inventory = inventory_create();
+    Inventory *inventory = inventory_create(3);
     PRINT_TEST_RESULT(inventory_add_object(inventory, 1) == OK);
     inventory_destroy(inventory);
 }
 
 void test2_inventory_add_object() {
-    Inventory *inventory = inventory_create();
+    Inventory *inventory = inventory_create(3);
     inventory_add_object(inventory, 1);
     inventory_add_object(inventory, 2);
     inventory_add_object(inventory, 3);
@@ -84,27 +84,27 @@ void test2_inventory_add_object() {
 }
 
 void test1_inventory_del_object() {
-    Inventory *inventory = inventory_create();
+    Inventory *inventory = inventory_create(3);
     inventory_add_object(inventory, 1);
     PRINT_TEST_RESULT(inventory_del_object(inventory, 1) == OK);
     inventory_destroy(inventory);
 }
 
 void test2_inventory_del_object() {
-    Inventory *inventory = inventory_create();
+    Inventory *inventory = inventory_create(3);
     PRINT_TEST_RESULT(inventory_del_object(inventory, 1) == ERROR);
     inventory_destroy(inventory);
 }
 
 void test1_inventory_contains_object() {
-    Inventory *inventory = inventory_create();
+    Inventory *inventory = inventory_create(3);
     inventory_add_object(inventory, 1);
     PRINT_TEST_RESULT(inventory_contains_object(inventory, 1) == TRUE);
     inventory_destroy(inventory);
 }
 
 void test2_inventory_contains_object() {
-    Inventory *inventory = inventory_create();
+    Inventory *inventory = inventory_create(3);
     PRINT_TEST_RESULT(inventory_contains_object(inventory, 1) == FALSE);
     inventory_destroy(inventory);
 }

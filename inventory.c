@@ -15,7 +15,7 @@ struct _Inventory {
     int max_objs;
 };
 
-Inventory *inventory_create() {
+Inventory *inventory_create(int max_objs) {
     Inventory *inventory = NULL;
 
     inventory = (Inventory *)malloc(sizeof(Inventory));
@@ -29,7 +29,7 @@ Inventory *inventory_create() {
         return NULL;
     }
 
-    inventory->max_objs = BACKPACK_SIZE;
+    inventory->max_objs = max_objs;
     return inventory;
 }
 
@@ -84,9 +84,30 @@ Status inventory_print(Inventory *inventory) {
         return ERROR;
     }
 
-    printf("Inventory (max %d objects): \n", inventory->max_objs);
+    if (set_get_count(inventory->objs) == 0) {
+        printf("The inventory is empty\n");
+    }
+    return OK;
+
+    printf("Inventory has %d objects (max %d objects): \n", set_get_count(inventory->objs), inventory->max_objs);
     if (set_print(inventory->objs) == ERROR) {
         return ERROR;
     }
-    return OK;
+    
+}
+
+Set *inventory_get_objects(Inventory *inventory) {
+    if (!inventory) {
+        return NULL;
+    }
+
+    return inventory->objs;
+}
+
+int inventory_get_count(Inventory *inventory) {
+    if (!inventory) {
+        return -1;
+    }
+
+    return set_get_count(inventory->objs);
 }

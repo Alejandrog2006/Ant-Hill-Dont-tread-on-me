@@ -12,6 +12,7 @@
 #define PLAYER_H
 
 #include "types.h"
+#include "inventory.h"
 
 typedef struct _Player Player;
 
@@ -62,23 +63,34 @@ Status player_set_name(Player* player, char* name);
 const char* player_get_name(Player* player);
 
 /**
- * @brief It sets whether the player has an object or not
+ * @brief It adds an object to the player's backpack inventory
  * @author Alejandro Gonzalez
- *
+ * 
  * @param player a pointer to the player
- * @param value a boolean, specifying if in the player there is an object (TRUE) or not (FALSE)
+ * @param id the id of the object to add
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Status player_set_object(Player* player, Bool value);
+Status player_add_object(Player* player, Id id);
 
 /**
- * @brief It gets whether the player has an object or not
+ * @brief It deletes an object from the player's backpack inventory
  * @author Alejandro Gonzalez
- *
+ * 
  * @param player a pointer to the player
- * @return a boolean, specifying if in the player there is an object (TRUE) or not (FALSE)
+ * @param id the id of the object to delete
+ * @return OK, if everything goes well or ERROR if there was some mistake
  */
-Bool player_get_object(Player* player);
+Status player_del_object(Player* player, Id id);
+
+/**
+ * @brief It checks if an object is in the player's backpack inventory or not
+ * @author Alejandro Gonzalez
+ * 
+ * @param player a pointer to the player
+ * @param id the id of the object to check
+ * @return TRUE if the object is in the inventory, FALSE otherwise
+ */
+Bool player_has_object(Player* player, Id id);  
 
 /**
  * @brief It prints the player information
@@ -131,5 +143,15 @@ Status player_set_health(Player* player, int health);
  * @return the player's health value or -1 if there was an error
  */
 int player_get_health(Player* player);
+
+/**
+ * @brief Gets the player's backpack inventory
+ * @author Alejandro Gonzalez)
+ * 
+ * @param player a pointer to the player
+ * 
+ * @return the player's backpack inventory
+ */
+Inventory* player_get_inventory(Player* player);
 
 #endif
