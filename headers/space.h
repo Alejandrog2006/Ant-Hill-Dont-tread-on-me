@@ -12,7 +12,7 @@
 #define SPACE_H
 
 #define GDESC_ROWS 5
-#define GDESC_COLS 9
+#define GDESC_COLS 20
 
 #include "types.h"
 #include "objects.h"
@@ -218,5 +218,28 @@ const char **space_get_gdesc(Space *space);
  * @return A pointer to the set of object locations
  */
 Set *space_get_object_locations(Space *space);
+
+/**
+ * @brief It returns a part of the graphic description of a space
+ * @author Daniel Martín Jaén
+ * 
+ * @param space The space with the gdesc array
+ * @param position The position of the partial graphic description in the gdesc array
+ * @return The part of the graphic description stored in the given position
+ */
+const char *space_get_gdesc_at(Space *space, int position);
+
+/**
+ * @brief Changes a part of the full graphic description of a space
+ * @author Daniel Martín Jaén
+ * 
+ * @param space The space with the gdesc array
+ * @param gdesc_new The new partial graphic description
+ * @param position The position of the gdesc array that's being changed
+ * @return
+ *  ERROR if something went wrong
+ *  OK if everything went well
+ */
+Status space_set_gdesc_at(Space *space, char *gdesc_new, int position);
 
 #endif
