@@ -26,7 +26,6 @@ struct _Player {
 Player* player_create(Id id) {
   Player* newPlayer = NULL;
 
-
   newPlayer = (Player*)malloc(sizeof(Player));
   if (newPlayer == NULL) {
     return NULL;
@@ -108,6 +107,18 @@ Status player_print(Player* player) {
 
   if(inventory_print(player->backpack) == ERROR){
     return ERROR;
+  }
+
+  if (player->location != NO_ID) {
+    fprintf(stdout, "Location: %ld\n", player->location);
+  } else {
+    fprintf(stdout, "Location: No location\n");
+  }
+  
+  if (player->player_health > 0) {
+    fprintf(stdout, "Health: %d\n", player->player_health);
+  } else {
+    fprintf(stdout, "Health: No health\n");
   }
 
   return OK;

@@ -13,7 +13,6 @@
 #include "character.h"
 #include "time.h"
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -31,7 +30,7 @@ struct _Game {
   Bool finished;            /**< Whether the game is finished or not. */
   char last_message[MESSAGE_SIZE + 1]; /**< Last message received from a character. */
   /*TEMPORAL*/
-  char temporal_feedback[MESSAGE_SIZE + 1];
+  char temporal_feedback[MESSAGE_SIZE + 1]; /**< Temporal feedback message. */
 };
 
 Status game_create(Game **game) {

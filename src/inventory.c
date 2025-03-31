@@ -11,8 +11,8 @@
 #include "inventory.h"
 
 struct _Inventory {
-    Set* objs;
-    int max_objs;
+    Set* objs; /**< Set of objects in the inventory */
+    int max_objs; /**< Maximum number of objects in the inventory */
 };
 
 Inventory *inventory_create(int max_objs) {

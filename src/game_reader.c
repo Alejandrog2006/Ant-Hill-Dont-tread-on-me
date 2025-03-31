@@ -1,5 +1,14 @@
+/**
+* @brief It reads the game data from a file and initializes the game and graphic engine.
+* 
+* @file game_reader.c
+* @version 0
+* @date 27-02-2025
+*/
+
 #include "game_reader.h"
 #include "space.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

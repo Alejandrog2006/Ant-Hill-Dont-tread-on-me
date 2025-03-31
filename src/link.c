@@ -9,16 +9,18 @@
  */
 
 #include "link.h"
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 struct _Link {
-    Id id;
-    char name[WORD_SIZE + 1];
-    Id origin;
-    Id destination;
-    Direction direction;
-    Bool open;
+    Id id; /* Link ID */
+    char name[WORD_SIZE + 1]; /* Link name */
+    Id origin; /* Origin ID */
+    Id destination; /* Destination ID */
+    Direction direction; /* Direction of the link */
+    Bool open; /* Link status (open or closed) */
 };
 
 Link* link_create(Id id) {

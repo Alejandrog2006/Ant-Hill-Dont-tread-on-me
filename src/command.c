@@ -18,8 +18,8 @@ char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "E
 
 struct _Command {
   CommandCode code; /*!< Name of the command */
-  char arg[CMD_ARG_SIZE];
-  Status command_status;
+  char arg[CMD_ARG_SIZE]; /*!< Argument of the command */
+  Status command_status; /*!< Status of the command */
 };
 
 Command* command_create() {

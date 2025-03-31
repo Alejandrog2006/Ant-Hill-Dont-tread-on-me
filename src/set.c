@@ -13,8 +13,8 @@
 #include <stdlib.h>
 
 struct _Set {
-    Id ids[MAX_IDS];
-    int n_ids;
+    Id ids[MAX_IDS]; /* Array of ids in the set */
+    int n_ids; /* Number of ids in the set */
 };
 
 Set* set_create() {

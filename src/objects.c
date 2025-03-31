@@ -37,7 +37,6 @@ Object* object_create(Id id){
    strcpy(newObject->name, "");
 
    return newObject;
-
 }
 
 Status object_destroy(Object* object){
