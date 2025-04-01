@@ -145,11 +145,4 @@ Bool link_get_open(Link*link);
  */
 void link_print(Link* link);
 
-
-
-
-
-
-
-
  #endif
