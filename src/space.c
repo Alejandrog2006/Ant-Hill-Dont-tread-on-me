@@ -269,3 +269,20 @@ Set *space_get_object_locations(Space *space) {
   }
   return space->object_locations;
 }
+
+const char *space_get_gdesc_at(Space *space, int position){
+  if(!space || position < 0){
+    return NULL;
+  }
+
+  return space->gdesc[position];
+}
+
+Status space_set_gdesc_at(Space *space, char *gdesc_new, int position){
+  if(!space || !gdesc_new || position < 0){
+    return ERROR;
+  } 
+
+  strcpy(space->gdesc[position], gdesc_new);
+  return OK;
+}
