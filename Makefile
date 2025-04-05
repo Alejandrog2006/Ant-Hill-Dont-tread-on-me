@@ -1,6 +1,6 @@
 ##########  Variables & Directorios  ##########
 EXE = anthill
-CFLAGS = -Wall -pedantic -ansi -Iheaders
+CFLAGS = -Wall -pedantic -ansi -Iheaders -g
 CC = gcc
 
 C_DIR = ./src
@@ -11,7 +11,7 @@ R_DIR = ./resources
 ##########  General rules  ##########
 all: new_folder $(EXE) space_test set_test character_test inventory_test
 
-$(EXE): $(O_DIR)/game_loop.o $(O_DIR)/game.o $(O_DIR)/command.o $(O_DIR)/graphic_engine.o $(O_DIR)/space.o $(O_DIR)/game_actions.o $(O_DIR)/objects.o $(O_DIR)/game_reader.o $(O_DIR)/player.o $(O_DIR)/set.o $(O_DIR)/character.o $(O_DIR)/inventory.o $(O_DIR)/link.o
+$(EXE): $(O_DIR)/game_loop.o $(O_DIR)/game.o $(O_DIR)/command.o $(O_DIR)/graphic_engine.o $(O_DIR)/space.o $(O_DIR)/game_actions.o $(O_DIR)/objects.o $(O_DIR)/game_reader.o $(O_DIR)/player.o $(O_DIR)/set.o $(O_DIR)/character.o $(O_DIR)/inventory.o $(O_DIR)/link_l.o
 	$(CC) -o $@ $^ -lscreen -L $(R_DIR)
 
 space_test: $(O_DIR)/space_test.o $(O_DIR)/space.o $(O_DIR)/set.o
@@ -79,7 +79,7 @@ $(O_DIR)/character_test.o: $(C_DIR)/character_test.c $(H_DIR)/character.h $(H_DI
 $(O_DIR)/inventory_test.o: $(C_DIR)/inventory_test.c $(H_DIR)/inventory.h $(H_DIR)/test.h $(O_DIR)
 	$(CC) $(CFLAGS) -o $@ -c $<
 
-$(O_DIR)/link.o: $(C_DIR)/link.c $(H_DIR)/link.h $(O_DIR)
+$(O_DIR)/link_l.o: $(C_DIR)/link_l.c $(H_DIR)/link_l.h $(H_DIR)/space.h $(H_DIR)/types.h $(O_DIR)
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 
