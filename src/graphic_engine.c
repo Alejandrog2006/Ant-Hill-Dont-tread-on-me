@@ -19,7 +19,7 @@
 #include "types.h"
 #include "game.h"
 
-#define WIDTH_MAP 80
+#define WIDTH_MAP 100
 #define WIDTH_DES 40
 #define WIDTH_BAN 30
 #define HEIGHT_MAP 25
@@ -627,7 +627,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  sprintf(str, " next or n, back or b, right or r, left or l, take or t, drop or d, attack or a, exit or e, chat or c, inspect or i");
+  sprintf(str, " move or m (noth or n, south or s, east or e, west or w), take or t, drop or d, attack or a, exit or e, chat or c, inspect or i");
   screen_area_puts(ge->help, str);
 
   screen_area_clear(ge->feedback);
@@ -645,28 +645,31 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
   if (temporal_feedback && last_cmd == ATTACK) {
     sprintf(str, " %s", temporal_feedback);
     screen_area_puts(ge->feedback, str);
-  } else if(temporal_feedback && last_cmd == MOVE){
+  } else if (temporal_feedback && last_cmd == MOVE) {
     sprintf(str, " %s", temporal_feedback);
     screen_area_puts(ge->feedback, str);
   }
-  
+
   message = game_get_last_message(game);
   if (message && last_cmd == CHAT) {
-  characters = game_get_character_array(game);
-  player_location = game_get_player_location(game);
+    characters = game_get_character_array(game);
+    player_location = game_get_player_location(game);
 
-  for (i = 0; i < MAX_CHARACTERS; i++) {
-    if (characters[i] != NULL && character_get_location(characters[i]) == player_location) {
-      same_location = TRUE;
-      break;
+    for (i = 0; i < MAX_CHARACTERS; i++) {
+      if (characters[i] != NULL && character_get_location(characters[i]) == player_location) {
+        same_location = TRUE;
+        break;
+      }
     }
-  }
 
-  if (same_location) {
-    sprintf(str, " Character says: %s", message);
+    if (same_location) {
+      sprintf(str, " Character says: %s", message);
+      screen_area_puts(ge->feedback, str);
+    }
+  } else if (message && last_cmd == INSPECT && cmd_status == OK) {
+    sprintf(str, " Description: %s", message);
     screen_area_puts(ge->feedback, str);
   }
-}
 
   screen_paint();
   printf("prompt:> ");

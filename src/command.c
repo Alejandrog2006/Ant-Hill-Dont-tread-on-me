@@ -13,7 +13,7 @@
 #define CMD_LENGHT 30
 #define CMD_ARG_SIZE 32
 
-char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"t", "Take"}, {"d", "Drop"}, {"a", "Attack"}, {"c", "Chat"}, {"m", "Move"}};
+char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"t", "Take"}, {"d", "Drop"}, {"a", "Attack"}, {"c", "Chat"}, {"m", "Move"}, {"i", "Inspect"}};
 
 struct _Command {
   CommandCode code; /*!< Name of the command */
@@ -89,7 +89,7 @@ Status command_get_user_input(Command* command) {
     
     command_set_code(command, cmd);
 
-    if (cmd == TAKE || cmd == DROP || cmd == MOVE) {
+    if (cmd == TAKE || cmd == DROP || cmd == MOVE || cmd == INSPECT) {
       token = strtok(NULL, "\n");
       if (token) {
         while (*token == ' ') token++; 

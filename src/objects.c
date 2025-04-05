@@ -22,6 +22,7 @@ struct _Object {
    Id id;                            /*!< Id number of the object, it must be unique */
    char name[WORD_SIZE + 1];         /*!< Name of the object */
    Id location;                      /*!< Id number of the space the object resides in */
+   char description[WORD_SIZE + 1]; /*!< Description of the object */
 };
 
 Object* object_create(Id id){
@@ -35,6 +36,7 @@ Object* object_create(Id id){
    newObject->id = id;
    newObject->location = NO_ID;
    strcpy(newObject->name, "");
+   strcpy(newObject->description, "");
 
    return newObject;
 }
@@ -96,4 +98,37 @@ const char* object_get_name(Object* object){
    return object->name;
 }
 
+Status object_set_description(Object* object, char* description){
+   if ((object) == NULL || !description) {
+      return ERROR;
+   }
+
+   if (!strcpy(object->description, description)) {
+      return ERROR;
+   }
+   return OK;
+}
+
+const char* object_get_description(Object* object){
+   if (object == NULL) {
+      return NULL;
+   }
+   return object->description;
+}
+
+Id object_get_id_by_name(Object **objects, const char *name) {
+   int i;
+ 
+   if (!objects || !name) {
+     return NO_ID;
+   }
+ 
+   for (i = 0; i < MAX_OBJECTS; i++) {
+     if (objects[i] && strcmp(object_get_name(objects[i]), name) == 0) {
+       return object_get_id(objects[i]);
+     }
+   }
+ 
+   return NO_ID;
+}
 

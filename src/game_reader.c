@@ -175,57 +175,111 @@ Status game_add_link(Game *game, Link *link){
   return OK;
 }
 
-Status game_load_players(Game *game, char *filename){
-  FILE *f = NULL;
-  char line[WORD_SIZE], name[WORD_SIZE], gdesc[PLAYER_GDESC_COLUMS], *toks = NULL;
-  int backpack_size, health_points;
-  Id id, location;
-  Player *player_p = NULL;
-  Inventory *inventory_p = NULL;
+Status game_load_players(Game *game, char *filename) {
+    FILE *f = NULL;
+    char line[WORD_SIZE], name[WORD_SIZE], gdesc[PLAYER_GDESC_COLUMS], *toks = NULL;
+    int backpack_size, health_points;
+    Id id, location;
+    Player *player_p = NULL;
+    Inventory *inventory_p = NULL;
 
-
-  if(game == NULL || filename == NULL){
-    return ERROR;
-  }
-
-  if(!(f = fopen(filename, "r"))){
-    return ERROR;
-  }
-
-  while(fgets(line, WORD_SIZE, f)){
-    if(strncmp(line, "#p:", 3) == 0){
-      toks = strtok(line+3, "|");
-      id = atol(toks);
-      toks = strtok(NULL, "|");
-      strcpy(name, toks);
-      toks = strtok(NULL, "|");
-      strcpy(gdesc, toks);
-      toks = strtok(NULL, "|");
-      location = atol(toks);
-      toks = strtok(NULL, "|");
-      health_points = (int)atol(toks);
-      toks = strtok(NULL, "|\n");
-      backpack_size = (int)atol(toks);
-
-      player_p = player_create(id);
-
-      if(player_p != NULL){
-        inventory_p = inventory_create(backpack_size);
-        player_set_name(player_p, name);
-        player_set_gdesc(player_p, gdesc);
-        player_set_location(player_p, location);
-        player_set_health(player_p, health_points);
-        player_set_inventory(player_p, inventory_p);
-
-        game_add_player(game, player_p);
-      }else{
+    if (game == NULL || filename == NULL) {
+        fprintf(stderr, "Error: Invalid parameters in game_load_players.\n");
         return ERROR;
-      }
     }
-  }
 
-  fclose(f);
-  return OK;
+    f = fopen(filename, "r");
+    if (!f) {
+        fprintf(stderr, "Error: Could not open file %s.\n", filename);
+        return ERROR;
+    }
+
+    while (fgets(line, WORD_SIZE, f)) {
+        if (strncmp(line, "#p:", 3) == 0) {
+            toks = strtok(line + 3, "|");
+            if (!toks) {
+                fprintf(stderr, "Error: Missing player ID.\n");
+                fclose(f);
+                return ERROR;
+            }
+            id = atol(toks);
+
+            toks = strtok(NULL, "|");
+            if (!toks) {
+                fprintf(stderr, "Error: Missing player name.\n");
+                fclose(f);
+                return ERROR;
+            }
+            strcpy(name, toks);
+
+            toks = strtok(NULL, "|");
+            if (!toks) {
+                fprintf(stderr, "Error: Missing player graphic description.\n");
+                fclose(f);
+                return ERROR;
+            }
+            strcpy(gdesc, toks);
+
+            toks = strtok(NULL, "|");
+            if (!toks) {
+                fprintf(stderr, "Error: Missing player location.\n");
+                fclose(f);
+                return ERROR;
+            }
+            location = atol(toks);
+
+            toks = strtok(NULL, "|");
+            if (!toks) {
+                fprintf(stderr, "Error: Missing player health points.\n");
+                fclose(f);
+                return ERROR;
+            }
+            health_points = (int)atol(toks);
+
+            toks = strtok(NULL, "|\n");
+            if (!toks) {
+                fprintf(stderr, "Error: Missing player backpack size.\n");
+                fclose(f);
+                return ERROR;
+            }
+            backpack_size = (int)atol(toks);
+
+            player_p = player_create(id);
+            if (!player_p) {
+                fprintf(stderr, "Error: Could not create player.\n");
+                fclose(f);
+                return ERROR;
+            }
+
+            inventory_p = inventory_create(backpack_size);
+            if (!inventory_p) {
+                fprintf(stderr, "Error: Could not create inventory.\n");
+                player_destroy(player_p);
+                fclose(f);
+                return ERROR;
+            }
+
+            player_set_name(player_p, name);
+            player_set_gdesc(player_p, gdesc);
+            player_set_location(player_p, location);
+            player_set_health(player_p, health_points);
+            player_set_inventory(player_p, inventory_p);
+
+            if (game_add_player(game, player_p) == ERROR) {
+                fprintf(stderr, "Error: Could not add player to game.\n");
+                player_destroy(player_p);
+                fclose(f);
+                return ERROR;
+            }
+
+            fclose(f);
+            return OK;
+        }
+    }
+
+    fprintf(stderr, "Error: No player found in file.\n");
+    fclose(f);
+    return ERROR;
 }
 
 Status game_load_links(Game *game, char *filename){
@@ -279,25 +333,24 @@ Status game_load_links(Game *game, char *filename){
   return OK;
 }
 
-Status game_load_characters(Game *game, char *filename){
+Status game_load_characters(Game *game, char *filename) {
   FILE *f = NULL;
-  char line[WORD_SIZE], name[WORD_SIZE] , gdesc[WORD_SIZE], message[MESSAGE_SIZE],*toks = NULL;
+  char line[WORD_SIZE], name[WORD_SIZE], gdesc[WORD_SIZE], message[MESSAGE_SIZE], *toks = NULL;
   Id id = 0, position = 0;
   int health = 0;
   Bool friendly = FALSE;
   Character *char_p = NULL;
 
-
-  if(game == NULL || filename == NULL){
+  if (game == NULL || filename == NULL) {
     return ERROR;
   }
 
-  if(!(f = fopen(filename, "r"))){
+  if (!(f = fopen(filename, "r"))) {
     return ERROR;
   }
 
-  while(fgets(line, WORD_SIZE, f)){
-    if(strncmp(line, "#c:", 3) == 0){
+  while (fgets(line, WORD_SIZE, f)) {
+    if (strncmp(line, "#c:", 3) == 0) {
       toks = strtok(line + 3, "|");
       id = atol(toks);
       toks = strtok(NULL, "|");
@@ -311,23 +364,30 @@ Status game_load_characters(Game *game, char *filename){
       toks = strtok(NULL, "|\n");
       friendly = atol(toks);
 
-      if(friendly == TRUE){
-        toks = strtok(NULL, "|\n");
-        strcpy(message, toks);
-      }
-
       char_p = character_create(id);
-      if(char_p != NULL){
-        character_set_name(char_p, name);
-        character_set_gdesc(char_p, gdesc);
-        character_set_location(char_p, position);
-        character_set_health(char_p, health);
-        character_set_friendly(char_p, friendly);
-        character_set_message(char_p, message);
-        game_add_character(game ,char_p);
-      } else{
+      if (char_p == NULL) {
+        fclose(f);
         return ERROR;
       }
+
+      character_set_name(char_p, name);
+      character_set_gdesc(char_p, gdesc);
+      character_set_location(char_p, position);
+      character_set_health(char_p, health);
+      character_set_friendly(char_p, friendly);
+
+      
+      if (friendly == TRUE) {
+        toks = strtok(NULL, "|\n");
+        if (toks != NULL) { 
+          strcpy(message, toks);
+          character_set_message(char_p, message);
+        }
+      } else {
+        character_set_message(char_p, ""); 
+      }
+
+      game_add_character(game, char_p);
     }
   }
 

@@ -59,22 +59,6 @@ Status game_actions_drop(Game *game);
 Status game_actions_attack(Game *game);
 
 /**
- * @brief Handles the "left" command.
- * @author Izan Robles
- *
- * @param game A pointer to the game structure.
- */
-Status game_actions_left(Game *game);
-
-/**
- * @brief Handles the "right" command.
- * @author Izan Robles
- * 
- * @param game A pointer to the game structure.
- */
-Status game_actions_right(Game *game);
-
-/**
  * @brief Handles the "chat" command.
  * @author Izan Robles
  * 
@@ -82,7 +66,22 @@ Status game_actions_right(Game *game);
  */
 Status game_actions_chat(Game *game);
 
+/**
+ * @brief Handles the "move" command.
+ * @author Daniel Martin
+ * 
+ * @param game A pointer to the game structure.
+ */
+
 Status game_actions_move(Game *game);
+
+/**
+ * @brief Handles the "inspect" command.
+ * @author Alejandro Gonzalez
+ * 
+ * @param game A pointer to the game structure.
+ */
+Status game_actions_inspect(Game *game);
 
 /**
    Game actions implementation
@@ -126,6 +125,10 @@ Status game_actions_update(Game *game, Command *command) {
       status = game_actions_move(game);
       break;
     
+    case INSPECT:
+      status = game_actions_inspect(game);
+      break;
+
     default:
       status = ERROR;
       break;
@@ -361,4 +364,60 @@ Status game_actions_move(Game *game){
     return OK;
   }
   
+}
+
+Status game_actions_inspect(Game *game) {
+    Id player_location_id = NO_ID;
+    Id object_location_id = NO_ID;
+    Id obj_id = NO_ID;
+    const char *obj_name = NULL;
+    const char *description = NULL;
+    Object *object = NULL;
+    Inventory *player_inventory = NULL;
+    int i;
+    Command *cmd = NULL;
+
+    if (!game) return ERROR;
+
+    cmd = game_get_last_command(game);
+    if (!cmd) return ERROR;
+
+    obj_name = command_get_arg(cmd);
+    if (!obj_name || obj_name[0] == '\0') {
+        return ERROR;
+    }
+
+    player_location_id = game_get_player_location(game);
+    if (player_location_id == NO_ID) {
+        return ERROR;
+    }
+
+    for (i = 0; i < *(game_get_n_objects(game)); i++) {
+        object = game_get_objects(game)[i];
+        object_location_id = game_get_object_location(game, i);
+
+        if (object_location_id == player_location_id && strcasecmp(object_get_name(object), obj_name) == 0) {
+            description = object_get_description(object);
+            game_set_last_message(game, description);
+            return OK;
+        }
+    }
+
+    player_inventory = player_get_inventory(game_get_player(game));
+    if (!player_inventory) {
+        return ERROR;
+    }
+
+    for (i = 0; i < inventory_get_count(player_inventory); i++) {
+        obj_id = set_get_id_at(inventory_get_objects(player_inventory), i);
+        object = game_get_object_by_id(game, obj_id);
+        if (object && strcasecmp(object_get_name(object), obj_name) == 0) {
+            description = object_get_description(object);
+            game_set_last_message(game, description);
+            return OK;
+        }
+    }
+
+    game_set_last_message(game, "You can't inspect that object.");
+    return ERROR;
 }

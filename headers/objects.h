@@ -19,6 +19,7 @@
 typedef struct _Object Object;
 
 #define MAX_SPACES 100
+#define MAX_OBJECTS 10
 
 /**
  * @brief It creates a new object, allocating memory and initializing its members
@@ -94,5 +95,32 @@ Status object_set_name(Object* object, char* name);
  */
 const char* object_get_name(Object* object);
 
+/**
+ * @brief It gets the name of a object
+ * @author Alejandro Gonzalez
+ *
+ * @param object a pointer to the object
+ * @return  a string with the name of the object
+ */
+Status object_set_description(Object* object, char* description);
+
+/**
+ * @brief It gets the description of a object
+ * @author Alejandro Gonzalez
+ *
+ * @param object a pointer to the object
+ * @return  a string with the name of the object
+ */
+const char* object_get_description(Object* object);
+
+/**
+ * @brief It gets the id of a object by its name
+ * @author Alejandro Gonzalez
+ *
+ * @param objects a pointer to the array of objects
+ * @param name a string with the name of the object
+ * @return  the id of the object, NO_ID if there was some mistake
+ */
+Id object_get_id_by_name(Object **objects, const char *name);
 
 #endif

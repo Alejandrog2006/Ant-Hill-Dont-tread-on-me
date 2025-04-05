@@ -91,32 +91,43 @@ Status game_create(Game **game) {
 
 Status game_create_from_file(Game **game, char *filename) {
   if (game_create(game) == ERROR) {
+    fprintf(stderr, "Error: Failed to create game structure.\n");
     return ERROR;
   }
 
-  if (game_load_players(*game, filename) == ERROR){
+  if (game_load_players(*game, filename) == ERROR) {
+    fprintf(stderr, "Error: Failed to load players from file.\n");
     return ERROR;
   }
 
   if (game_load_spaces(*game, filename) == ERROR) {
+    fprintf(stderr, "Error: Failed to load spaces from file.\n");
     return ERROR;
   }
-  
+
   if (game_load_objects(*game, filename) == ERROR) {
+    fprintf(stderr, "Error: Failed to load objects from file.\n");
     return ERROR;
   }
 
-  if (game_load_links(*game, filename) == ERROR){
+  if (game_load_links(*game, filename) == ERROR) {
+    fprintf(stderr, "Error: Failed to load links from file.\n");
     return ERROR;
   }
 
-  if (game_load_characters(*game, filename) == ERROR){
+  if (game_load_characters(*game, filename) == ERROR) {
+    fprintf(stderr, "Error: Failed to load characters from file.\n");
     return ERROR;
   }
 
   /* The player is located in the first space */
   game_set_player_location(*game, player_get_location(game_get_player(*game)));
-  /*game_set_object_location(*game, game_get_space_id_at(*game, 0), 0);*/
+/*game_set_object_location(*game, game_get_space_id_at(*game, 0), 0);*/
+
+  object_set_description((*game)->objects[0], "A magic wand");
+  object_set_description((*game)->objects[1], "A book of magic.");
+  object_set_description((*game)->objects[2], "A magic potion.");
+  object_set_description((*game)->objects[3], "A magic ring.");
 
   return OK;
 }

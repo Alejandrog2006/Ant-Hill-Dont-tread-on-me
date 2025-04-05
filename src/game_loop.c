@@ -75,13 +75,19 @@
  int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name) { 
      if (game_create_from_file(game, file_name) == ERROR) {
          fprintf(stderr, "Error while initializing game.\n");
-         game_destroy(*game);
+         if (*game) {
+             game_destroy(*game);
+             *game = NULL;
+         }
          return 1;
      }
  
      if ((*gengine = graphic_engine_create()) == NULL) {
          fprintf(stderr, "Error while initializing graphic engine.\n");
-         game_destroy(*game);
+         if (*game) {
+             game_destroy(*game);
+             *game = NULL;
+         }
          return 1;
      }
  
@@ -114,8 +120,10 @@
  void game_loop_cleanup(Game *game, Graphic_engine *gengine) {
      if (game) {
          game_destroy(game);
+         game = NULL; 
      }
      if (gengine) {
          graphic_engine_destroy(gengine);
+         gengine = NULL; 
      }
  }
