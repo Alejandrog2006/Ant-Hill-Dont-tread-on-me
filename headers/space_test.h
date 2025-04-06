@@ -8,75 +8,274 @@
  * @copyright GNU Public License
  */
 
-#ifndef SPACE_TEST_H
-#define SPACE_TEST_H
-
-/**
- * @test Test space creation
- * @pre Space ID 
- * @post Non NULL pointer to space 
- */
-void test1_space_create();
-
-/**
- * @test Test space creation
- * @pre Space ID 
- * @post Space_ID == Supplied Space Id
- */
-void test2_space_create();
-
-/**
- * @test Test function for space_name setting
- * @pre String with space name
- * @post Ouput==OK 
- */
-void test1_space_set_name();
-
-/**
- * @test Test function for space_name setting
- * @pre pointer to space = NULL 
- * @post Output==ERROR
- */
-void test2_space_set_name();
-
-/**
- * @test Test function for space_name setting
- * @pre pointer to space_name = NULL (point to space = NON NULL) 
- * @post Output==ERROR
- */
-void test3_space_set_name();
-void test1_space_set_north();
-void test2_space_set_north();
-void test3_space_set_north();
-void test4_space_set_north();
-void test1_space_set_south();
-void test2_space_set_south();
-void test3_space_set_south();
-void test4_space_set_south();
-void test1_space_set_east();
-void test2_space_set_east();
-void test3_space_set_east();
-void test4_space_set_east();
-void test1_space_set_west();
-void test2_space_set_west();
-void test3_space_set_west();
-void test4_space_set_west();
-void test1_space_set_object();
-void test2_space_set_object();
-void test1_space_get_id();
-void test2_space_get_id();
-void test1_space_get_name();
-void test2_space_get_name();
-void test1_space_get_north();
-void test2_space_get_north();
-void test1_space_get_south();
-void test2_space_get_south();
-void test1_space_get_east();
-void test2_space_get_east();
-void test1_space_get_west();
-void test2_space_get_west();
-void test1_space_get_object();
-void test2_space_get_object();
-void test3_space_get_object();
-
-#endif
+ #ifndef SPACE_TEST_H
+ #define SPACE_TEST_H
+ 
+ /**
+  * @test Test space creation
+  * @pre Space ID 
+  * @post Non NULL pointer to space 
+  */
+ void test1_space_create();
+ 
+ /**
+  * @test Test space creation
+  * @pre Space ID 
+  * @post Space_ID == Supplied Space Id
+  */
+ void test2_space_create();
+ 
+ /**
+  * @test Test function for space_name setting
+  * @pre String with space name
+  * @post Output==OK 
+  */
+ void test1_space_set_name();
+ 
+ /**
+  * @test Test function for space_name setting
+  * @pre Pointer to space = NULL 
+  * @post Output==ERROR
+  */
+ void test2_space_set_name();
+ 
+ /**
+  * @test Test function for space_name setting
+  * @pre Pointer to space_name = NULL (pointer to space = NON NULL) 
+  * @post Output==ERROR
+  */
+ void test3_space_set_name();
+ 
+ /**
+  * @test Test setting north link to a valid ID
+  * @pre Valid space and ID
+  * @post Output==OK
+  */
+ void test1_space_set_north();
+ 
+ /**
+  * @test Test setting north link with NULL space
+  * @pre NULL pointer to space
+  * @post Output==ERROR
+  */
+ void test2_space_set_north();
+ 
+ /**
+  * @test Test setting north link with invalid ID
+  * @pre Invalid ID
+  * @post Output==ERROR
+  */
+ void test3_space_set_north();
+ 
+ /**
+  * @test Test setting north link and verifying link
+  * @pre Valid ID
+  * @post North link set correctly
+  */
+ void test4_space_set_north();
+ 
+ /**
+  * @test Test setting south link to a valid ID
+  * @pre Valid space and ID
+  * @post Output==OK
+  */
+ void test1_space_set_south();
+ 
+ /**
+  * @test Test setting south link with NULL space
+  * @pre NULL pointer to space
+  * @post Output==ERROR
+  */
+ void test2_space_set_south();
+ 
+ /**
+  * @test Test setting south link with invalid ID
+  * @pre Invalid ID
+  * @post Output==ERROR
+  */
+ void test3_space_set_south();
+ 
+ /**
+  * @test Test setting south link and verifying link
+  * @pre Valid ID
+  * @post South link set correctly
+  */
+ void test4_space_set_south();
+ 
+ /**
+  * @test Test setting east link to a valid ID
+  * @pre Valid space and ID
+  * @post Output==OK
+  */
+ void test1_space_set_east();
+ 
+ /**
+  * @test Test setting east link with NULL space
+  * @pre NULL pointer to space
+  * @post Output==ERROR
+  */
+ void test2_space_set_east();
+ 
+ /**
+  * @test Test setting east link with invalid ID
+  * @pre Invalid ID
+  * @post Output==ERROR
+  */
+ void test3_space_set_east();
+ 
+ /**
+  * @test Test setting east link and verifying link
+  * @pre Valid ID
+  * @post East link set correctly
+  */
+ void test4_space_set_east();
+ 
+ /**
+  * @test Test setting west link to a valid ID
+  * @pre Valid space and ID
+  * @post Output==OK
+  */
+ void test1_space_set_west();
+ 
+ /**
+  * @test Test setting west link with NULL space
+  * @pre NULL pointer to space
+  * @post Output==ERROR
+  */
+ void test2_space_set_west();
+ 
+ /**
+  * @test Test setting west link with invalid ID
+  * @pre Invalid ID
+  * @post Output==ERROR
+  */
+ void test3_space_set_west();
+ 
+ /**
+  * @test Test setting west link and verifying link
+  * @pre Valid ID
+  * @post West link set correctly
+  */
+ void test4_space_set_west();
+ 
+ /**
+  * @test Test setting an object in space
+  * @pre Valid space and object ID
+  * @post Output==OK
+  */
+ void test1_space_set_object();
+ 
+ /**
+  * @test Test setting object with NULL space
+  * @pre NULL space
+  * @post Output==ERROR
+  */
+ void test2_space_set_object();
+ 
+ /**
+  * @test Test getting space ID from valid space
+  * @pre Valid space
+  * @post Correct ID returned
+  */
+ void test1_space_get_id();
+ 
+ /**
+  * @test Test getting space ID from NULL space
+  * @pre NULL space
+  * @post Output==NO_ID
+  */
+ void test2_space_get_id();
+ 
+ /**
+  * @test Test getting name from valid space
+  * @pre Valid space
+  * @post Correct name returned
+  */
+ void test1_space_get_name();
+ 
+ /**
+  * @test Test getting name from NULL space
+  * @pre NULL space
+  * @post Output==NULL
+  */
+ void test2_space_get_name();
+ 
+ /**
+  * @test Test getting north link from valid space
+  * @pre Valid space
+  * @post Correct north link ID
+  */
+ void test1_space_get_north();
+ 
+ /**
+  * @test Test getting north link from NULL space
+  * @pre NULL space
+  * @post Output==NO_ID
+  */
+ void test2_space_get_north();
+ 
+ /**
+  * @test Test getting south link from valid space
+  * @pre Valid space
+  * @post Correct south link ID
+  */
+ void test1_space_get_south();
+ 
+ /**
+  * @test Test getting south link from NULL space
+  * @pre NULL space
+  * @post Output==NO_ID
+  */
+ void test2_space_get_south();
+ 
+ /**
+  * @test Test getting east link from valid space
+  * @pre Valid space
+  * @post Correct east link ID
+  */
+ void test1_space_get_east();
+ 
+ /**
+  * @test Test getting east link from NULL space
+  * @pre NULL space
+  * @post Output==NO_ID
+  */
+ void test2_space_get_east();
+ 
+ /**
+  * @test Test getting west link from valid space
+  * @pre Valid space
+  * @post Correct west link ID
+  */
+ void test1_space_get_west();
+ 
+ /**
+  * @test Test getting west link from NULL space
+  * @pre NULL space
+  * @post Output==NO_ID
+  */
+ void test2_space_get_west();
+ 
+ /**
+  * @test Test if space contains an object
+  * @pre Valid space
+  * @post Correct object presence status
+  */
+ void test1_space_get_object();
+ 
+ /**
+  * @test Test object presence in empty space
+  * @pre Valid space with no object
+  * @post Output==FALSE
+  */
+ void test2_space_get_object();
+ 
+ /**
+  * @test Test object presence in NULL space
+  * @pre NULL space
+  * @post Output==FALSE
+  */
+ void test3_space_get_object();
+ 
+ #endif
+ 

@@ -1,6 +1,5 @@
 /**
  * @brief It defines the character module interface
- *
  * @file character.h
  * @author Izan Robles
  * @version 1.0
@@ -13,9 +12,18 @@
 
 #include "types.h"
 
+/**
+ * @brief Max size of graphical description
+ */
 #define GDESC_SIZE 7
+/**
+ * @brief Max size of massage
+ */
 #define MESSAGE_SIZE 1024
 
+/**
+ * @brief Private datatype for characters
+ */
 typedef struct _Character Character;
 
 /**

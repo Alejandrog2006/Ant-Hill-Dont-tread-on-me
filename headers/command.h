@@ -1,6 +1,5 @@
 /**
  * @brief It defines the command interpreter interface
- *
  * @file command.h
  * @author Profesores PPROG
  * @version 0

@@ -16,6 +16,9 @@
 
 #include "space.h"
 
+/**
+ * @brief Private implementation of link datatype
+ */
 typedef struct _Link Link;
 
 /**

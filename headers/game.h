@@ -18,8 +18,19 @@
 #include "player.h"
 #include "character.h"
 
+/**
+ * @brief Maximum of spaces in a game
+ */
 #define MAX_SPACES 100
+
+/**
+ * @brief Maximum of objects per game
+ */
 #define MAX_OBJECTS 10
+
+/**
+ * @brief Maximum of characters per game
+ */
 #define MAX_CHARACTERS 5
 
 /**
@@ -74,7 +85,6 @@ Space *game_get_space(Game *game, Id id);
  * @author Profesores PPROG
  *
  * @param game A pointer to the game structure.
- * @param id The ID of the space to retrieve.
  * @return A pointer to the space, or NULL if the space is not found.
  */
 Player *game_get_player(Game *game);
@@ -103,6 +113,7 @@ Status game_set_player_location(Game *game, Id id);
  * @author Profesores PPROG
  *
  * @param game A pointer to the game structure.
+ * @param position Int of the position of the object in set
  * @return The ID of the object's current location.
  */
 Id game_get_object_location(Game *game, int position);
@@ -113,6 +124,7 @@ Id game_get_object_location(Game *game, int position);
  *
  * @param game A pointer to the game structure.
  * @param id The ID of the new location.
+ * @param position Int of the position of the objet in set
  * @return OK if the location was successfully set, ERROR otherwise.
  */
 Status game_set_object_location(Game *game, Id id, int position);

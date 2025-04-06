@@ -1,13 +1,28 @@
+/**
+ * @brief Defines data for test implementation
+ *
+ * @file test.h
+ * @author Alejandro González
+ * @version 0
+ * @date 27-01-2025
+ * @copyright GNU Public License
+ */
+
 #ifndef _TEST_H
 #define _TEST_H
 
 #pragma GCC diagnostic ignored "-Wpedantic"
 
 #ifndef NOCOLOR
-#define KRED  "\x1B[31m"
+/** @brief Assigns color red */
+#define KRED  "\x1B[31m" 
+ /** @brief Assigns color green */
 #define KGRN  "\x1B[32m"
-#define KYEL  "\x1B[33m"
-#define KCYN  "\x1B[36m"
+/** @brief Assigns color yellow */
+#define KYEL  "\x1B[33m" 
+/** @brief Assigns color cyan */
+#define KCYN  "\x1B[36m" 
+/** @brief Assigns reset code */
 #define RESET "\033[0m"
 #else
 #define KRED
@@ -17,6 +32,7 @@
 #define RESET
 #endif
 
+/** @brief Defines print_test_result */
 #define PRINT_TEST_RESULT(x) do{					\
     __test_counter++;							\
     __pass = (x);							\
@@ -26,6 +42,7 @@
 	   ((!__pass) ? KRED "NOT PASS" RESET : KGRN "PASS" RESET));	\
   } while (0)
 
+/** @brief Defines passed_percentage for printing data */
 #define PRINT_PASSED_PERCENTAGE printf("Tests passed %d%%\n", ((__test_passed * 100) / __test_counter))
       
 static int __test_counter = 0;

@@ -11,13 +11,23 @@
 #ifndef SPACE_H
 #define SPACE_H
 
+/**
+ * @brief Number of rows in a space
+ */
 #define GDESC_ROWS 5
+
+/**
+ * @brief Number of columns in a space
+ */
 #define GDESC_COLS 20
 
 #include "types.h"
 #include "objects.h"
 #include "set.h"
 
+/**
+ * @brief Private implementation of space datatype
+ */
 typedef struct _Space Space;
 
 /**
@@ -158,9 +168,10 @@ Status space_set_object(Space* space, Bool value);
  * @author Profesores PPROG
  *
  * @param space a pointer to the space
+ * @param id id of the object to be looked for
  * @return a boolean, specifying if in the space there is an object (TRUE) or not (FALSE)
  */
-Bool space_get_object(Space* space, Id);
+Bool space_get_object(Space* space, Id id);
 
 /**
  * @brief It prints the space information

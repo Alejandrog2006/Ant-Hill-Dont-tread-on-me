@@ -14,6 +14,9 @@
 #include "types.h"
 #include "inventory.h"
 
+/**
+ * @brief Private implementation of player datatype
+ */
 typedef struct _Player Player;
 
 /**
@@ -107,7 +110,6 @@ Status player_print(Player* player);
  * @author Alejandro Gonzalez
  * 
  * @param player a pointer to the player
- * @param location the location of the player
  * 
  * @return OK, if everything goes well or ERROR if there was some mistake
  */

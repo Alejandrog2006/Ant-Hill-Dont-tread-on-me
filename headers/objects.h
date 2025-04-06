@@ -16,8 +16,14 @@
 
 #include "types.h"
 
+/**
+ * @brief Private implementation of object datatype
+ */
 typedef struct _Object Object;
 
+/**
+ * @brief Maximum number of a spaces
+ */
 #define MAX_SPACES 100
 
 /**

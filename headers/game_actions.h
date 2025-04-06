@@ -22,10 +22,10 @@
  * @author Profesores PPROG
  * 
  * @param game A pointer to the game structure to be updated.
- * @param cmd A pointer to the command to be processed.
+ * @param command A pointer to the command to be processed.
  * @return OK if the update was successful, ERROR otherwise.
  */
-Status game_actions_update(Game *game, Command *cmd);
+Status game_actions_update(Game *game, Command *command);
 
 #endif
 

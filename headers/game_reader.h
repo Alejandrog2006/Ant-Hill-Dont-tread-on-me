@@ -1,3 +1,7 @@
+/**
+ * @brief Implements the game reader from datafile
+ */
+
 #ifndef GAME_READER_H
 #define GAME_READER_H
 

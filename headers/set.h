@@ -13,8 +13,14 @@
 
 #include "types.h"
 
+/**
+ * @brief Maximum number of ids for a set
+ */
 #define MAX_IDS 100
 
+/**
+ * @brief Private implementation of a set datatype
+ */
 typedef struct _Set Set;
 
 /**

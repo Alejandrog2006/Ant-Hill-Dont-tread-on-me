@@ -11,6 +11,9 @@
 #ifndef LIBSCREEN_H
 #define LIBSCREEN_H
 
+/**
+ * @brief Private implementation of Area datatype
+ */
 typedef struct _Area Area;
 
 /**

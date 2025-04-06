@@ -19,8 +19,14 @@
 #include "objects.h"
 #include "set.h"
 
-#define BACKPACK_SIZE 3  /* Default maximum backpack size */
+/**
+ * @brief Default inventory size for the player
+ */
+#define BACKPACK_SIZE 3  
 
+/**
+ * @brief Private datatype for inventory implementation
+ */
 typedef struct _Inventory Inventory;
 
 /**
