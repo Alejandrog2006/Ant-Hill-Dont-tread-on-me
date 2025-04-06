@@ -16,6 +16,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+/**
+ * @brief Private implementation of space datatype
+ */
 struct _Space {
   Id id;                    /*!< Id number of the space, it must be unique */
   char name[WORD_SIZE + 1]; /*!< Name of the space */

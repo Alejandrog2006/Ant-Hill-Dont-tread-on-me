@@ -1,3 +1,11 @@
+/**
+ * @brief Implementation of game reader 
+ *
+ * @file game_reader.c
+ * @version 0
+ * @date 27-01-2025
+ */
+
 #include "game_reader.h"
 #include "space.h"
 #include <stdio.h>

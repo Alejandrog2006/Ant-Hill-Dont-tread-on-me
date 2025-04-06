@@ -13,22 +13,115 @@
 #include "character.h"
 #include "test.h"
 
+/**
+ * @brief Defines maximum number of tests per execution
+ */
 #define MAX_TESTS 14
 
+/** 
+ * @brief It tests the creation of a character.
+ * 
+ * This test creates a character using a valid ID and verifies that the character was successfully created.
+ * It also destroys the character after the test.
+ */
 void test1_character_create();
+
+/** 
+ * @brief It tests the creation of a character with an invalid ID.
+ * 
+ * This test tries to create a character using an invalid ID (NO_ID) and verifies that the function returns NULL.
+ * It then ensures proper cleanup by not calling the destroy function, as the character creation failed.
+ */
 void test2_character_create();
+
+/** 
+ * @brief It tests the destruction of a character.
+ * 
+ * This test creates a character and verifies that it can be destroyed successfully, returning the expected result (OK).
+ */
 void test1_character_destroy();
+
+/** 
+ * @brief It tests the destruction of a NULL character.
+ * 
+ * This test attempts to destroy a NULL character pointer and verifies that the function returns an error (ERROR).
+ */
 void test2_character_destroy();
+
+/** 
+ * @brief It tests setting the name of a character.
+ * 
+ * This test creates a character and sets a valid name. It verifies that the name is set correctly and then destroys the character.
+ */
 void test1_character_set_name();
+
+/** 
+ * @brief It tests setting an invalid name for a character.
+ * 
+ * This test creates a character and attempts to set a NULL name, verifying that the function returns an error (ERROR).
+ * The character is then destroyed after the test.
+ */
 void test2_character_set_name();
+
+/** 
+ * @brief It tests getting the name of a character.
+ * 
+ * This test creates a character, sets a name, and then verifies that the name retrieved matches the expected value.
+ * The character is destroyed after the test.
+ */
 void test1_character_get_name();
+
+/** 
+ * @brief It tests getting the name of a character with a different name.
+ * 
+ * This test creates a character, sets a name, and verifies that the name retrieved matches the expected value.
+ * The character is destroyed after the test.
+ */
 void test2_character_get_name();
+
+/** 
+ * @brief It tests setting the location of a character.
+ * 
+ * This test creates a character and sets a valid location ID. It verifies that the location is set correctly and then destroys the character.
+ */
 void test1_character_set_location();
+
+/** 
+ * @brief It tests setting the location of a NULL character.
+ * 
+ * This test attempts to set the location of a NULL character pointer and verifies that the function returns an error (ERROR).
+ */
 void test2_character_set_location();
+
+/** 
+ * @brief It tests getting the location of a character.
+ * 
+ * This test creates a character, sets a location, and verifies that the location retrieved matches the expected value.
+ * The character is destroyed after the test.
+ */
 void test1_character_get_location();
+
+/** 
+ * @brief It tests getting the location of a NULL character.
+ * 
+ * This test attempts to get the location of a NULL character pointer and verifies that the function returns NO_ID.
+ */
 void test2_character_get_location();
+
+/** 
+ * @brief It tests setting the friendly status of a character.
+ * 
+ * This test creates a character and sets its friendly status to TRUE. It verifies that the status is set correctly and then destroys the character.
+ */
 void test1_character_set_friendly();
+
+/** 
+ * @brief It tests setting the friendly status of a NULL character.
+ * 
+ * This test attempts to set the friendly status of a NULL character pointer and verifies that the function returns an error (ERROR).
+ */
 void test2_character_set_friendly();
+
 
 /** 
  * @brief Main function for CHARACTER unit tests. 

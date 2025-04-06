@@ -12,20 +12,107 @@
 #include "set.h"
 #include "test.h"
 
+/**
+ * @brief Defines maximum number of tests per execution
+ */
 #define MAX_TESTS 12
 
+/** 
+ * @brief Test for the creation of a set.
+ * 
+ * This test verifies that the `set_create()` function returns a valid set 
+ * pointer and that the set can be successfully destroyed afterwards.
+ */
 void test1_set_create();
+
+/** 
+ * @brief Test for the creation of a set with an empty count.
+ * 
+ * This test verifies that the `set_create()` function initializes a set with 
+ * a count of 0 and that the set is successfully destroyed after the test.
+ */
 void test2_set_create();
+
+/** 
+ * @brief Test for the destruction of a set.
+ * 
+ * This test verifies that the `set_destroy()` function works correctly when 
+ * called on a valid set.
+ */
 void test1_set_destroy();
+
+/** 
+ * @brief Test for the destruction of a NULL set.
+ * 
+ * This test verifies that the `set_destroy()` function correctly handles 
+ * a NULL pointer, returning an error.
+ */
 void test2_set_destroy();
+
+/** 
+ * @brief Test for adding an element to a set.
+ * 
+ * This test verifies that the `set_add()` function correctly adds an element 
+ * to the set and returns a success status.
+ */
 void test1_set_add();
+
+/** 
+ * @brief Test for adding a duplicate element to a set.
+ * 
+ * This test verifies that the `set_add()` function returns an error when 
+ * attempting to add a duplicate element to the set.
+ */
 void test2_set_add();
+
+/** 
+ * @brief Test for deleting an element from a set.
+ * 
+ * This test verifies that the `set_del()` function correctly deletes an 
+ * existing element from the set and returns a success status.
+ */
 void test1_set_del();
+
+/** 
+ * @brief Test for deleting a non-existing element from a set.
+ * 
+ * This test verifies that the `set_del()` function returns an error when 
+ * attempting to delete an element that does not exist in the set.
+ */
 void test2_set_del();
+
+/** 
+ * @brief Test for getting the count of elements in a set.
+ * 
+ * This test verifies that the `set_get_count()` function returns the correct 
+ * count of elements in the set after adding elements.
+ */
 void test1_set_get_count();
+
+/** 
+ * @brief Test for getting the count of elements in an empty set.
+ * 
+ * This test verifies that the `set_get_count()` function returns 0 for an 
+ * empty set.
+ */
 void test2_set_get_count();
+
+/** 
+ * @brief Test for getting an element by its index in a set.
+ * 
+ * This test verifies that the `set_get_id_at()` function correctly returns 
+ * the ID of an element at a given index in the set.
+ */
 void test1_set_get_id_at();
+
+/** 
+ * @brief Test for getting an element from an empty set.
+ * 
+ * This test verifies that the `set_get_id_at()` function returns `NO_ID` 
+ * when trying to get an element from an empty set or an invalid index.
+ */
 void test2_set_get_id_at();
+
 
 /** 
  * @brief Main function for SET unit tests. 

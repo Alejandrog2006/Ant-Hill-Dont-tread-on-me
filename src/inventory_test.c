@@ -13,16 +13,75 @@
 #include "inventory.h"
 #include "test.h"
 
+/**
+ * @brief Defines maximum number of test per execution
+ */
 #define MAX_TESTS 10
 
+/** 
+ * @brief It tests the creation of an inventory.
+ * 
+ * This test creates an inventory with a maximum size and checks if the inventory is successfully created.
+ * The inventory is then destroyed after the test to ensure proper memory management.
+ */
 void test_inventory_create();
+
+/** 
+ * @brief It tests the destruction of an inventory.
+ * 
+ * This test creates an inventory, and then checks if it can be destroyed correctly.
+ * It verifies that the function returns the expected result (OK) when destroying the inventory.
+ */
 void test_inventory_destroy();
+
+/** 
+ * @brief It tests adding an object to the inventory.
+ * 
+ * This test creates an inventory and adds an object (with ID 1) to it. It then verifies that the addition was successful 
+ * by checking the return value (OK). The inventory is destroyed after the test.
+ */
 void test1_inventory_add_object();
+
+/** 
+ * @brief It tests adding an object to a full inventory.
+ * 
+ * This test creates an inventory, adds three objects to it, and then tries to add a fourth object. It verifies 
+ * that the addition of the fourth object fails by returning an error (ERROR). The inventory is destroyed after the test.
+ */
 void test2_inventory_add_object();
+
+/** 
+ * @brief It tests deleting an object from the inventory.
+ * 
+ * This test creates an inventory, adds an object (with ID 1), and then deletes that object. It verifies that the object 
+ * is successfully removed by checking the return value (OK). The inventory is destroyed after the test.
+ */
 void test1_inventory_del_object();
+
+/** 
+ * @brief It tests deleting a non-existent object from the inventory.
+ * 
+ * This test creates an inventory and attempts to delete an object that has not been added to the inventory. 
+ * It verifies that the deletion fails and returns an error (ERROR). The inventory is destroyed after the test.
+ */
 void test2_inventory_del_object();
+
+/** 
+ * @brief It tests if an object is present in the inventory.
+ * 
+ * This test creates an inventory, adds an object (with ID 1), and then checks if the object exists in the inventory. 
+ * It verifies that the object is present by checking that the function returns TRUE. The inventory is destroyed after the test.
+ */
 void test1_inventory_contains_object();
+
+/** 
+ * @brief It tests if an object is not present in the inventory.
+ * 
+ * This test creates an inventory and checks if an object (with ID 1) is present, but the object has not been added yet. 
+ * It verifies that the object is not present by checking that the function returns FALSE. The inventory is destroyed after the test.
+ */
 void test2_inventory_contains_object();
+
 
 /** 
  * @brief Main function for INVENTORY unit tests. 

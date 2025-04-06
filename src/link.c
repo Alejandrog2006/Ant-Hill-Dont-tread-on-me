@@ -10,13 +10,16 @@
 
 #include "link.h"
 
+/**
+ * @brief Private implementation of link datatype
+ */
 struct _Link {
-    Id id;
-    char name[WORD_SIZE + 1];
-    Id origin;
-    Id destination;
-    Direction direction;
-    Bool open;
+    Id id; /*!< Id of the link*/
+    char name[WORD_SIZE + 1]; /*!< Name of the link*/
+    Id origin; /*!< Id of origin of link*/
+    Id destination; /*!< Id of destination space*/
+    Direction direction; /*!< Direction of the link */
+    Bool open; /*!< Is the link opened or not*/
 };
 
 Link *link_create(Id id) {

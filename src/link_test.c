@@ -13,24 +13,140 @@
 #include "link.h"
 #include "test.h"
 
+/**
+ * @brief Defines maximum number of tests per execution
+ */
 #define MAX_TESTS 16
 
+/** 
+ * @brief It tests the creation of a Link.
+ * 
+ * This test creates a Link with a valid ID (1) and verifies that the Link is successfully created 
+ * by checking if the returned pointer is not NULL. The Link is then destroyed after the test.
+ */
 void test1_link_create();
+
+/** 
+ * @brief It tests the creation of a Link with an invalid ID.
+ * 
+ * This test tries to create a Link with an invalid ID (`NO_ID`) and verifies that the function returns NULL,
+ * indicating that the Link creation has failed. No destruction is needed since the Link creation is unsuccessful.
+ */
 void test2_link_create();
+
+/** 
+ * @brief It tests the destruction of a Link.
+ * 
+ * This test creates a Link with a valid ID (1) and verifies that the Link can be successfully destroyed 
+ * by checking if the return value is `OK`. The test confirms that the link destruction works as expected.
+ */
 void test1_link_destroy();
+
+/** 
+ * @brief It tests the destruction of a NULL Link.
+ * 
+ * This test verifies that trying to destroy a NULL Link returns an error (`ERROR`), which helps confirm 
+ * the correct handling of invalid input when attempting to destroy a Link.
+ */
 void test2_link_destroy();
+
+/** 
+ * @brief It tests setting the name of a Link.
+ * 
+ * This test creates a Link with a valid ID (1), sets a name for the Link, and verifies that the operation 
+ * was successful by checking that the return value is `OK`. The Link is then destroyed after the test.
+ */
 void test1_link_set_name();
+
+/** 
+ * @brief It tests setting the name of a Link to NULL.
+ * 
+ * This test creates a Link with a valid ID (1), attempts to set its name to `NULL`, and verifies that 
+ * the operation fails by returning an error (`ERROR`). The Link is then destroyed after the test.
+ */
 void test2_link_set_name();
+
+/** 
+ * @brief It tests getting the name of a Link.
+ * 
+ * This test creates a Link with a valid ID (1), sets its name to "Test Link", and verifies that the 
+ * function `link_get_name()` returns the correct name. It checks if the returned name is "Test Link".
+ * The Link is then destroyed after the test.
+ */
 void test1_link_get_name();
+
+/** 
+ * @brief It tests getting the name of a NULL Link.
+ * 
+ * This test checks the behavior of `link_get_name()` when called on a NULL Link. It verifies that 
+ * the function returns `NULL`, indicating that the name cannot be retrieved for an invalid Link.
+ */
 void test2_link_get_name();
+
+/** 
+ * @brief It tests setting the origin of a Link.
+ * 
+ * This test creates a Link with a valid ID (1), sets its origin to ID 2, and verifies that the operation 
+ * was successful by checking that the return value is `OK`. The Link is then destroyed after the test.
+ */
 void test1_link_set_origin();
+
+/** 
+ * @brief It tests setting the origin of a NULL Link.
+ * 
+ * This test tries to set the origin of a NULL Link and verifies that the operation fails, returning 
+ * an error (`ERROR`). This ensures that the system handles invalid input correctly.
+ */
 void test2_link_set_origin();
+
+/** 
+ * @brief It tests getting the origin of a Link.
+ * 
+ * This test creates a Link with a valid ID (1), sets its origin to ID 2, and verifies that the 
+ * `link_get_origin()` function correctly retrieves the origin ID (2). The Link is then destroyed after the test.
+ */
 void test1_link_get_origin();
+
+/** 
+ * @brief It tests getting the origin of a NULL Link.
+ * 
+ * This test checks the behavior of `link_get_origin()` when called on a NULL Link. It verifies that 
+ * the function returns `NO_ID`, indicating that the origin cannot be retrieved for an invalid Link.
+ */
 void test2_link_get_origin();
+
+/** 
+ * @brief It tests setting the destination of a Link.
+ * 
+ * This test creates a Link with a valid ID (1), sets its destination to ID 3, and verifies that the 
+ * operation was successful by checking that the return value is `OK`. The Link is then destroyed after the test.
+ */
 void test1_link_set_destination();
+
+/** 
+ * @brief It tests setting the destination of a NULL Link.
+ * 
+ * This test tries to set the destination of a NULL Link and verifies that the operation fails, returning 
+ * an error (`ERROR`). This ensures that the system handles invalid input correctly.
+ */
 void test2_link_set_destination();
+
+/** 
+ * @brief It tests getting the destination of a Link.
+ * 
+ * This test creates a Link with a valid ID (1), sets its destination to ID 3, and verifies that the 
+ * `link_get_destination()` function correctly retrieves the destination ID (3). The Link is then destroyed after the test.
+ */
 void test1_link_get_destination();
+
+/** 
+ * @brief It tests getting the destination of a NULL Link.
+ * 
+ * This test checks the behavior of `link_get_destination()` when called on a NULL Link. It verifies that 
+ * the function returns `NO_ID`, indicating that the destination cannot be retrieved for an invalid Link.
+ */
 void test2_link_get_destination();
+
 
 /**
  * @brief Main function for LINK unit tests.

@@ -10,6 +10,9 @@
 
 #include "inventory.h"
 
+/**
+ * @brief Private implementation of inventory datatype
+ */
 struct _Inventory {
     Set* objs; /**< Set of objects in the inventory */
     int max_objs; /**< Maximum number of objects in the inventory */

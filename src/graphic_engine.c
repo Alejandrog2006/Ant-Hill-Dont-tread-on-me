@@ -19,17 +19,48 @@
 #include "types.h"
 #include "game.h"
 
+/**
+ * @brief Defines map width
+ */
 #define WIDTH_MAP 80
+/**
+ * @brief Defines description width
+ */
 #define WIDTH_DES 40
+/**
+ * @brief Defines banner width
+ */
 #define WIDTH_BAN 30
+/**
+ * @brief Defines map heigh
+ */
 #define HEIGHT_MAP 30
+/**
+ * @brief Defines banner heigh
+ */
 #define HEIGHT_BAN 1
+/**
+ * @brief Defines hlp height
+ */
 #define HEIGHT_HLP 2
+/**
+ * @brief Defines fdb height
+ */
 #define HEIGHT_FDB 5
+/**
+ * @brief Defines cell height
+ */
 #define HEIGHT_CELL 9
 
+/**
+ * @brief Private implementation of graphic engine datatype
+ */
 struct _Graphic_engine {
-  Area *map, *descript, *banner, *help, *feedback;
+  Area *map; /*!< Map for graphic engine */
+  Area *descript; /*!< Description for gengine*/
+  Area *banner; /*!< Banner for gengine*/
+  Area *help; /*!< Help for gengine*/
+  Area *feedback; /*!< Feedback for gengine*/
 };
 
 Graphic_engine *graphic_engine_create() {

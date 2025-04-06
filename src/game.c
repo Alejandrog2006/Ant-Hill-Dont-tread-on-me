@@ -17,6 +17,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+/**
+ * @brief Private implementation of game module
+ */
 struct _Game {
   Id player_location;       /**< Current location of the player. */
   Player *player;           /**< Pointer to the player. */
@@ -29,7 +32,6 @@ struct _Game {
   Command *last_cmd;        /**< Last command executed. */
   Bool finished;            /**< Whether the game is finished or not. */
   char last_message[MESSAGE_SIZE + 1]; /**< Last message received from a character. */
-  /*TEMPORAL*/
   char temporal_feedback[MESSAGE_SIZE + 1]; /**< Temporal feedback message. */
 };
 

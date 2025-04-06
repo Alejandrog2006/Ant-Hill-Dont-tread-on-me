@@ -1,6 +1,6 @@
 /**
  * 
- * @brief 
+ * @brief Implementation of object module
  *
  * @file objects.c
  * @author Andres Falcon
@@ -18,6 +18,9 @@
 #include "objects.h"
 #include "types.h"
 
+/**
+ * @brief Private implementation of object datatype
+ */
 struct _Object {
    Id id;                            /*!< Id number of the object, it must be unique */
    char name[WORD_SIZE + 1];         /*!< Name of the object */

@@ -14,6 +14,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+/**
+ * @brief Private implementation of character datatype
+ */
 struct _Character {
     Id id;                            /*!< Character's id */
     char name[WORD_SIZE + 1];         /*!< Character's name */

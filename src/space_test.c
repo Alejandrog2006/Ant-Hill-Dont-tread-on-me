@@ -15,6 +15,9 @@
 #include "space_test.h"
 #include "test.h"
 
+/**
+ * @brief Defines maximum number of test per execution
+ */
 #define MAX_TESTS 30
 
 /** 

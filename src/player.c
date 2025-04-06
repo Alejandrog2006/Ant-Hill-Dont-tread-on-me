@@ -14,12 +14,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+/**
+ * @brief Private implementation of player
+ */
 struct _Player {
-  Id id; /*Player's id*/
-  char name[WORD_SIZE + 1]; /*Player's name*/
-  Id location; /*Player's location*/
-  Inventory *backpack; /*Player's objects*/
-  int player_health; /*Player's health*/
+  Id id; /*!< Player's ID*/
+  char name[WORD_SIZE + 1]; /*!< Player's name*/
+  Id location; /*!< Player's location*/
+  Inventory *backpack; /*!< Player's objects*/
+  int player_health; /*!< Player's health*/
 };
 
 

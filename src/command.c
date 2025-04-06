@@ -10,12 +10,25 @@
 
 #include "command.h"
 
+/**
+ * @brief Defines length of the command
+ */
 #define CMD_LENGHT 30
+
+/**
+ * @brief Defines maximum argument size
+ */
 #define CMD_ARG_SIZE 32
 
+/**
+ * @brief Defines database for commands
+ */
 char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"n", "Next"}, {"b", "Back"}, 
                                    {"t", "Take"}, {"d", "Drop"}, {"a", "Attack"}, {"l", "Left"}, {"r", "Right"}, {"c", "Chat"}};
 
+/**
+ * @brief Private implementation of command datatype
+ */
 struct _Command {
   CommandCode code; /*!< Name of the command */
   char arg[CMD_ARG_SIZE]; /*!< Argument of the command */

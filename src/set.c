@@ -12,9 +12,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * @brief Private implementation of set datatype
+ */
 struct _Set {
-    Id ids[MAX_IDS]; /* Array of ids in the set */
-    int n_ids; /* Number of ids in the set */
+    Id ids[MAX_IDS]; /*!< Array of ids in the set */
+    int n_ids; /*!< Number of ids in the set */
 };
 
 Set* set_create() {
