@@ -139,7 +139,7 @@ testv:
 	@valgrind --leak-check=full ./character_test
 	@valgrind --leak-check=full ./inventory_test
 	@echo "--> tests executed with valgrind"
- --leak-check=full ./set_test
+	@valgrind --leak-check=full ./set_test
 	@valgrind --leak-check=full ./character_test
 	@valgrind --leak-check=full ./inventory_test
 	@echo "--> tests executed with valgrind"
