@@ -1,0 +1,34 @@
+#p:1|ant|m0^|11|5|3|
+#c:2|Spider|/\oo/\|123|10|0|I won't talk to you!|
+#c:3|Ant|^0m   |122|10|1|Watch out! There's a spider in the next room|
+#s:11|Entry|-__- -__ |_/ \_/  -|o 0    --|mo'_0o8o-|__/ \ / \|
+#s:121|Corridor_1|    _    |\ \___   |\ mo' \_ |\ @ _ - -| \__/ \__|
+#s:122|Corridor_2|---+--- _|  0_+_0  |\--+++--/|_  +++  _|---+---\+|
+#s:123|Corridor_3|_/\__/\__|_\ --  /_|         |_ /   \ _|/  0+0  \|
+#s:124|Corridor_4|
+#s:125|Corridor_5|
+#s:126|Corridor_6|
+#s:127|Corridor_7|
+#s:13|Pantry|
+#s:14|Hole| m0^     |   ___   |  /   \  |  | O |  |  \___/  |
+#o:21|Grain|11
+#o:22|Crumb|11
+#o:23|Leaf|122
+#o:24|Nut|123
+#l:200|Entry|11|121|1|1|
+#l:201|Corridor_1|121|122|1|1|
+#l:202|Corridor_1|121|11|0|1|
+#l:203|Corridor_2|122|121|0|1|
+#l:204|Corridor_2|122|125|2|1|
+#l:205|Corridor_2|122|123|1|1|
+#l:206|Corridor_3|123|122|0|1|
+#l:207|Corridor_3|123|124|1|0|
+#l:208|Corridor_4|124|123|0|0|
+#l:209|Corridor_4|124|13|1|1|
+#l:210|Corridor_5|125|123|3|1|
+#l:211|Corridor_5|125|126|2|1|
+#l:212|Corridor_6|126|125|3|1|
+#l:213|Corridor_6|126|127|2|1|
+#l:214|Corridor_7|127|126|3|1|
+#l:215|Corridor_7|127|13|1|1|
+#l:216|Pantry|13|124|0|1|
