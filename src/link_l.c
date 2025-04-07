@@ -1,7 +1,7 @@
 /**
  * @brief It implements the link module interface
  *
- * @file link.c
+ * @file link_l.c
  * @author Rodrigo Cruz Asensio
  * @version 1.0
  * @date 20-03-2025
