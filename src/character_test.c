@@ -22,84 +22,182 @@
  * @brief It tests the creation of a character.
  */
 void test1_character_create();
+
+/** 
+ * @brief It tests the creation of a character with an invalid ID.
+ * 
+ * This test tries to create a character with an invalid ID (`NO_ID`) and verifies that the function returns NULL,
+ * indicating that the character creation has failed. No destruction is needed since the character creation is unsuccessful.
+ */
 void test2_character_create();
 
 /** 
  * @brief It tests the destruction of a character.
  */
 void test1_character_destroy();
+
+/** 
+ * @brief It tests the destruction of a NULL character.
+ * 
+ * This test verifies that trying to destroy a NULL character returns an error (`ERROR`), which helps confirm 
+ * the correct handling of invalid input when attempting to destroy a character.
+ */
 void test2_character_destroy();
 
 /** 
  * @brief It tests setting the name of a character.
  */
 void test1_character_set_name();
+
+/** 
+ * @brief It tests setting the name of a character with NULL.
+ * 
+ * This test tries to set the name of a character to NULL and verifies that the operation fails by returning an error (`ERROR`).
+ * This ensures that the system handles invalid input correctly.
+ */
 void test2_character_set_name();
 
 /** 
  * @brief It tests getting the name of a character.
  */
 void test1_character_get_name();
+
+/** 
+ * @brief It tests getting the name of a character.
+ * 
+ * This test creates a character with a valid ID (1), sets its name to "Izan", and verifies that the 
+ * `character_get_name()` function returns the correct name. It checks if the returned name is "Izan".
+ */
 void test2_character_get_name();
 
 /** 
  * @brief It tests setting the location of a character.
  */
 void test1_character_set_location();
+
+/** 
+ * @brief It tests setting the location of a NULL character.
+ * 
+ * This test tries to set the location of a NULL character and verifies that the operation fails by returning an error (`ERROR`).
+ * This ensures that the system handles invalid input correctly.
+ */
 void test2_character_set_location();
 
 /** 
  * @brief It tests getting the location of a character.
  */
 void test1_character_get_location();
+
+/** 
+ * @brief It tests getting the location of a character.
+ * 
+ * This test creates a character with a valid ID (1), sets its location to 2, and verifies that the 
+ * `character_get_location()` function correctly retrieves the location ID (2). The character is then destroyed after the test.
+ */
 void test2_character_get_location();
 
 /** 
  * @brief It tests setting the friendly status of a character.
  */
 void test1_character_set_friendly();
+
+/** 
+ * @brief It tests setting the friendly status of a NULL character.
+ * 
+ * This test tries to set the friendly status of a NULL character and verifies that the operation fails by returning an error (`ERROR`).
+ * This ensures that the system handles invalid input correctly.
+ */
 void test2_character_set_friendly();
 
 /** 
  * @brief It tests setting the health of a character.
  */
 void test1_character_set_health();
+
+/** 
+ * @brief It tests setting the health of a NULL character.
+ * 
+ * This test tries to set the health of a NULL character and verifies that the operation fails by returning an error (`ERROR`).
+ * This ensures that the system handles invalid input correctly.
+ */
 void test2_character_set_health();
 
 /** 
  * @brief It tests getting the health of a character.
  */
 void test1_character_get_health();
+
+/** 
+ * @brief It tests getting the health of a NULL character.
+ * 
+ * This test tries to get the health of a NULL character and verifies that the operation fails by returning an error (`ERROR`).
+ * This ensures that the system handles invalid input correctly.
+ */
 void test2_character_get_health();
 
 /** 
  * @brief It tests setting the message of a character.
  */
 void test1_character_set_message();
+
+/** 
+ * @brief It tests setting the message of a NULL character.
+ * 
+ * This test tries to set the message of a NULL character and verifies that the operation fails by returning an error (`ERROR`).
+ * This ensures that the system handles invalid input correctly.
+ */
 void test2_character_set_message();
 
 /** 
  * @brief It tests getting the message of a character.
  */
 void test1_character_get_message();
+
+/** 
+ * @brief It tests getting the message of a NULL character.
+ * 
+ * This test tries to get the message of a NULL character and verifies that the operation fails by returning an error (`ERROR`).
+ * This ensures that the system handles invalid input correctly.
+ */
 void test2_character_get_message();
 
 /** 
  * @brief It tests getting the friendly status of a character.
  */
 void test1_character_get_friendly();
+
+/** 
+ * @brief It tests getting the friendly status of a NULL character.
+ * 
+ * This test tries to get the friendly status of a NULL character and verifies that the operation fails by returning an error (`ERROR`).
+ * This ensures that the system handles invalid input correctly.
+ */
 void test2_character_get_friendly();
 
 /** 
  * @brief It tests getting the ID of a character.
  */
 void test1_character_get_id();
+
+/** 
+ * @brief It tests getting the ID of a NULL character.
+ * 
+ * This test tries to get the ID of a NULL character and verifies that the operation fails by returning an error (`ERROR`).
+ * This ensures that the system handles invalid input correctly.
+ */
 void test2_character_get_id();
 
 /** 
  * @brief It tests printing a character.
  */
 void test1_character_print();
+
+/** 
+ * @brief It tests printing a NULL character.
+ * 
+ * This test tries to print a NULL character and verifies that the operation fails by returning an error (`ERROR`).
+ * This ensures that the system handles invalid input correctly.
+ */
 void test2_character_print();
 
 /** 

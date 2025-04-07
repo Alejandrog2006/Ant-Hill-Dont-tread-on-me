@@ -27,30 +27,50 @@ void test1_object_create();
  * @brief Test for the destruction of an object.
  */
 void test1_object_destroy();
+
+/** 
+ * @brief Test for the destruction of a NULL object.
+ */
 void test2_object_destroy();
 
 /** 
  * @brief Test for setting the name of an object.
  */
 void test1_object_set_name();
+
+/** 
+ * @brief Test for setting the name of an object with NULL.
+ */
 void test2_object_set_name();
 
 /** 
  * @brief Test for getting the name of an object.
  */
 void test1_object_get_name();
+
+/** 
+ * @brief Test for getting the name of a NULL object.
+ */
 void test2_object_get_name();
 
 /** 
  * @brief Test for setting the location of an object.
  */
 void test1_object_set_location();
+
+/** 
+ * @brief Test for setting the location of a NULL object.
+ */
 void test2_object_set_location();
 
 /** 
  * @brief Test for getting the location of an object.
  */
 void test1_object_get_location();
+
+/** 
+ * @brief Test for getting the location of a NULL object.
+ */
 void test2_object_get_location();
 
 /** 

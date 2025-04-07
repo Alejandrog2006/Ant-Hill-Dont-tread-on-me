@@ -28,42 +28,70 @@ void test1_player_create();
  * @brief Test for the destruction of a player.
  */
 void test1_player_destroy();
+
+/** 
+ * @brief Test for the destruction of a player.
+ */
 void test2_player_destroy();
 
 /** 
  * @brief Test for setting the name of a player.
  */
 void test1_player_set_name();
+
+/** 
+ * @brief Test for setting the name of a player.
+ */
 void test2_player_set_name();
 
 /** 
  * @brief Test for getting the name of a player.
  */
 void test1_player_get_name();
+
+/** 
+ * @brief Test for getting the name of a player.
+ */
 void test2_player_get_name();
 
 /** 
  * @brief Test for setting the location of a player.
  */
 void test1_player_set_location();
+
+/** 
+ * @brief Test for setting the location of a player.
+ */
 void test2_player_set_location();
 
 /** 
  * @brief Test for getting the location of a player.
  */
 void test1_player_get_location();
+
+/** 
+ * @brief Test for getting the location of a player.
+ */
 void test2_player_get_location();
 
 /** 
  * @brief Test for setting the health of a player.
  */
-void test1_player_set_health();
+void test1_player_set_health(); 
+
+/** 
+ * @brief Test for setting the health of a player.
+ */
 void test2_player_set_health();
 
 /** 
  * @brief Test for getting the health of a player.
  */
 void test1_player_get_health();
+
+/** 
+ * @brief Test for getting the health of a player.
+ */
 void test2_player_get_health();
 
 /** 

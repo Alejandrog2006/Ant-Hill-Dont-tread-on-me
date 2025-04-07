@@ -30,37 +30,65 @@ void test3_space_set_name();
  * @brief Test for getting the name of a space.
  */
 void test1_space_get_name();
+
+/** 
+ * @brief Test for getting the name of a NULL space.
+ */
 void test2_space_get_name();
 
 /** 
  * @brief Test for setting objects in a space.
  */
 void test1_space_set_object();
+
+/** 
+ * @brief Test for setting objects in a NULL space.
+ */
 void test2_space_set_object();
 
 /** 
  * @brief Test for getting objects in a space.
  */
 void test1_space_get_object();
+
+/** 
+ * @brief Test for getting objects in a space.
+ */
 void test2_space_get_object();
+
+/** 
+ * @brief Test for getting objects in a NULL space.
+ */
 void test3_space_get_object();
 
 /** 
  * @brief Test for getting the ID of a space.
  */
 void test1_space_get_id();
+
+/** 
+ * @brief Test for getting the ID of a NULL space.
+ */
 void test2_space_get_id();
 
 /** 
  * @brief Test for getting the object locations of a space.
  */
 void test1_space_get_object_locations();
+
+/** 
+ * @brief Test for getting the object locations of a NULL space.
+ */
 void test2_space_get_object_locations();
 
 /** 
  * @brief Test for printing a space.
  */
 void test1_space_print();
+
+/** 
+ * @brief Test for printing a NULL space.
+ */
 void test2_space_print();
 
 /** 
