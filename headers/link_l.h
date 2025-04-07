@@ -1,7 +1,7 @@
 /**
  * @brief It defines the link module interface
  *
- * @file link.h
+ * @file link_l.h
  * @author Rodrigo Cruz
  * @version 1.0
  * @date 20-03-2025

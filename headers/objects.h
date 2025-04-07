@@ -110,6 +110,7 @@ const char* object_get_name(Object* object);
  * @author Alejandro Gonzalez
  *
  * @param object a pointer to the object
+ * @param description description to be set in object
  * @return  a string with the name of the object
  */
 Status object_set_description(Object* object, char* description);
