@@ -13,7 +13,7 @@ DOXYGEN = doxygen
 DOXYFILE = docs/Doxyfile
 
 ##########  General rules  ##########
-all: new_folder $(EXE) space_test set_test character_test inventory_test
+all: new_folder $(EXE) space_test set_test character_test inventory_test link_test player_test object_test
 
 $(EXE): $(O_DIR)/game_loop.o $(O_DIR)/game.o $(O_DIR)/command.o $(O_DIR)/graphic_engine.o $(O_DIR)/space.o $(O_DIR)/game_actions.o $(O_DIR)/objects.o $(O_DIR)/game_reader.o $(O_DIR)/player.o $(O_DIR)/set.o $(O_DIR)/character.o $(O_DIR)/inventory.o $(O_DIR)/link_l.o
 	@$(CC) -o $@ $^ -lscreen -L $(R_DIR)
@@ -34,7 +34,19 @@ character_test: $(O_DIR)/character_test.o $(O_DIR)/character.o
 inventory_test: $(O_DIR)/inventory_test.o $(O_DIR)/inventory.o $(O_DIR)/set.o $(O_DIR)/objects.o
 	@$(CC) -o $@ $^
 	@echo "--> inventory test created"
-	
+
+player_test: $(O_DIR)/player_test.o $(O_DIR)/player.o $(O_DIR)/inventory.o $(O_DIR)/set.o
+	@$(CC) -o $@ $^
+	@echo "--> player test created"
+
+object_test: $(O_DIR)/object_test.o $(O_DIR)/objects.o
+	@$(CC) -o $@ $^
+	@echo "--> object test created"
+
+link_test: $(O_DIR)/link_test.o $(O_DIR)/link_l.o
+	@$(CC) -o $@ $^
+	@echo "--> link test created"
+
 # Create object folder
 new_folder:
 	@mkdir -p $(O_DIR)
@@ -109,9 +121,21 @@ $(O_DIR)/link_l.o: $(C_DIR)/link_l.c $(H_DIR)/link_l.h $(O_DIR)
 	@$(CC) $(CFLAGS) -o $@ -c $<
 	@echo "--> link module compiled"
 
+$(O_DIR)/link_test.o: $(C_DIR)/link_test.c $(H_DIR)/link_l.h $(H_DIR)/test.h $(O_DIR)
+	@$(CC) $(CFLAGS) -o $@ -c $<
+	@echo "--> link test object compiled"
+
+$(O_DIR)/player_test.o: $(C_DIR)/player_test.c $(H_DIR)/player.h $(H_DIR)/inventory.h $(H_DIR)/set.h $(H_DIR)/test.h $(O_DIR)
+	@$(CC) $(CFLAGS) -o $@ -c $<
+	@echo "--> player test object compiled"
+
+$(O_DIR)/object_test.o: $(C_DIR)/object_test.c $(H_DIR)/objects.h $(H_DIR)/test.h $(O_DIR)
+	@$(CC) $(CFLAGS) -o $@ -c $<
+	@echo "--> object test object compiled"
+
 ##########  Cleaning and execution  ##########
 clean:
-	@rm -f -r $(EXE) space_test set_test character_test inventory_test $(O_DIR) ./docs/output
+	@rm -f -r $(EXE) space_test set_test character_test inventory_test link_test player_test object_test $(O_DIR) ./docs/output
 	@echo "--> project cleaned"
 
 run:
@@ -126,11 +150,14 @@ doc:
 	@echo "--> generating documentation"
 	@$(DOXYGEN) $(DOXYFILE)
 
-test: space_test set_test character_test inventory_test
+test: space_test set_test character_test inventory_test link_test player_test object_test
 	@./space_test
 	@./set_test
 	@./character_test
 	@./inventory_test
+	@./player_test
+	@./object_test
+	@./link_test
 	@echo "--> tests executed"
 
 testv:
@@ -138,4 +165,7 @@ testv:
 	@valgrind --leak-check=full ./set_test
 	@valgrind --leak-check=full ./character_test
 	@valgrind --leak-check=full ./inventory_test
+	@valgrind --leak-check=full ./player_test
+	@valgrind --leak-check=full ./object_test
+	@valgrind --leak-check=full ./link_test
 	@echo "--> tests executed with valgrind"
