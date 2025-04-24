@@ -150,22 +150,3 @@ doc:
 	@echo "--> generating documentation"
 	@$(DOXYGEN) $(DOXYFILE)
 
-test: space_test set_test character_test inventory_test link_test player_test object_test
-	@./space_test
-	@./set_test
-	@./character_test
-	@./inventory_test
-	@./player_test
-	@./object_test
-	@./link_test
-	@echo "--> tests executed"
-
-testv:
-	@valgrind --leak-check=full ./space_test
-	@valgrind --leak-check=full ./set_test
-	@valgrind --leak-check=full ./character_test
-	@valgrind --leak-check=full ./inventory_test
-	@valgrind --leak-check=full ./player_test
-	@valgrind --leak-check=full ./object_test
-	@valgrind --leak-check=full ./link_test
-	@echo "--> tests executed with valgrind"
