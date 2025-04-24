@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "link.h"
+#include "link_l.h"
 #include "test.h"
 
 /**
@@ -186,7 +186,7 @@ int main(int argc, char** argv) {
 
     PRINT_PASSED_PERCENTAGE;
 
-    return 1;
+    return 0;
 }
 
 void test1_link_create() {
