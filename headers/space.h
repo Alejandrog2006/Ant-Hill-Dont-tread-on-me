@@ -253,4 +253,25 @@ const char *space_get_gdesc_at(Space *space, int position);
  */
 Status space_set_gdesc_at(Space *space, char *gdesc_new, int position);
 
+/**
+ * @brief Returns the discovered value of a given space
+ * @author Alejandro Gonzalez
+ * 
+ * @param space The pointer to the given space
+ * @return TRUE if the space is discovered, FALSE otherwise
+ */
+Bool space_is_discovered(Space *space);
+
+/**
+ * @brief Sets a new value to the discovered field in a given space
+ * @author Alejandro Gonzalez
+ * 
+ * @param space The pointer to the space that's being changed
+ * @param discovered The new value of the discovered field
+ * @return 
+ *  OK if everything went correctly
+ *  ERROR otherwise
+ */
+Status space_set_discovered(Space *space, Bool discovered);
+
 #endif

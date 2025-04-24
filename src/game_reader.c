@@ -270,6 +270,7 @@ Status game_load_players(Game *game, char *filename) {
             player_set_name(player_p, name);
             player_set_gdesc(player_p, gdesc);
             player_set_location(player_p, location);
+            space_set_discovered(game_get_space(game, location), TRUE);
             player_set_health(player_p, health_points);
             player_set_inventory(player_p, inventory_p);
 
@@ -279,15 +280,12 @@ Status game_load_players(Game *game, char *filename) {
                 fclose(f);
                 return ERROR;
             }
-
-            fclose(f);
-            return OK;
         }
     }
 
-    fprintf(stderr, "Error: No player found in file.\n");
+    
     fclose(f);
-    return ERROR;
+    return OK;
 }
 
 Status game_load_links(Game *game, char *filename){
@@ -404,8 +402,28 @@ Status game_load_characters(Game *game, char *filename) {
 }
 
 Status game_add_player(Game *game, Player *player){
-  game_set_player(game, player);
-  
+  Player **players_array = NULL;
+  InterfaceData **interfaces_array = NULL;
+  const int n_players = game_get_n_players(game);
+
+  if(game == NULL || player == NULL){
+    return ERROR;
+  }
+
+  players_array = game_get_players(game);
+  interfaces_array = game_get_interfaces(game);
+  if(players_array == NULL || n_players < 0){
+    return ERROR;
+  }
+
+  players_array[n_players] = player;
+  interfaces_array[n_players] = game_create_interface();
+  game_set_n_players(game, n_players + 1);
+
+  if(interfaces_array[n_players] == NULL){
+    return ERROR;
+  }
+ 
   return OK;
 }
 

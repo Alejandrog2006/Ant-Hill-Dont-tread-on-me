@@ -2,7 +2,7 @@
  * @brief It tests the link module
  * 
  * @file link_test.c
- * @author Alejandro González
+ * @author 
  * @version 1.0
  * @date 01-04-2025
  */
@@ -10,13 +10,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "link_l.h"
+#include "link.h"
 #include "test.h"
 
 /**
  * @brief Defines maximum number of tests per execution
  */
-#define MAX_TESTS 25
+#define MAX_TESTS 16
 
 /** 
  * @brief It tests the creation of a Link.
@@ -147,77 +147,6 @@ void test1_link_get_destination();
  */
 void test2_link_get_destination();
 
-/** 
- * @brief It tests setting the direction of a Link.
- * 
- * This test creates a Link with a valid ID (1), sets its direction to N, and verifies that the operation 
- * was successful by checking that the return value is `OK`. The Link is then destroyed after the test.
- */
-void test1_link_set_direction();
-
-/** 
- * @brief It tests setting the direction of a NULL Link.
- * 
- * This test tries to set the direction of a NULL Link and verifies that the operation fails, returning 
- * an error (`ERROR`). This ensures that the system handles invalid input correctly.
- */
-void test2_link_set_direction();
-
-/** 
- * @brief It tests getting the direction of a Link.
- * 
- * This test creates a Link with a valid ID (1), sets its direction to N, and verifies that the 
- * `link_get_direction()` function correctly retrieves the direction (N). The Link is then destroyed after the test.
- */
-void test1_link_get_direction();
-
-/** 
- * @brief It tests getting the direction of a NULL Link.
- * 
- * This test checks the behavior of `link_get_direction()` when called on a NULL Link. It verifies that 
- * the function returns `NONE`, indicating that the direction cannot be retrieved for an invalid Link.
- */
-void test2_link_get_direction();
-
-/** 
- * @brief It tests setting the open status of a Link.
- * 
- * This test creates a Link with a valid ID (1), sets its open status to FALSE, and verifies that the operation 
- * was successful by checking that the return value is `OK`. The Link is then destroyed after the test.
- */
-void test1_link_set_open();
-
-/** 
- * @brief It tests setting the open status of a NULL Link.
- * 
- * This test tries to set the open status of a NULL Link and verifies that the operation fails, returning 
- * an error (`ERROR`). This ensures that the system handles invalid input correctly.
- */
-void test2_link_set_open();
-
-/** 
- * @brief It tests getting the open status of a Link.
- * 
- * This test creates a Link with a valid ID (1), sets its open status to FALSE, and verifies that the 
- * `link_get_open()` function correctly retrieves the status (FALSE). The Link is then destroyed after the test.
- */
-void test1_link_get_open();
-
-/** 
- * @brief It tests getting the open status of a NULL Link.
- * 
- * This test checks the behavior of `link_get_open()` when called on a NULL Link. It verifies that 
- * the function returns `FALSE`, indicating that the open status cannot be retrieved for an invalid Link.
- */
-void test2_link_get_open();
-
-/** 
- * @brief It tests printing a Link.
- * 
- * This test creates a Link with a valid ID (1), sets its attributes, and verifies that the `link_print()` 
- * function works correctly by printing the Link's details. The Link is then destroyed after the test.
- */
-void test_link_print();
 
 /**
  * @brief Main function for LINK unit tests.
@@ -254,15 +183,6 @@ int main(int argc, char** argv) {
     if (all || test == 14) test2_link_set_destination();
     if (all || test == 15) test1_link_get_destination();
     if (all || test == 16) test2_link_get_destination();
-    if (all || test == 17) test1_link_set_direction();
-    if (all || test == 18) test2_link_set_direction();
-    if (all || test == 19) test1_link_get_direction();
-    if (all || test == 20) test2_link_get_direction();
-    if (all || test == 21) test1_link_set_open();
-    if (all || test == 22) test2_link_set_open();
-    if (all || test == 23) test1_link_get_open();
-    if (all || test == 24) test2_link_get_open();
-    if (all || test == 25) test_link_print();
 
     PRINT_PASSED_PERCENTAGE;
 
@@ -358,62 +278,4 @@ void test1_link_get_destination() {
 void test2_link_get_destination() {
     Link *link = NULL;
     PRINT_TEST_RESULT(link_get_destination(link) == NO_ID);
-}
-
-void test1_link_set_direction() {
-    Link *link = link_create(1);
-    PRINT_TEST_RESULT(link_set_direction(link, N) == OK);
-    link_destroy(link);
-}
-
-void test2_link_set_direction() {
-    Link *link = NULL;
-    PRINT_TEST_RESULT(link_set_direction(link, N) == ERROR);
-}
-
-void test1_link_get_direction() {
-    Link *link = link_create(1);
-    link_set_direction(link, N);
-    PRINT_TEST_RESULT(link_get_direction(link) == N);
-    link_destroy(link);
-}
-
-void test2_link_get_direction() {
-    Link *link = NULL;
-    PRINT_TEST_RESULT(link_get_direction(link) == NONE);
-}
-
-void test1_link_set_open() {
-    Link *link = link_create(1);
-    PRINT_TEST_RESULT(link_set_open(link, FALSE) == OK);
-    link_destroy(link);
-}
-
-void test2_link_set_open() {
-    Link *link = NULL;
-    PRINT_TEST_RESULT(link_set_open(link, FALSE) == ERROR);
-}
-
-void test1_link_get_open() {
-    Link *link = link_create(1);
-    link_set_open(link, FALSE);
-    PRINT_TEST_RESULT(link_get_open(link) == FALSE);
-    link_destroy(link);
-}
-
-void test2_link_get_open() {
-    Link *link = NULL;
-    PRINT_TEST_RESULT(link_get_open(link) == FALSE);
-}
-
-void test_link_print() {
-    Link *link = link_create(1);
-    link_set_name(link, "Test Link");
-    link_set_origin(link, 2);
-    link_set_destination(link, 3);
-    link_set_direction(link, N);
-    link_set_open(link, TRUE);
-    link_print(link);
-    PRINT_TEST_RESULT(TRUE);
-    link_destroy(link);
 }

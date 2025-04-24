@@ -12,12 +12,21 @@
 #define LIBSCREEN_H
 
 /**
- * @brief Private implementation of Area datatype
+ * @brief Implements Area data type
  */
 typedef struct _Area Area;
 
 /**
+ * @brief Defines the diferent colors to be used in the screen_area_print
+ */
+typedef enum {BLUE, GREEN, BLACK, RED, YELLOW, PURPLE, CYAN, WHITE} Frame_color;
+
+
+
+/**
  * @brief It creates a new screen
+ * @author Profesores PPROG
+ *
  * This function should be called at the beginning of the program,
  *  so the complete screen is allocated before starting defining areas.
  * @param rows the number of rows that will have the full screen
@@ -41,7 +50,7 @@ void screen_destroy();
  * This function should be called when some updates
  *  in the screen want to be shown.
  */
-void screen_paint();
+void screen_paint(Frame_color color);
 
 /**
  * @brief It creates a new area inside a screen

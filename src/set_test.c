@@ -1,7 +1,7 @@
 /** 
  * @brief It tests set module
- * 
  * @author Alejandro González
+ * 
  * @file set_test.c
  * @version 1.0 
  * @date 27-02-2025
@@ -152,7 +152,7 @@ int main(int argc, char** argv) {
 
   PRINT_PASSED_PERCENTAGE;
 
-  return 0;
+  return 1;
 }
 
 void test1_set_create() {

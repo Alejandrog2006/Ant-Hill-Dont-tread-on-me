@@ -18,11 +18,19 @@
 #include <string.h>
 
 /**
+ * @brief Private implementation of the interface module
+ */
+struct _InterfaceData {
+  Command *last_cmd; /**< Last command of a specific player */
+  char last_message[MESSAGE_SIZE + 1]; /**< Last message of a specific player */
+};
+
+/**
  * @brief Private implementation of game module
  */
 struct _Game {
-  Id player_location;       /**< Current location of the player. */
-  Player *player;           /**< Pointer to the player. */
+  Player *players[MAX_PLAYERS];          /**< Array of pointers to the players */
+  InterfaceData *interfaces[MAX_PLAYERS]; /**< Array of pointers to the interfaces of each player */
   Space *spaces[MAX_SPACES];/**< Array of spaces in the game. */
   Object *objects[MAX_OBJECTS];/**< Array of objects in the game. */
   Character *characters[MAX_CHARACTERS];/**< Array of characters in the game. */
@@ -31,11 +39,23 @@ struct _Game {
   int n_objects;            /**< Number of objects in the game. */
   int n_characters;         /**< Number of characters in the game. */
   int n_links;              /**< Number of links in the game. */
-  Command *last_cmd;        /**< Last command executed. */
+  int n_players;            /**< Number of players in the game */
   Bool finished;            /**< Whether the game is finished or not. */
-  char last_message[MESSAGE_SIZE + 1]; /**< Last message received from a character. */
   char temporal_feedback[MESSAGE_SIZE + 1]; /**< Temporal feedback message. */
+  int turn;                 /**< The position of the active player in the players array */
 };
+
+InterfaceData *game_create_interface(){
+  InterfaceData *new_interface = NULL;
+
+  if(!(new_interface = (InterfaceData *)malloc(sizeof(InterfaceData)))){
+    return NULL;
+  }
+
+  new_interface->last_cmd = command_create();
+  new_interface->last_message[0] = '\0';
+  return new_interface;
+}
 
 Status game_create(Game **game) {
   int i;
@@ -57,18 +77,23 @@ Status game_create(Game **game) {
     (*game)->characters[i] = NULL;
   }
 
-  strcpy((*game)->last_message, "\0");
-
   for (i = 0; i < MAX_SPACES; i++) {
     (*game)->spaces[i] = NULL;
   }
 
   (*game)->n_spaces = 0;
   (*game)->n_objects = 0;
-  (*game)->player = player_create(NO_ID);
-  if ((*game)->player == NULL) {
-    return ERROR;
+  (*game)->n_links = 0;
+  (*game)->n_players = 0;
+  
+  for(i = 0; i < MAX_PLAYERS; i++){
+    (*game)->players[i] = NULL;
   }
+
+  for(i = 0; i < MAX_PLAYERS; i++){
+    (*game)->interfaces[i] = NULL;
+  }
+
   for (i = 0; i < MAX_OBJECTS; i++) {
     (*game)->objects[i] = NULL;
   }
@@ -77,16 +102,15 @@ Status game_create(Game **game) {
     return ERROR;
   }
   (*game)->n_objects++;*/
-  (*game)->last_cmd = command_create();
-  if ((*game)->last_cmd == NULL) {
-    return ERROR;
-  }
+  
   (*game)->finished = FALSE;
 
   for(i = 0; i < MAX_LINKS; i++){
     (*game)->links[i] = NULL;
   }
-  (*game)->n_links = 0;
+
+  (*game)->temporal_feedback[0] = '\0';
+  (*game)->turn = 0;
 
   return OK;
 }
@@ -97,13 +121,13 @@ Status game_create_from_file(Game **game, char *filename) {
     return ERROR;
   }
 
-  if (game_load_players(*game, filename) == ERROR) {
-    fprintf(stderr, "Error: Failed to load players from file.\n");
+  if (game_load_spaces(*game, filename) == ERROR) {
+    fprintf(stderr, "Error: Failed to load spaces from file.\n");
     return ERROR;
   }
 
-  if (game_load_spaces(*game, filename) == ERROR) {
-    fprintf(stderr, "Error: Failed to load spaces from file.\n");
+  if (game_load_players(*game, filename) == ERROR) {
+    fprintf(stderr, "Error: Failed to load players from file.\n");
     return ERROR;
   }
 
@@ -123,7 +147,7 @@ Status game_create_from_file(Game **game, char *filename) {
   }
 
   /* The player is located in the first space */
-  game_set_player_location(*game, player_get_location(game_get_player(*game)));
+  game_set_player_location(*game, player_get_location(game_get_player_at(*game, game_get_turn(*game))));
 /*game_set_object_location(*game, game_get_space_id_at(*game, 0), 0);*/
 
   object_set_description((*game)->objects[0], "A magic wand");
@@ -158,9 +182,19 @@ Status game_destroy(Game *game) {
   }
   
 
-  if (game->player != NULL) {
-    player_destroy(game->player);
-    game->player = NULL;
+  for(i = 0; i < MAX_PLAYERS; i++){
+    if(game->players[i] != NULL){
+      player_destroy(game->players[i]);
+      game->players[i] = NULL;
+    }
+  }
+
+  for(i = 0; i < MAX_PLAYERS; i++){
+    if(game->interfaces[i] != NULL){
+      command_destroy(game->interfaces[i]->last_cmd);
+      free(game->interfaces[i]);
+      game->interfaces[i] = NULL;
+    }
   }
 
   for (i = 0; i < game->n_objects; i++) {
@@ -168,11 +202,6 @@ Status game_destroy(Game *game) {
       object_destroy(game->objects[i]);
       game->objects[i] = NULL;
     }
-  }
-
-  if (game->last_cmd != NULL) {
-    command_destroy(game->last_cmd);
-    game->last_cmd = NULL;
   }
 
   for(i = 0; i < game->n_links; i++){
@@ -205,17 +234,9 @@ Space *game_get_space(Game *game, Id id) {
   return NULL;
 }
 
-Player *game_get_player(Game *game) {
-  if (game == NULL) {
-    return NULL;
-  }
-
-  return game->player;
-}
-
 Id game_get_player_location(Game *game) { 
 
-  Id location =  player_get_location(game->player);
+  Id location =  player_get_location(game->players[game->turn]);
 
   return location; 
 }
@@ -225,7 +246,7 @@ Status game_set_player_location(Game *game, Id id) {
     return ERROR;
   }
   
-  *(player_get_location_pointer(game->player)) = id;
+  *(player_get_location_pointer(game->players[game->turn])) = id;
 
   return OK;
 }
@@ -266,11 +287,11 @@ Status game_set_object_location(Game *game, Id id, int position) {
 }
 
 Command* game_get_last_command(Game *game) { 
-  return game->last_cmd; 
+  return game->interfaces[game->turn]->last_cmd; 
 }
 
 Status game_set_last_command(Game *game, Command *command) {
-  game->last_cmd = command;
+  game->interfaces[game->turn]->last_cmd = command;
 
   return OK;
 }
@@ -300,7 +321,7 @@ void game_print(Game *game) {
     printf("=> Object location: %d\n", (int)object_get_id(game->objects[i]));
   }
   
-  printf("=> Player location: %d\n", (int)game->player_location);
+  
 }
 
 /*ADDITIONAL FUNCTIONS*/
@@ -344,8 +365,8 @@ Status game_set_last_message(Game *game, const char *message) {
   if (!game || !message) {
     return ERROR;
   }
-  strncpy(game->last_message, message, MESSAGE_SIZE);
-  game->last_message[MESSAGE_SIZE] = '\0';
+  strncpy(game->interfaces[game->turn]->last_message, message, MESSAGE_SIZE);
+  game->interfaces[game->turn]->last_message[MESSAGE_SIZE] = '\0';
   return OK;
 }
 
@@ -353,7 +374,7 @@ const char *game_get_last_message(Game *game) {
   if (!game) {
     return NULL;
   }
-  return game->last_message;
+  return game->interfaces[game->turn]->last_message;
 }
 
 const char *game_get_temporal_feedback(Game *game) {
@@ -444,12 +465,60 @@ int *game_get_n_characters(Game *game){
   return &game->n_characters;
 }
 
-Status game_set_player(Game *game, Player *player){
-  if(game == NULL || player == NULL){
+const int game_get_turn(Game *game){
+  if(game == NULL){
+    return -1;
+  }
+
+  return game->turn;
+}
+
+Status game_set_turn(Game *game, int turn_n){
+  if(game == NULL || turn_n < 0){
     return ERROR;
   }
 
-  player_destroy(game->player);
-  game->player = player;
+  game->turn = turn_n;
   return OK;
+}
+
+Player **game_get_players(Game *game){
+  if(game == NULL){
+    return NULL;
+  }
+
+  return game->players;
+}
+
+const int game_get_n_players(Game *game){
+  if(game == NULL){
+    return -1;
+  }
+
+  return game->n_players;
+}
+
+Status game_set_n_players(Game *game, int n_players){
+  if(game == NULL || n_players < 0){
+    return ERROR;
+  }
+
+  game->n_players = n_players;
+  return OK;
+}
+
+InterfaceData **game_get_interfaces(Game *game){
+  if(game == NULL){
+    return NULL;
+  }
+
+  return game->interfaces;
+}
+
+Player *game_get_player_at(Game *game, int position){
+  if(game == NULL || position < 0){
+    return NULL;
+  }
+
+  return game->players[position];
 }

@@ -23,8 +23,9 @@ struct _Space {
   Id id;                    /*!< Id number of the space, it must be unique */
   char name[WORD_SIZE + 1]; /*!< Name of the space */
   Id character;             /*!< Id of the character in the space */        
-  Set *object_locations;     /*!< Set of objects in the space */ 
+  Set *object_locations;    /*!< Set of objects in the space */ 
   char gdesc[GDESC_ROWS][GDESC_COLS]; /*!< Graphical description of the space */
+  Bool discovered;          /*!< Wether the space is discovered or not*/
 };
 
 Space* space_create(Id id) {
@@ -41,6 +42,7 @@ Space* space_create(Id id) {
   newSpace->id = id;
   newSpace->name[0] = '\0';
   newSpace->character = NO_ID;
+  newSpace->discovered = FALSE;
 
   newSpace->object_locations = set_create();
   if (newSpace->object_locations == NULL) {
@@ -193,5 +195,22 @@ Status space_set_gdesc_at(Space *space, char *gdesc_new, int position){
   } 
 
   strcpy(space->gdesc[position], gdesc_new);
+  return OK;
+}
+
+Bool space_is_discovered(Space *space){
+  if(space == NULL){
+    return FALSE;
+  }
+
+  return space->discovered;
+}
+
+Status space_set_discovered(Space *space, Bool discovered){
+  if(!space){
+    return ERROR;
+  }
+
+  space->discovered = discovered;
   return OK;
 }

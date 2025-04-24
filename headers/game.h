@@ -40,6 +40,18 @@
 #define MAX_LINKS 400
 
 /**
+ * @brief Maximum of player per game
+ */
+#define MAX_PLAYERS 8
+
+/**
+ * @brief Interface structure
+ * 
+ * This struct stores all of the additional information particular for each player
+ */
+typedef struct _InterfaceData InterfaceData;
+
+/**
  * @brief Game structure.
  *
  * This struct stores all the information related to the game, including the player,
@@ -316,13 +328,77 @@ Id game_get_connection(Game *game, Id id_orig, Direction dir);
 Bool game_connection_is_open(Game *game, Id id_orig, Direction dir);
 
 /**
- * @brief Changes the pointer player in the game struct to a given one
+ * @brief Gets the current turn of the game (the position of a player in the game array)
+ * @author Daniel Martín Jaén
+ * 
+ * @param game The game struct
+ * @return A positive integer if everything went right, a negative one if something went wrong
+ */
+const int game_get_turn(Game *game);
+
+/**
+ * @brief Sets the game turn to a give one
+ * @author Daniel Martín Jaén
+ * 
+ * @param game The game struct
+ * @param turn_n The new value of the turn variable
+ * @return OK if everything went correctly, ERROR if something went wrong
+ */
+Status game_set_turn(Game *game, int turn_n);
+
+/**
+ * @brief Gets the players array from the game struct
+ * @author Daniel Martín Jaén
+ * 
+ * @param game The game struct
+ * @return NULL if something went wrong, the players array if everything went correctly
+ */
+Player **game_get_players(Game *game);
+
+/**
+ * @brief Creates a new interface
+ * @author Daniel Martín Jaén
+ * 
+ * @return A pointer to the new interface if everything went correctly, NULL if something went wrong
+ */
+InterfaceData *game_create_interface();
+
+/**
+ * @brief Changes the number of players to a new one
  * @author Daniel Martín Jaén
  * 
  * @param game A pointer to the game struct
- * @param player A pointer to the new player struct
- * @return OK if everything went correctly ERROR if something went wrong
+ * @param n_players The new value of n_players
+ * @return OK if everything went correctly, ERROR if something went wrong
  */
-Status game_set_player(Game *game, Player *player);
+Status game_set_n_players(Game *game, int n_players);
+
+/**
+ * @brief Gets the number of players
+ * @author Daniel Martín Jaén
+ * 
+ * @param game A pointer to the game struct
+ * @return A positive integer if everything went correctly, a negative one if something went wrong
+ */
+const int game_get_n_players(Game *game);
+
+/**
+ * @brief Gets the interfaces array from the game struct
+ * @author Daniel Martín Jaén
+ * 
+ * @param game A pointer to the game struct
+ * @return The array to the interfaces in the game struct if everything went correctly, NULL otherwise
+ */
+InterfaceData **game_get_interfaces(Game *game);
+
+/**
+ * @brief Gets the player pointer of a given position in the players array
+ * @author Daniel Martín Jaén
+ * 
+ * @param game A pointer to the game struct
+ * @param position The position of the player pointer in the players array
+ * @return A pointer to the player in position if everything went well, NULL otherwise
+ */
+Player *game_get_player_at(Game *game, int position);
 
 #endif

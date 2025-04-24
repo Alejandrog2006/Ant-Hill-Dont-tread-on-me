@@ -95,22 +95,32 @@ int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name) {
 }
 
 int game_loop_run(Game *game, Graphic_engine *gengine) {
-    Command *last_cmd;
+    Command *last_cmd = NULL;
     Status cmd_status;
+    int turn;
 
     if (!gengine) {
         return 1;
     }
 
+    game_set_turn(game, 0);
     last_cmd = game_get_last_command(game);
 
-    while ((command_get_code(last_cmd) != EXIT) && (game_get_finished(game) == FALSE)) {
-        graphic_engine_paint_game(gengine, game);
-        command_get_user_input(last_cmd);
-        cmd_status = game_actions_update(game, last_cmd);
-        command_set_status(last_cmd, cmd_status);
-        if (player_get_health(game_get_player(game)) <= 0) {
-            game_set_finished(game, TRUE);
+    while ((command_get_code(game_get_last_command(game)) != EXIT) && (game_get_finished(game) == FALSE)) {
+        for(turn = 0; turn < game_get_n_players(game); turn++){
+            game_set_turn(game, turn);
+            last_cmd = game_get_last_command(game);
+            graphic_engine_paint_game(gengine, game);
+            command_get_user_input(last_cmd);
+            game_set_last_command(game, last_cmd);
+            if(command_get_code(last_cmd) == EXIT){
+                break;
+            }
+            cmd_status = game_actions_update(game, game_get_last_command(game));
+            command_set_status(game_get_last_command(game), cmd_status);
+            if (player_get_health(game_get_player_at(game, game_get_turn(game))) <= 0) {
+                game_set_finished(game, TRUE);
+            }
         }
     }
 

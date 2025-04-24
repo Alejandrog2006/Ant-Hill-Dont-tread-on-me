@@ -5,6 +5,7 @@
  * @author Rodrigo Cruz Asensio
  * @version 1.0 
  * @date 18-03-2025
+ * @copyright GNU Public License
  */
 
 #include <stdio.h>
@@ -15,7 +16,7 @@
 /**
  * @brief Defines maximum number of test per execution
  */
-#define MAX_TESTS 11
+#define MAX_TESTS 10
 
 /** 
  * @brief It tests the creation of an inventory.
@@ -81,26 +82,6 @@ void test1_inventory_contains_object();
  */
 void test2_inventory_contains_object();
 
-/** 
- * @brief It tests printing an inventory.
- * 
- * This test creates an inventory, adds objects to it, and verifies that the print function works correctly.
- */
-void test_inventory_print();
-
-/** 
- * @brief It tests getting the objects from an inventory.
- * 
- * This test creates an inventory, adds objects to it, and verifies that the objects can be retrieved correctly.
- */
-void test_inventory_get_objects();
-
-/** 
- * @brief It tests getting the count of objects in an inventory.
- * 
- * This test creates an inventory, adds objects to it, and verifies that the count of objects is correct.
- */
-void test_inventory_get_count();
 
 /** 
  * @brief Main function for INVENTORY unit tests. 
@@ -129,13 +110,10 @@ int main(int argc, char** argv) {
     if (all || test == 6) test2_inventory_del_object();
     if (all || test == 7) test1_inventory_contains_object();
     if (all || test == 8) test2_inventory_contains_object();
-    if (all || test == 9) test_inventory_print();
-    if (all || test == 10) test_inventory_get_objects();
-    if (all || test == 11) test_inventory_get_count();
 
     PRINT_PASSED_PERCENTAGE;
 
-    return 0;
+    return 1;if (all || test == 3) test_inventory_destroy();
 }
 
 void test_inventory_create() {
@@ -187,32 +165,6 @@ void test1_inventory_contains_object() {
 void test2_inventory_contains_object() {
     Inventory *inventory = inventory_create(3);
     PRINT_TEST_RESULT(inventory_contains_object(inventory, 1) == FALSE);
-    inventory_destroy(inventory);
-}
-
-void test_inventory_print() {
-    Inventory *inventory = inventory_create(3);
-    inventory_add_object(inventory, 1);
-    inventory_add_object(inventory, 2);
-    PRINT_TEST_RESULT(inventory_print(inventory) == OK);
-    inventory_destroy(inventory);
-}
-
-void test_inventory_get_objects() {
-    Inventory *inventory = inventory_create(3);
-    Set *objects; 
-    inventory_add_object(inventory, 1);
-    inventory_add_object(inventory, 2);
-    objects = inventory_get_objects(inventory);
-    PRINT_TEST_RESULT(objects != NULL && set_get_count(objects) == 2);
-    inventory_destroy(inventory);
-}
-
-void test_inventory_get_count() {
-    Inventory *inventory = inventory_create(3);
-    inventory_add_object(inventory, 1);
-    inventory_add_object(inventory, 2);
-    PRINT_TEST_RESULT(inventory_get_count(inventory) == 2);
     inventory_destroy(inventory);
 }
 

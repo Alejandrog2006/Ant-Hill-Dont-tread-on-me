@@ -1,6 +1,10 @@
 /**
  * @brief Implements the game reader from datafile
  * @file game_reader.h
+ * @author Daniel Martin Jaen
+ * @version 0
+ * @date 27-01-2025
+ * @copyright GNU Public License
  */
 
 #ifndef GAME_READER_H

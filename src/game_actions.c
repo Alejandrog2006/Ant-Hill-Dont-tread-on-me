@@ -167,7 +167,7 @@ Status game_actions_take(Game *game) {
 
         if (object_id == player_location_id &&
             strcasecmp(object_get_name(game_get_objects(game)[i]), obj_name) == 0) {
-            if (player_add_object(game_get_player(game), object_get_id(game_get_objects(game)[i])) == OK) {
+            if (player_add_object(game_get_player_at(game, game_get_turn(game)), object_get_id(game_get_objects(game)[i])) == OK) {
                 game_set_object_location(game, NO_ID, i);
                 return OK;
             } else {
@@ -206,8 +206,8 @@ Status game_actions_drop(Game *game) {
         if (object == NULL) continue;
 
         if (strcasecmp(object_get_name(object), obj_name) == 0 &&
-            player_has_object(game_get_player(game), object_get_id(object)) == TRUE) {
-            if (player_del_object(game_get_player(game), object_get_id(object)) == OK) {
+            player_has_object(game_get_player_at(game, game_get_turn(game)), object_get_id(object)) == TRUE) {
+            if (player_del_object(game_get_player_at(game, game_get_turn(game)), object_get_id(object)) == OK) {
                 if (game_set_object_location(game, player_location_id, i) == OK) {
                     return OK;
                 } else {
@@ -231,7 +231,7 @@ Status game_actions_attack(Game *game) {
   char temp[WORD_SIZE];
   Bool enemy_found = FALSE;
 
-  player = game_get_player(game);
+  player = game_get_player_at(game, game_get_turn(game));
   if (!(character_array = game_get_character_array(game))) {
     return ERROR;
   }
@@ -354,6 +354,7 @@ Status game_actions_move(Game *game){
 
   if(id_new != NO_ID && is_open == TRUE){
     game_set_player_location(game, id_new);
+    space_set_discovered(game_get_space(game, id_new), TRUE);
     game_set_temporal_feedback(game, " ");
     return OK;
   }else if( id_new != NO_ID && is_open == FALSE){
@@ -403,7 +404,7 @@ Status game_actions_inspect(Game *game) {
         }
     }
 
-    player_inventory = player_get_inventory(game_get_player(game));
+    player_inventory = player_get_inventory(game_get_player_at(game, game_get_turn(game)));
     if (!player_inventory) {
         return ERROR;
     }
