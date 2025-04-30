@@ -183,7 +183,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 			}
 		}
 
-		strcpy(ch, "    ");
+		strcpy(ch, "   ");
 
 		space = game_get_space(game, id_back);
 		if (space && space_is_discovered(space) == TRUE)
@@ -202,7 +202,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 		{
 			sprintf(str, "                      +---------------+");
 			screen_area_puts(ge->map, str);
-			sprintf(str, "                      |  %s  %s %3d|", ply_n, ch, (int)id_back);
+			sprintf(str, "                      | %s %s %3d|", ply_n, ch, (int)id_back);
 			screen_area_puts(ge->map, str);
 
 			for (i = 0; i < GDESC_ROWS; i++)
@@ -578,7 +578,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
 			sprintf(str, "  +---------------+   +---------------+   +---------------+");
 			screen_area_puts(ge->map, str);
-			sprintf(str, "  | %s %s %3d|   | %s %s %3d|   | %s %s %3d|", ply_w, ch, (int)id_left, plys[game_get_turn(game)], ch1, (int)id_act, ch2, ply_w, (int)id_right);
+			sprintf(str, "  | %s %s %3d|   | %s %s %3d|   | %s %s %3d|", ply_w, ch, (int)id_left, plys[game_get_turn(game)], ch1, (int)id_act, ch2, ply_e, (int)id_right);
 			screen_area_puts(ge->map, str);
 
 			for (i = 0; i < GDESC_ROWS; i++)

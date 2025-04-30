@@ -32,7 +32,7 @@ int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name);
  * @param gengine The graphic engine used to render the game.
  * @return 0 if the game loop runs successfully, 1 otherwise.
  */
-int game_loop_run(Game *game, Graphic_engine *gengine);
+int game_loop_run(Game *game, Graphic_engine *gengine, char *log);
 
 /**
  * @brief Cleans up resources used by the game loop.
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    if (game_loop_run(game, gengine) != 0)
+    if (game_loop_run(game, gengine, argv[2]) != 0)
     {
         game_loop_cleanup(game, gengine);
         return 1;
@@ -103,11 +103,12 @@ int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name)
     return 0;
 }
 
-int game_loop_run(Game *game, Graphic_engine *gengine)
+int game_loop_run(Game *game, Graphic_engine *gengine, char *log)
 {
     Command *last_cmd = NULL;
     Status cmd_status;
     int turn;
+    FILE *f = NULL;
 
     if (!gengine)
     {
@@ -117,6 +118,17 @@ int game_loop_run(Game *game, Graphic_engine *gengine)
     game_set_turn(game, 0);
     last_cmd = game_get_last_command(game);
 
+    if (log != NULL)
+    {
+        if (strcmp(log, "-l") == 0)
+        {
+            if (!(f = fopen("log.txt", "w")))
+            {
+                return -1;
+            }
+        }
+    }
+
     while ((command_get_code(game_get_last_command(game)) != EXIT) && (game_get_finished(game) == FALSE))
     {
         for (turn = 0; turn < game_get_n_players(game); turn++)
@@ -125,6 +137,47 @@ int game_loop_run(Game *game, Graphic_engine *gengine)
             last_cmd = game_get_last_command(game);
             graphic_engine_paint_game(gengine, game);
             command_get_user_input(last_cmd);
+            if (f != NULL)
+            {
+                switch (command_get_code(last_cmd))
+                {
+                case UNKNOWN:
+                    fprintf(f, "Player %d: UNKNOWN\n", game_get_turn(game) + 1);
+                    break;
+
+                case EXIT:
+                    fprintf(f, "Player %d: EXIT\n", game_get_turn(game) + 1);
+                    break;
+
+                case TAKE:
+                    fprintf(f, "Player %d: TAKE\n", game_get_turn(game) + 1);
+                    break;
+
+                case DROP:
+                    fprintf(f, "Player %d: DROP\n", game_get_turn(game) + 1);
+                    break;
+
+                case ATTACK:
+                    fprintf(f, "Player %d: ATTACK\n", game_get_turn(game) + 1);
+                    break;
+
+                case CHAT:
+                    fprintf(f, "Player %d: CHAT\n", game_get_turn(game) + 1);
+                    break;
+
+                case MOVE:
+                    fprintf(f, "Player %d: MOVE\n", game_get_turn(game) + 1);
+                    break;
+
+                case INSPECT:
+                    fprintf(f, "Player %d: INSPECT\n", game_get_turn(game) + 1);
+                    break;
+
+                default:
+                    break;
+                }
+            }
+
             game_set_last_command(game, last_cmd);
             if (command_get_code(last_cmd) == EXIT)
             {
@@ -137,6 +190,10 @@ int game_loop_run(Game *game, Graphic_engine *gengine)
                 game_set_finished(game, TRUE);
             }
         }
+    }
+    if (f != NULL)
+    {
+        fclose(f);
     }
 
     return 0;
