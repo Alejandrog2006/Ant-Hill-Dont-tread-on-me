@@ -25,7 +25,7 @@
  /**
   * @brief Number of available commands.
   */
- #define N_CMD 9
+ #define N_CMD 11
  
  /**
   * @brief Command type enumeration.
@@ -52,7 +52,9 @@
      ATTACK,       /**< Attack command. */
      CHAT,         /**< Chat command. */
      MOVE,         /**< Move command. */
-     INSPECT       /**< Inspect command. */
+     INSPECT,       /**< Inspect command. */
+     RECRUIT,      /**< Recruit command. */
+     ABANDON       /**< Abandon command. */
  } CommandCode;
  
  /**
