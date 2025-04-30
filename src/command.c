@@ -23,7 +23,7 @@
 /**
  * @brief Defines database for commands
  */
-char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"t", "Take"}, {"d", "Drop"}, {"a", "Attack"}, {"c", "Chat"}, {"m", "Move"},{"i", "Inspect"}};
+char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"t", "Take"}, {"d", "Drop"}, {"a", "Attack"}, {"c", "Chat"}, {"m", "Move"},{"i", "Inspect"}, {"r", "Recruit"}, {"ab", "Abandon"}}; 
 
 /**
  * @brief Private implementation of command datatype
@@ -102,7 +102,7 @@ Status command_get_user_input(Command* command) {
     
     command_set_code(command, cmd);
 
-    if (cmd == TAKE || cmd == DROP || cmd == MOVE || cmd == INSPECT) {
+    if (cmd == TAKE || cmd == DROP || cmd == MOVE || cmd == INSPECT || cmd == RECRUIT || cmd == ABANDON) {
       token = strtok(NULL, "\n");
       if (token) {
         while (*token == ' ') token++; 
