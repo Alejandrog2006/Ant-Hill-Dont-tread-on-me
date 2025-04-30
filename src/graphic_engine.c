@@ -785,13 +785,13 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     screen_area_puts(ge->descript, str);
   }
   
-  sprintf(str, "       Player %d", game_get_turn(game));
+  sprintf(str, "           Player %d", game_get_turn(game));
 
   screen_area_puts(ge->banner, str);
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  sprintf(str, " move or m (noth or n, south or s, east or e, west or w), take or t, drop or d, attack or a, exit or e, chat or c, inspect or i");
+  sprintf(str, " move or m (north or n, south or s, east or e, west or w), take or t, drop or d, attack or a, exit or e, chat or c,       inspect or i, recruit or r, abandon or ab");
   screen_area_puts(ge->help, str);
 
   screen_area_clear(ge->feedback);
