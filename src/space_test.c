@@ -85,6 +85,9 @@ int main(int argc, char **argv)
 	return 1;
 }
 
+/**
+ * @brief Tests space_create function
+ */
 void test1_space_create()
 {
 	int result;
@@ -95,6 +98,9 @@ void test1_space_create()
 	space_destroy(s);
 }
 
+/**
+ * @brief Tests space_create function
+ */
 void test2_space_create()
 {
 	Space *s;
@@ -103,6 +109,9 @@ void test2_space_create()
 	space_destroy(s);
 }
 
+/**
+ * @brief Tests space_set_name function
+ */
 void test1_space_set_name()
 {
 	Space *s;
@@ -111,12 +120,18 @@ void test1_space_set_name()
 	space_destroy(s);
 }
 
+/**
+ * @brief Tests space_set_name function
+ */
 void test2_space_set_name()
 {
 	Space *s = NULL;
 	PRINT_TEST_RESULT(space_set_name(s, "hola") == ERROR);
 }
 
+/**
+ * @brief Tests space_set_name function
+ */
 void test3_space_set_name()
 {
 	Space *s;
@@ -125,6 +140,9 @@ void test3_space_set_name()
 	space_destroy(s);
 }
 
+/**
+ * @brief Tests space_set_object function
+ */
 void test1_space_set_object()
 {
 	Space *s;
@@ -133,12 +151,18 @@ void test1_space_set_object()
 	space_destroy(s);
 }
 
+/**
+ * @brief Tests space_set_object function
+ */
 void test2_space_set_object()
 {
 	Space *s = NULL;
 	PRINT_TEST_RESULT(space_set_object(s, TRUE) == ERROR);
 }
 
+/**
+ * @brief Tests space_get_name function
+ */
 void test1_space_get_name()
 {
 	Space *s;
@@ -148,12 +172,18 @@ void test1_space_get_name()
 	space_destroy(s);
 }
 
+/**
+ * @brief Tests space_get_name function
+ */
 void test2_space_get_name()
 {
 	Space *s = NULL;
 	PRINT_TEST_RESULT(space_get_name(s) == NULL);
 }
 
+/**
+ * @brief Tests space_get_object function
+ */
 void test1_space_get_object()
 {
 	Space *s;
@@ -162,6 +192,9 @@ void test1_space_get_object()
 	space_destroy(s);
 }
 
+/**
+ * @brief Tests space_get_object function
+ */
 void test2_space_get_object()
 {
 	Space *s;
@@ -171,12 +204,18 @@ void test2_space_get_object()
 	space_destroy(s);
 }
 
+/**
+ * @brief Tests space_get_object function
+ */
 void test3_space_get_object()
 {
 	Space *s = NULL;
 	PRINT_TEST_RESULT(space_get_object(s, 1) == FALSE);
 }
 
+/**
+ * @brief Tests space_get_id function
+ */
 void test1_space_get_id()
 {
 	Space *s;
@@ -185,6 +224,9 @@ void test1_space_get_id()
 	space_destroy(s);
 }
 
+/**
+ * @brief Tests space_get_id function
+ */
 void test2_space_get_id()
 {
 	Space *s = NULL;
