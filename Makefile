@@ -6,7 +6,7 @@ CC = gcc
 C_DIR = ./src
 H_DIR = ./include
 O_DIR = ./obj
-R_DIR = ./lib
+R_DIR = ./resources
 D_DIR = ./docs
 
 DOXYGEN = doxygen
@@ -135,12 +135,15 @@ $(O_DIR)/object_test.o: $(C_DIR)/object_test.c $(H_DIR)/objects.h $(H_DIR)/test.
 
 ##########  Cleaning and execution  ##########
 clean:
-	@rm -f -r $(EXE) space_test set_test character_test inventory_test link_test player_test object_test $(O_DIR) ./docs/output
+	@rm -f -r $(EXE) space_test set_test character_test inventory_test link_test player_test object_test $(O_DIR) ./docs/output ./log.txt
 	@echo "--> project cleaned"
 
 run:
 	@./$(EXE) $(R_DIR)/anthill.dat
 	@echo "--> project executed"
+
+log:
+	@./$(EXE) $(R_DIR)/anthill.dat -l
 
 runv:
 	@valgrind --leak-check=full ./$(EXE) $(R_DIR)/anthill.dat
