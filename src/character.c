@@ -25,6 +25,7 @@ struct _Character {
     Bool friendly;                   /*!< Whether character is friendly */
     char message[MESSAGE_SIZE + 1];   /*!< Character's message */
     Id location;                     /*!< Character's location */
+    Id following;                  /*!< Character's following id */
 };
 
 Character* character_create(Id id) {
@@ -47,6 +48,7 @@ Character* character_create(Id id) {
     newCharacter->friendly = TRUE;
     newCharacter->message[0] = '\0';
     newCharacter->location = NO_ID;
+    newCharacter->following = NO_ID;
 
     return newCharacter;
 }
@@ -178,6 +180,28 @@ Id* character_get_location_pointer(Character* character) {
     return &(character->location);
 }
 
+Id character_get_following(Character* character) {
+    if (!character) {
+        return NO_ID;
+    }
+    return character->following;
+}
+
+Status character_set_following(Character* character, Id following) {
+    if (!character) {
+        return ERROR;
+    }
+
+    if(character_get_friendly(character) == TRUE){
+        character->following = following;
+    } else {
+        character->following = NO_ID;
+        return ERROR;
+    }
+
+    return OK;
+}
+
 Status character_print(Character* character) {
     if (!character) {
         return ERROR;
@@ -189,6 +213,7 @@ Status character_print(Character* character) {
     fprintf(stdout, "Friendly: %s\n", character->friendly ? "YES" : "NO");
     fprintf(stdout, "Message: %s\n", character->message);
     fprintf(stdout, "Location: %ld\n", character->location);
+    fprintf(stdout, "Following: %ld\n", character->following);
 
     return OK;
 }
