@@ -83,6 +83,21 @@ Status game_actions_move(Game *game);
 Status game_actions_inspect(Game *game);
 
 /**
+ * @brief Handles the "recruit" command.
+ * @author Alejandro Gonzalez
+ * 
+ * @param game A pointer to the game structure.
+ */
+Status game_actions_recruit(Game *game);
+
+/**
+ * @brief Handles the "abandon" command.
+ * @author Alejandro Gonzalez
+ * 
+ * @param game A pointer to the game structure.
+ */
+Status game_actions_abandon(Game *game);
+/**
    Game actions implementation
 */
 
@@ -128,6 +143,13 @@ Status game_actions_update(Game *game, Command *command) {
       status = game_actions_inspect(game);
       break;
 
+    case RECRUIT:
+      status = game_actions_recruit(game);
+      break;
+
+    case ABANDON:
+      status = game_actions_abandon(game);
+      break;
     
     default:
       status = ERROR;
@@ -316,7 +338,11 @@ Status game_actions_move(Game *game){
   const char *arg = NULL;
   Direction dir;
   Id id_act, id_new;
+  Id player_id = NO_ID;
+  Id character_location_id = NO_ID;
+  Character **character_array = NULL;
   Bool is_open = FALSE;
+  int i;
 
   if(game == NULL){
     return ERROR;
@@ -334,6 +360,15 @@ Status game_actions_move(Game *game){
 
   id_act = game_get_player_location(game);
   if(id_act == NO_ID){
+    return ERROR;
+  }
+
+  player_id = player_get_id(game_get_player_at(game, game_get_turn(game)));
+  if(player_id == NO_ID){
+    return ERROR;
+  }
+
+  if (!(character_array = game_get_character_array(game))) {
     return ERROR;
   }
 
@@ -356,7 +391,6 @@ Status game_actions_move(Game *game){
     game_set_player_location(game, id_new);
     space_set_discovered(game_get_space(game, id_new), TRUE);
     game_set_temporal_feedback(game, " ");
-    return OK;
   }else if( id_new != NO_ID && is_open == FALSE){
     game_set_temporal_feedback(game, "The door is locked");
     return OK;
@@ -364,7 +398,16 @@ Status game_actions_move(Game *game){
     game_set_temporal_feedback(game, "I can't do that");
     return OK;
   }
+
+  for (i = 0; i < MAX_CHARACTERS; i++) {
+    character_location_id = character_get_location(character_array[i]);
+    if (character_location_id == id_act && character_get_following(character_array[i]) == player_id) {
+        character_set_location(character_array[i], id_new);
+        return OK;
+    }
+  }
   
+  return OK;
 }
 
 Status game_actions_inspect(Game *game) {
@@ -422,3 +465,112 @@ Status game_actions_inspect(Game *game) {
     game_set_last_message(game, "You can't inspect that object.");
     return ERROR;
 }
+
+Status game_actions_recruit(Game *game) {
+    Id player_location = NO_ID;
+    Id player_id = NO_ID;
+    Id character_location_id = NO_ID;
+    Character **character_array = NULL;
+    const char *character_name = NULL;
+    Command *cmd = NULL;
+    int i;
+
+    cmd = game_get_last_command(game);
+    if (!cmd) {
+        return ERROR;
+    }
+
+    character_name = command_get_arg(cmd);
+    if(character_name == NULL || character_name[0] == '\0') {
+        return ERROR;
+    }
+
+    if (!(character_array = game_get_character_array(game))) {
+        return ERROR;
+    }
+
+    player_location = game_get_player_location(game);
+    if (player_location == NO_ID) {
+        return ERROR;
+    }
+    player_id = player_get_id(game_get_player_at(game, game_get_turn(game)));
+    if (player_id == NO_ID) {
+        return ERROR;
+    }
+
+    for (i = 0; i < MAX_CHARACTERS; i++) {
+        character_location_id = character_get_location(character_array[i]);
+        if (character_location_id == player_location &&
+            strcasecmp(character_get_name(character_array[i]), character_name) == 0 &&
+            character_get_friendly(character_array[i]) == TRUE) {
+            if (character_set_following(character_array[i], player_id) == OK) {
+                game_set_temporal_feedback(game, "Character recruited successfully!");
+                return OK;
+            }
+        }
+    }
+    game_set_temporal_feedback(game, "You cannot recruit this character.");
+    return ERROR;
+}
+
+Status game_actions_abandon(Game *game) {
+    Id player_location = NO_ID;
+    Id player_id = NO_ID;
+    Id character_location_id = NO_ID;
+    Character **character_array = NULL;
+    const char *character_name = NULL;
+    Command *cmd = NULL;
+    int i;
+    Bool character_found = FALSE;
+
+    cmd = game_get_last_command(game);
+    if (!cmd) {
+        return ERROR;
+    }
+
+    character_name = command_get_arg(cmd);
+    if (character_name == NULL || character_name[0] == '\0') {
+        game_set_temporal_feedback(game, "Invalid character name.");
+        return ERROR;
+    }
+
+    if (!(character_array = game_get_character_array(game))) {
+        return ERROR;
+    }
+
+    player_location = game_get_player_location(game);
+    if (player_location == NO_ID) {
+        return ERROR;
+    }
+
+    player_id = player_get_id(game_get_player_at(game, game_get_turn(game)));
+    if (player_id == NO_ID) {
+        return ERROR;
+    }
+
+
+    for (i = 0; i < MAX_CHARACTERS; i++) {
+        character_location_id = character_get_location(character_array[i]);
+        if (character_location_id == player_location &&
+            strcasecmp(character_get_name(character_array[i]), character_name) == 0 &&
+            character_get_following(character_array[i]) == player_id) {
+
+            if (character_set_following(character_array[i], NO_ID) == OK) {
+                game_set_temporal_feedback(game, "Character abandoned successfully!");
+                character_found = TRUE;
+                break;
+            } else {
+                game_set_temporal_feedback(game, "Failed to abandon the character.");
+                return ERROR;
+            }
+        }
+    }
+
+    if (!character_found) {
+        game_set_temporal_feedback(game, "The character is not following you or is not in your location.");
+        return ERROR;
+    }
+
+    return OK;
+}
+
