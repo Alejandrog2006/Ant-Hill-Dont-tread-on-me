@@ -1,12 +1,12 @@
 ##########  Variables & Directories  ##########
 EXE = anthill
-CFLAGS = -Wall -pedantic -ansi -Iheaders -g
+CFLAGS = -Wall -pedantic -ansi -Iinclude -g
 CC = gcc
 
 C_DIR = ./src
-H_DIR = ./headers
-O_DIR = ./objects
-R_DIR = ./resources
+H_DIR = ./include
+O_DIR = ./obj
+R_DIR = ./lib
 D_DIR = ./docs
 
 DOXYGEN = doxygen
