@@ -177,6 +177,25 @@ Id character_get_location(Character *character);
 Id *character_get_location_pointer(Character *character);
 
 /**
+ * @brief Gets the character's following id
+ * @author Alejandro Gonzalez
+ *
+ * @param character A pointer to the character
+ * @return The character's following id
+ */
+Id character_get_following(Character *character);
+
+/**
+ * @brief Sets the character's following id
+ * @author Alejandro Gonzalez
+ *
+ * @param character A pointer to the character
+ * @param following The following id to set
+ * @return OK if successful, ERROR if there was a problem
+ */
+Status character_set_following(Character *character, Id following);
+
+/**
  * @brief Prints the character information
  * @author Izan Robles
  *
