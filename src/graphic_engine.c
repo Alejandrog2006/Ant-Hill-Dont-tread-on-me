@@ -183,7 +183,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 			}
 		}
 
-		strcpy(ch, "   ");
+		strcpy(ch, "      ");
 
 		space = game_get_space(game, id_back);
 		if (space && space_is_discovered(space) == TRUE)
@@ -347,9 +347,10 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 		strcpy(ch, "      ");
 
 		space = game_get_space(game, id_act);
+
 		if (space && space_is_discovered(space) == TRUE)
 		{
-			for (i = 0; i < game_get_n_players(game); i++)
+			for (i = 0; i < MAX_CHARACTERS; i++)
 			{
 				if (game_get_character_array(game)[i] != NULL && character_get_location(game_get_character_array(game)[i]) == id_act)
 				{
@@ -361,7 +362,11 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
 		strcpy(ch1, "      ");
 
-		for (i = 0; i < game_get_n_players(game); i++)
+		space = game_get_space(game, id_right);
+
+		if (space && space_is_discovered(space) == TRUE)
+		{
+		for (i = 0; i < MAX_CHARACTERS; i++)
 		{
 			if (game_get_character_array(game)[i] != NULL && character_get_location(game_get_character_array(game)[i]) == id_right)
 			{
@@ -369,6 +374,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 				break;
 			}
 		}
+     	}
 
 		for (i = 0; i < game_get_n_players(game); i++)
 		{
@@ -882,13 +888,14 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 	characters = game_get_character_array(game);
 	player_location = game_get_player_location(game);
 
-	sprintf(str, " ");
-	screen_area_puts(ge->descript, str);
+	
 
 	for (i = 0; i < MAX_CHARACTERS; i++)
 	{
 		if (characters[i] != NULL && character_get_location(characters[i]) == player_location)
 		{
+			sprintf(str, " ");
+	        screen_area_puts(ge->descript, str);
 			sprintf(str, "  %s:", character_get_name(characters[i]));
 			screen_area_puts(ge->descript, str);
 			sprintf(str, "  Health: %d", character_get_health(characters[i]));
@@ -904,8 +911,6 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 				sprintf(str, "  Enemy");
 				screen_area_puts(ge->descript, str);
 			}
-
-			break;
 		}
 	}
 
