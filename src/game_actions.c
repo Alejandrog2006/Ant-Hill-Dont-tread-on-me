@@ -271,75 +271,106 @@ Status game_actions_drop(Game *game)
 
 Status game_actions_attack(Game *game)
 {
-	Id player_location_id = NO_ID;
-	Id character_location_id = NO_ID;
-	Player *player = NULL;
-	Character **character_array = NULL;
-	int i, random;
-	char temp[WORD_SIZE];
-	Bool enemy_found = FALSE;
+    Id player_location_id = NO_ID;
+    Id character_location_id = NO_ID;
+    Id player_id = NO_ID;
+    Player *player = NULL;
+    Character **character_array = NULL;
+    int i, j, random, followers_count = 0, damage = 0;
+    char temp[WORD_SIZE];
+    Bool enemy_found = FALSE;
 
-	player = game_get_player_at(game, game_get_turn(game));
-	if (!(character_array = game_get_character_array(game)))
-	{
-		return ERROR;
-	}
+    player = game_get_player_at(game, game_get_turn(game));
+    if (!(character_array = game_get_character_array(game)))
+    {
+        return ERROR;
+    }
 
-	player_location_id = game_get_player_location(game);
-	if (player_location_id == NO_ID)
-	{
-		return ERROR;
-	}
+    player_location_id = game_get_player_location(game);
+    if (player_location_id == NO_ID)
+    {
+        return ERROR;
+    }
 
-	for (i = 0; i < MAX_CHARACTERS; i++)
-	{
-		character_location_id = character_get_location(character_array[i]);
-		if (character_location_id == player_location_id)
-		{
-			if (character_get_friendly(character_array[i]) == FALSE)
-			{
-				enemy_found = TRUE;
-				random = rand() % 2;
+    player_id = player_get_id(game_get_player_at(game, game_get_turn(game)));
+    if (player_id == NO_ID)
+    {
+        return ERROR;
+    }
 
-				if (random == 0)
-				{
-					character_set_health(character_array[i], character_get_health(character_array[i]) - 10);
-					strcpy(temp, character_get_name(character_array[i]));
-					if (character_get_health(character_array[i]) > 0)
-					{
-						strcat(temp, " - 10");
-						game_set_temporal_feedback(game, temp);
-					}
-					else
-					{
-						strcat(temp, " is dead");
-						game_set_temporal_feedback(game, temp);
-					}
-				}
+    for (i = 0; i < MAX_CHARACTERS; i++)
+    {
+        if (character_array[i] != NULL && character_get_following(character_array[i]) == player_id)
+        {
+            followers_count++;
+        }
+    }
+
+    for (i = 0; i < MAX_CHARACTERS; i++)
+    {
+        character_location_id = character_get_location(character_array[i]);
+        if (character_location_id == player_location_id)
+        {
+            if (character_get_friendly(character_array[i]) == FALSE && character_get_following(character_array[i]) != player_id) 
+            {
+                enemy_found = TRUE;
+                random = rand() % 2;
+
+                if (random == 0) {
+					damage = 1 + followers_count; 
+                    character_set_health(character_array[i], character_get_health(character_array[i]) - damage);
+                    strcpy(temp, character_get_name(character_array[i]));
+                    if (character_get_health(character_array[i]) > 0)
+                    {
+                        sprintf(temp + strlen(temp), " - %d", damage);
+                        game_set_temporal_feedback(game, temp);
+                    }
+                    else
+                    {
+                        strcat(temp, " is dead");
+                        game_set_temporal_feedback(game, temp);
+                    }
+                }
+                else if (character_get_health(character_array[i]) > 0)
+                {
+                    int target = rand() % (followers_count + 1);
+                    if (target == 0) 
+                    {
+                        player_set_health(player, player_get_health(player) - 1);
+                        game_set_temporal_feedback(game, "Player - 1");
+                    }
+                    else 
+                    {
+                        int follower_index = 0;
+                        for (j = 0; j < MAX_CHARACTERS; j++)
+                        {
+                            if (character_array[j] != NULL && character_get_following(character_array[j]) == player_id)
+                            {
+                                if (++follower_index == target)
+                                {
+                                    character_set_health(character_array[j], character_get_health(character_array[j]) - 1);
+                                    sprintf(temp, "%s - 1", character_get_name(character_array[j]));
+                                    game_set_temporal_feedback(game, temp);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
 				else
 				{
-					if (character_get_health(character_array[i]) > 0)
-					{
-						player_set_health(player, player_get_health(player) - 10);
-						game_set_temporal_feedback(game, "Player - 10");
-					}
-					else
-					{
-						strcpy(temp, character_get_name(character_array[i]));
-						strcat(temp, " is dead");
-						game_set_temporal_feedback(game, temp);
-					}
+					return ERROR;
 				}
-			}
-		}
-	}
+            }
+        }
+    }
 
-	if (!enemy_found)
-	{
-		return ERROR;
-	}
+    if (!enemy_found)
+    {
+        return ERROR;
+    }
 
-	return OK;
+    return OK;
 }
 
 Status game_actions_chat(Game *game)
