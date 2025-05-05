@@ -109,5 +109,54 @@
   */
  void test3_space_get_object();
  
+ /**
+  * @test Tests getting characters out of a NULL space
+  * @pre NULL space
+  * @post Output == NULL
+  */
+ void test1_space_get_characters();
+
+ /**
+  * @test Tests getting the character set of a space
+  * @pre Valid space
+  * @post Pointer to the set
+  */
+ void test2_space_get_characters();
+
+ /**
+  * @test Tests deleting a character in a NULL space
+  * @pre NULL space, Valid character
+  * @post Output == ERROR
+  */
+ void test1_space_del_character();
+
+ /**
+  * @test Tests deleting a NULL character in a space
+  * @pre Valid space, NULL character
+  * @post Output == ERROR
+  */
+ void test2_space_del_character();
+
+ /**
+  * @test Tests deleting a character in a space that doesn't contain it
+  * @pre Valid space, Valid character
+  * @post Output == OK
+  */
+ void test3_space_del_character();
+
+ /**
+  * @test Tests adding a character to a space
+  * @pre Valid character, Valid space
+  * @post Output == OK
+  */
+ void test1_space_add_character();
+
+ /**
+  * @test Tests adding a NULL character to a space
+  * @pre Valid space, NULL character
+  * @post Output == ERROR
+  */
+ void test2_space_add_character();
+ 
  #endif
  

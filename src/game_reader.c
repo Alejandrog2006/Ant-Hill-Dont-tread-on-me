@@ -121,96 +121,60 @@ Id game_get_space_id_at(Game *game, int position)
 
 Status game_load_objects(Game *game, char *filename)
 {
-    FILE *file = NULL;
-    char line[WORD_SIZE] = "";
-    char name[WORD_SIZE] = "";
-    char *toks = NULL;
-    Id id = NO_ID, location = NO_ID, dependency = NO_ID, open = NO_ID;
-    int health = 0, mov = -1;
-    Bool movable = FALSE;
-    Object *object = NULL;
-    Status status = OK;
+	FILE *file = NULL;
+	char line[WORD_SIZE] = "";
+	char name[WORD_SIZE] = "";
+	char *toks = NULL;
+	Id id = NO_ID, location = NO_ID;
+	Object *object = NULL;
+	Status status = OK;
 
-    if (!filename)
-    {
-        return ERROR;
-    }
+	if (!filename)
+	{
+		return ERROR;
+	}
 
-    file = fopen(filename, "r");
-    if (file == NULL)
-    {
-        return ERROR;
-    }
+	file = fopen(filename, "r");
+	if (file == NULL)
+	{
+		return ERROR;
+	}
 
-    while (fgets(line, WORD_SIZE, file))
-    {
-        if (strncmp("#o:", line, 3) == 0)
-        {
-            toks = strtok(line + 3, "|");
-            id = atol(toks); 
-
-            toks = strtok(NULL, "|");
-            strcpy(name, toks);
-
-            toks = strtok(NULL, "|");
-            location = atol(toks);
-
-            toks = strtok(NULL, "|");
-            health = atoi(toks);
-
-            toks = strtok(NULL, "|");
-            mov = atoi(toks);
-
-            toks = strtok(NULL, "|");
-            dependency = atol(toks);
-
-            toks = strtok(NULL, "|\n");
-            open = atoi(toks); 
-
+	while (fgets(line, WORD_SIZE, file))
+	{
+		if (strncmp("#o:", line, 3) == 0)
+		{
+			toks = strtok(line + 3, "|");
+			id = atol(toks);
+			toks = strtok(NULL, "|");
+			strcpy(name, toks);
+			toks = strtok(NULL, "|");
+			location = atol(toks);
 #ifdef DEBUG
-            printf("Leído: %ld|%s|%ld|%d|%d|%ld|%ld\n", id, name, location, health, movable, dependency, open);
+			printf("Leído: %ld|%s|%ld\n", id, name, location);
 #endif
-            if (mov == 0)
+			object = object_create(id);
+			if (object != NULL)
 			{
-				movable = FALSE;
-			} 
-			else if (mov == 1)
-			{
-				movable = TRUE;
-			} 
-			else 
-			{
-				fprintf(stderr, "Error: Invalid value for movable.\n");
-				fclose(file);
-				return ERROR;
+				object_set_name(object, name);
+				object_set_location(object, location);
+
+				if (game_add_objects(game, object) == ERROR)
+				{
+					object_destroy(object);
+					fprintf(stderr, "Error while adding object to game.\n");
+				}
 			}
+		}
+	}
 
-            object = object_create(id);
-            if (object != NULL)
-            {
-                object_set_name(object, name);
-                object_set_location(object, location);
-                object_set_health(object, health);
-                object_set_movable(object, movable);
-                object_set_dependency(object, dependency);
-                object_set_open(object, open);
+	if (ferror(file))
+	{
+		status = ERROR;
+	}
 
-                if (game_add_objects(game, object) == ERROR)
-                {
-                    object_destroy(object);
-                    fprintf(stderr, "Error while adding object to game.\n");
-                }
-            }
-        }
-    }
-
-    if (ferror(file))
-    {
-        status = ERROR;
-    }
-
-    fclose(file);
-    return status;
+	fclose(file);
+	return status;
 }
 
 Status game_add_objects(Game *game, Object *object)
@@ -467,7 +431,6 @@ Status game_load_characters(Game *game, char *filename)
 
 			character_set_name(char_p, name);
 			character_set_gdesc(char_p, gdesc);
-			character_set_location(char_p, position);
 			character_set_health(char_p, health);
 			character_set_friendly(char_p, friendly);
 
@@ -485,7 +448,7 @@ Status game_load_characters(Game *game, char *filename)
 				character_set_message(char_p, "");
 			}
 
-			game_add_character(game, char_p);
+			game_add_character(game, char_p, position);
 		}
 	}
 
@@ -523,17 +486,25 @@ Status game_add_player(Game *game, Player *player)
 	return OK;
 }
 
-Status game_add_character(Game *game, Character *char_p)
+Status game_add_character(Game *game, Character *char_p, Id location)
 {
 	int *n_characters = game_get_n_characters(game);
 	Character **characters_p = game_get_character_array(game);
+	Space *current_space = NULL;
 
-	if (game == NULL || char_p == NULL || *n_characters == MAX_CHARACTERS || *n_characters < 0)
+	if (game == NULL || char_p == NULL || *n_characters == MAX_CHARACTERS || *n_characters < 0 || location < 0)
 	{
 		return ERROR;
 	}
 
 	characters_p[*n_characters] = char_p;
 	(*n_characters)++;
+	current_space = game_get_space(game, location);
+
+	if (current_space)
+	{
+		space_add_character(current_space, char_p);
+	}
+
 	return OK;
 }

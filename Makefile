@@ -19,7 +19,7 @@ $(EXE): $(O_DIR)/game_loop.o $(O_DIR)/game.o $(O_DIR)/command.o $(O_DIR)/graphic
 	@$(CC) -o $@ $^ -lscreen -L $(R_DIR)
 	@echo "--> main executable created"
 
-space_test: $(O_DIR)/space_test.o $(O_DIR)/space.o $(O_DIR)/set.o
+space_test: $(O_DIR)/space_test.o $(O_DIR)/space.o $(O_DIR)/set.o $(O_DIR)/character.o
 	@$(CC) -o $@ $^
 	@echo "--> space test created"
 

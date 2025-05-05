@@ -109,7 +109,7 @@ int *game_get_n_characters(Game *game);
  * @param char_p A pointer to the new charcter that's being added
  * @return OK if everything went correctly, ERROR if something went wrong
  */
-Status game_add_character(Game *game, Character *char_p);
+Status game_add_character(Game *game, Character *char_p, Id location);
 
 /**
  * @brief Loads the characters into the game struct from a given file

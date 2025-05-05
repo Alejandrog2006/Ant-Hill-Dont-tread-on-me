@@ -617,3 +617,50 @@ Player *game_get_player_at(Game *game, int position)
 
 	return game->players[position];
 }
+
+Id game_find_character(Game *game, Id id)
+{
+	int i, j, n;
+	Set *current_chars = NULL;
+	Space **spaces_p = NULL;
+
+	if (!game || id == NO_ID)
+	{
+		return NO_ID;
+	}
+
+	spaces_p = game_get_spaces(game);
+
+	for (i = 0; i < game->n_spaces; i++)
+	{
+		current_chars = space_get_characters(spaces_p[i]);
+		n = set_get_count(current_chars);
+
+		for (j = 0; j < n; j++)
+		{
+			if (id == set_get_id_at(current_chars, j))
+			{
+				return space_get_id(spaces_p[i]);
+			}
+		}
+	}
+
+	return NO_ID;
+}
+
+Status game_change_character_location(Game *game, Character *char_p, Id new_location)
+{
+	Id old_location;
+
+	if (!game || !char_p || new_location < 0 || new_location == NO_ID)
+	{
+		return ERROR;
+	}
+
+	old_location = game_find_character(game, character_get_id(char_p));
+	space_del_character(game_get_space(game, old_location), char_p);
+
+	space_add_character(game_get_space(game, new_location), char_p);
+
+	return OK;
+}

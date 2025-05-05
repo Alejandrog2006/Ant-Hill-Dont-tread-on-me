@@ -1,8 +1,7 @@
 #p:1|ant|m0^|11|5|3|
 #p:2|worm|mm0|122|5|3|
-#c:3|Spider|/\oo/\|123|10|0|I won't talk to you!|
-#c:4|Ant|^0m   |122|10|1|Watch out! There's a spider in the next room|
-#c:5|Paquito|:)    |122|10|1|Gaming|
+#c:2|Spider|/\oo/\|123|10|0|I won't talk to you!|
+#c:3|Ant|^0m   |122|10|1|Watch out! There's a spider in the next room|
 #s:11|Entry|-__- -__ |_/ \_/  -|o 0    --|mo'_0o8o-|__/ \ / \|
 #s:121|Corridor_1|    _    |\ \___   |\ mo' \_ |\ @ _ - -| \__/ \__|
 #s:122|Corridor_2|---+--- _|  0_+_0  |\--+++--/|_  +++  _|---+---\+|

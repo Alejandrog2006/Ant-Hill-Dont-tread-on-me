@@ -27,10 +27,6 @@ struct _Object
 	char name[WORD_SIZE + 1];		 /*!< Name of the object */
 	Id location;					 /*!< Id number of the space the object resides in */
 	char description[WORD_SIZE + 1]; /*!< Description of the object */
-	int health;				      	 /*!< Health of the object */
-	Bool movable;				     /*!< Movable or not */
-	Id dependency;			         /*!< Id number of the object that depends on this one */
-	Id open;                         /*!< Id number of the object that opens this link */
 };
 
 Object *object_create(Id id)
@@ -47,10 +43,6 @@ Object *object_create(Id id)
 	newObject->location = NO_ID;
 	strcpy(newObject->name, "");
 	strcpy(newObject->description, "");
-	newObject->health = 0;
-	newObject->movable = FALSE;
-	newObject->dependency = NO_ID;
-	newObject->open = NO_ID;
 
 	return newObject;
 }
@@ -168,80 +160,4 @@ Id object_get_id_by_name(Object **objects, const char *name)
 	}
 
 	return NO_ID;
-}
-
-Status object_set_health(Object *object, int health)
-{
-	if (!object)
-	{
-		return ERROR;
-	}
-	object->health = health;
-	return OK;
-}
-
-int object_get_health(Object *object)
-{
-	if (!object)
-	{
-		return 0;
-	}
-	return object->health;
-}
-
-Status object_set_movable(Object *object, Bool movable)
-{
-	if (!object)
-	{
-		return ERROR;
-	}
-	object->movable = movable;
-	return OK;
-}
-
-Bool object_get_movable(Object *object)
-{
-	if (!object)
-	{
-		return FALSE;
-	}
-	return object->movable;
-}
-
-Status object_set_dependency(Object *object, Id dependency)
-{
-	if (!object)
-	{
-		return ERROR;
-	}
-	object->dependency = dependency;
-	return OK;
-}
-
-Id object_get_dependency(Object *object)
-{
-	if (!object)
-	{
-		return NO_ID;
-	}
-	return object->dependency;
-}
-
-Status object_set_open(Object *object, Id open)
-{
-	if (!object)
-	{
-		return ERROR;
-	}
-	object->open = open;
-	return OK;
-}
-
-Id object_get_open(Object *object)
-{
-	if (!object)
-	{
-		return NO_ID;
-	}
-	return object->open;
 }

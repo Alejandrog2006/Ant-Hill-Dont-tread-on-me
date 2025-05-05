@@ -24,6 +24,7 @@
 #include "types.h"
 #include "objects.h"
 #include "set.h"
+#include "character.h"
 
 /**
  * @brief Private implementation of space datatype
@@ -184,25 +185,6 @@ Bool space_get_object(Space* space, Id id);
 Status space_print(Space* space);
 
 /**
- * @brief It sets the id of the character in the space
- * @author Izan Robles
- * 
- * @param space a pointer to the space
- * @param id the id number of the character
- * @return OK, if everything goes well or ERROR if there was some mistake
- */
-Status space_set_character(Space* space, Id id);
-
-/**
- * @brief It gets the id of the character in the space
- * @author Izan Robles
- * 
- * @param space a pointer to the space
- * @return the id number of the character
- */
-Id space_get_character(Space* space);
-
-/**
  * @brief Sets the graphical description of a space
  * @author Izan Robles
  *
@@ -273,5 +255,34 @@ Bool space_is_discovered(Space *space);
  *  ERROR otherwise
  */
 Status space_set_discovered(Space *space, Bool discovered);
+
+/**
+ * @brief Gets the characters set of a given space
+ * @author Daniel Martín Jaén
+ * 
+ * @param space A pointer to the space with the set
+ * @return NULL if something went wrong, a pointer to the set otherwise
+ */
+Set *space_get_characters(Space *space);
+
+/**
+ * @brief Removes a character in a given space
+ * @author Daniel Martín Jaén
+ * 
+ * @param space A pointer to the space with the character
+ * @param character A pointer to the character that's being removed
+ * @return ERROR if something went wrong, OK otherwise
+ */
+Status space_del_character(Space *space, Character *character);
+
+/**
+ * @brief Adds a character to a given space
+ * @author Daniel Martín Jaén
+ * 
+ * @param space A pointer to the space where the character is being added
+ * @param character A pointer to the character that's being added
+ * @return ERROR if something went wrong, OK otherwise
+ */
+Status space_add_character(Space *space, Character *character);
 
 #endif

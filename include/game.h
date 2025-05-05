@@ -401,4 +401,34 @@ InterfaceData **game_get_interfaces(Game *game);
  */
 Player *game_get_player_at(Game *game, int position);
 
+/**
+ * @brief Gets the number of characters in the game
+ * @authro Daniel Martín Jaén
+ * 
+ * @param game A pointer to the game struct
+ * @return -1 if something went wrong, a positive integer otherwise
+ */
+int *game_get_n_characters(Game *game);
+
+/**
+ * @brief Searches through the game spaces until it finds a given character
+ * @author Daniel Martín Jaén
+ * 
+ * @param game A pointer to the game struct
+ * @param id The id of the character that's being searched for
+ * @return NO_ID if something went wrong, the id of the space the character is in otherwise
+ */
+Id game_find_character(Game *game, Id id);
+
+/**
+ * @brief Changes the location of a given character to a new one
+ * @author Daniel Martín Jaén
+ * 
+ * @param game A pointer to the game struct
+ * @param char_p A pointer to the character that's being moved
+ * @param new_location The id of the space the character is being moved to
+ * @return ERROR if something went wrong, OK if everything went correctly
+ */
+Status game_change_character_location(Game *game, Character *char_p, Id new_location);
+
 #endif
