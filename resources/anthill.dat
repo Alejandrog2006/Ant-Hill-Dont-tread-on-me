@@ -1,5 +1,4 @@
 #p:1|ant|m0^|11|5|3|
-#p:2|worm|mm0|122|5|3|
 #c:2|Spider|/\oo/\|123|10|0|I won't talk to you!|
 #c:3|Ant|^0m   |122|10|1|Watch out! There's a spider in the next room|
 #s:11|Entry|-__- -__ |_/ \_/  -|o 0    --|mo'_0o8o-|__/ \ / \|
@@ -12,10 +11,10 @@
 #s:127|Corridor_7|
 #s:13|Pantry|
 #s:14|Hole| m0^     |   ___   |  /   \  |  | O |  |  \___/  |
-#o:21|Grain|11
-#o:22|Crumb|11
-#o:23|Leaf|122
-#o:24|Nut|123
+#o:21|Grain|11|-1|1|-1|13|
+#o:22|Crumb|11|1|0|-1|-1|
+#o:23|Leaf|122|0|1|-1|-1|
+#o:24|Nut|123|2|1|23|-1|
 #l:200|Entry|11|121|1|1|
 #l:201|Corridor_1|121|122|1|1|
 #l:202|Corridor_1|121|11|0|1|
