@@ -235,6 +235,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
 		strcpy(obj, " ");
 
+		space = game_get_space(game, id_act);
 		if (space && space_is_discovered(space) == TRUE)
 		{
 			for (i = 0; i < game_n_objects; i++)
