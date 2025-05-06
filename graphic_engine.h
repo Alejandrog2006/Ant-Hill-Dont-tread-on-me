@@ -53,4 +53,18 @@ void graphic_engine_destroy(Graphic_engine *ge);
  */
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game);
 
+/**
+ * @brief Displays an image using SDL2.
+ * @author Daniel Martín Jaén
+ *
+ * This function loads and displays an image using SDL2.
+ *
+ * @param image_path Path to the image file.
+ */
+void graphic_engine_show_image(const char *image_path);
+
+void graphic_engine_show_intro();
+
+void graphic_engine_show_end();
+
 #endif
