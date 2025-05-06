@@ -16,6 +16,7 @@
 #include "types.h"
 #include "character.h"
 #include "player.h"
+#include "game_reader.h"
 
 /**
  * @brief Updates the game state based on the given command.
@@ -26,6 +27,7 @@
  * @return OK if the update was successful, ERROR otherwise.
  */
 Status game_actions_update(Game *game, Command *command);
+
 
 #endif
 

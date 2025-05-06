@@ -131,4 +131,24 @@ Status game_load_characters(Game *game, char *filename);
  */
 Status game_add_player(Game *game, Player *player);
 
+/**
+ * @brief Saves the current game state to a file.
+ * @author Izan Robles
+ * 
+ * @param game A pointer to the game structure.
+ * @param filename The name of the file where the game state will be saved.
+ * @return OK if successful, ERROR otherwise.
+ */
+Status game_management_save(Game *game, const char *filename);
+
+/**
+ * @brief Loads a game state from a file.
+ * @author Izan Robles
+ * 
+ * @param game A pointer to the game structure to be loaded.
+ * @param filename The name of the file containing the game state.
+ * @return OK if successful, ERROR otherwise.
+ */
+Status game_management_load(Game **game, const char *filename);
+
 #endif
