@@ -121,7 +121,7 @@ Id game_get_space_id_at(Game *game, int position)
 
 Status game_load_objects(Game *game, char *filename)
 {
-    FILE *file = NULL;
+	FILE *file = NULL;
     char line[WORD_SIZE] = "";
     char name[WORD_SIZE] = "";
     char *toks = NULL;
@@ -129,7 +129,6 @@ Status game_load_objects(Game *game, char *filename)
     int health = 0, mov = -1;
     Bool movable = FALSE;
     Object *object = NULL;
-    Status status = OK;
 
     if (!filename)
     {
@@ -202,15 +201,9 @@ Status game_load_objects(Game *game, char *filename)
                 }
             }
         }
-    }
+	}
 
-    if (ferror(file))
-    {
-        status = ERROR;
-    }
-
-    fclose(file);
-    return status;
+	return OK;
 }
 
 Status game_add_objects(Game *game, Object *object)
@@ -467,7 +460,6 @@ Status game_load_characters(Game *game, char *filename)
 
 			character_set_name(char_p, name);
 			character_set_gdesc(char_p, gdesc);
-			character_set_location(char_p, position);
 			character_set_health(char_p, health);
 			character_set_friendly(char_p, friendly);
 
@@ -485,7 +477,7 @@ Status game_load_characters(Game *game, char *filename)
 				character_set_message(char_p, "");
 			}
 
-			game_add_character(game, char_p);
+			game_add_character(game, char_p, position);
 		}
 	}
 
@@ -523,17 +515,25 @@ Status game_add_player(Game *game, Player *player)
 	return OK;
 }
 
-Status game_add_character(Game *game, Character *char_p)
+Status game_add_character(Game *game, Character *char_p, Id location)
 {
 	int *n_characters = game_get_n_characters(game);
 	Character **characters_p = game_get_character_array(game);
+	Space *current_space = NULL;
 
-	if (game == NULL || char_p == NULL || *n_characters == MAX_CHARACTERS || *n_characters < 0)
+	if (game == NULL || char_p == NULL || *n_characters == MAX_CHARACTERS || *n_characters < 0 || location < 0)
 	{
 		return ERROR;
 	}
 
 	characters_p[*n_characters] = char_p;
 	(*n_characters)++;
+	current_space = game_get_space(game, location);
+
+	if (current_space)
+	{
+		space_add_character(current_space, char_p);
+	}
+
 	return OK;
 }

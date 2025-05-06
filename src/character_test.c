@@ -80,35 +80,6 @@ void test1_character_get_name();
 void test2_character_get_name();
 
 /**
- * @brief It tests setting the location of a character.
- *
- * This test creates a character and sets a valid location ID. It verifies that the location is set correctly and then destroys the character.
- */
-void test1_character_set_location();
-
-/**
- * @brief It tests setting the location of a NULL character.
- *
- * This test attempts to set the location of a NULL character pointer and verifies that the function returns an error (ERROR).
- */
-void test2_character_set_location();
-
-/**
- * @brief It tests getting the location of a character.
- *
- * This test creates a character, sets a location, and verifies that the location retrieved matches the expected value.
- * The character is destroyed after the test.
- */
-void test1_character_get_location();
-
-/**
- * @brief It tests getting the location of a NULL character.
- *
- * This test attempts to get the location of a NULL character pointer and verifies that the function returns NO_ID.
- */
-void test2_character_get_location();
-
-/**
  * @brief It tests setting the friendly status of a character.
  *
  * This test creates a character and sets its friendly status to TRUE. It verifies that the status is set correctly and then destroys the character.
@@ -166,16 +137,8 @@ int main(int argc, char **argv)
 	if (all || test == 8)
 		test2_character_get_name();
 	if (all || test == 9)
-		test1_character_set_location();
-	if (all || test == 10)
-		test2_character_set_location();
-	if (all || test == 11)
-		test1_character_get_location();
-	if (all || test == 12)
-		test2_character_get_location();
-	if (all || test == 13)
 		test1_character_set_friendly();
-	if (all || test == 14)
+	if (all || test == 10)
 		test2_character_set_friendly();
 
 	PRINT_PASSED_PERCENTAGE;
@@ -236,33 +199,6 @@ void test2_character_get_name()
 	character_set_name(character, "Alex");
 	PRINT_TEST_RESULT(strcmp(character_get_name(character), "Alex") == 0);
 	character_destroy(character);
-}
-
-void test1_character_set_location()
-{
-	Character *character = character_create(1);
-	PRINT_TEST_RESULT(character_set_location(character, 2) == OK);
-	character_destroy(character);
-}
-
-void test2_character_set_location()
-{
-	Character *character = NULL;
-	PRINT_TEST_RESULT(character_set_location(character, 2) == ERROR);
-}
-
-void test1_character_get_location()
-{
-	Character *character = character_create(1);
-	character_set_location(character, 2);
-	PRINT_TEST_RESULT(character_get_location(character) == 2);
-	character_destroy(character);
-}
-
-void test2_character_get_location()
-{
-	Character *character = NULL;
-	PRINT_TEST_RESULT(character_get_location(character) == NO_ID);
 }
 
 void test1_character_set_friendly()

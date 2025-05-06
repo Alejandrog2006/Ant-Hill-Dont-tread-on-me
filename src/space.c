@@ -23,7 +23,7 @@ struct _Space
 {
 	Id id;								/*!< Id number of the space, it must be unique */
 	char name[WORD_SIZE + 1];			/*!< Name of the space */
-	Id character;						/*!< Id of the character in the space */
+	Set *characters;					/*!< Set of the characters in that space*/
 	Set *object_locations;				/*!< Set of objects in the space */
 	char gdesc[GDESC_ROWS][GDESC_COLS]; /*!< Graphical description of the space */
 	Bool discovered;					/*!< Wether the space is discovered or not*/
@@ -45,7 +45,7 @@ Space *space_create(Id id)
 
 	newSpace->id = id;
 	newSpace->name[0] = '\0';
-	newSpace->character = NO_ID;
+	newSpace->characters = set_create();
 	newSpace->discovered = FALSE;
 
 	newSpace->object_locations = set_create();
@@ -75,6 +75,11 @@ Status space_destroy(Space *space)
 	if (space->object_locations != NULL)
 	{
 		set_destroy(space->object_locations);
+	}
+
+	if (space->characters != NULL)
+	{
+		set_destroy(space->characters);
 	}
 
 	free(space);
@@ -260,4 +265,44 @@ Status space_set_discovered(Space *space, Bool discovered)
 
 	space->discovered = discovered;
 	return OK;
+}
+
+Status space_add_character(Space *space, Character *character)
+{
+	Id char_id = NO_ID;
+
+	if (!space || !character)
+	{
+		return ERROR;
+	}
+
+	char_id = character_get_id(character);
+	set_add(space->characters, char_id);
+
+	return OK;
+}
+
+Status space_del_character(Space *space, Character *character)
+{
+	Id char_id = NO_ID;
+
+	if (!space || !character)
+	{
+		return ERROR;
+	}
+
+	char_id = character_get_id(character);
+	set_del(space->characters, char_id);
+
+	return OK;
+}
+
+Set *space_get_characters(Space *space)
+{
+	if (!space)
+	{
+		return NULL;
+	}
+
+	return space->characters;
 }
