@@ -190,7 +190,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 		characters = game_get_character_array(game);
 		if (space && space_is_discovered(space) == TRUE)
 		{
-			for (i = 0; i < MAX_CHARACTERS; i++)
+			for (i = 0; i < *game_get_n_characters(game); i++)
 			{
 				if (game_find_character(game, character_get_id(characters[i])) == id_back)
 				{
@@ -259,7 +259,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 		characters = game_get_character_array(game);
 		if (space && space_is_discovered(space) == TRUE)
 		{
-			for (i = 0; i < MAX_CHARACTERS; i++)
+			for (i = 0; i < *game_get_n_characters(game); i++)
 			{
 				if (game_find_character(game, character_get_id(characters[i])) == id_act)
 				{
@@ -366,6 +366,9 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
 		strcpy(ch1, "      ");
 
+		space = game_get_space(game, id_right);
+		if (space && space_is_discovered(space) == TRUE)
+		{
 		for (i = 0; i < *game_get_n_characters(game); i++)
 		{
 			if (game_find_character(game, character_get_id(characters[i])) == id_right)
@@ -374,7 +377,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 				break;
 			}
 		}
-
+	    }
 		for (i = 0; i < game_get_n_players(game); i++)
 		{
 			if (player_get_location(game_get_player_at(game, i)) == id_right)
@@ -511,7 +514,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 		characters = game_get_character_array(game);
 		if (space && space_is_discovered(space) == TRUE)
 		{
-			for (i = 0; i < MAX_CHARACTERS; i++)
+			for (i = 0; i < *game_get_n_characters(game); i++)
 			{
 				if (game_find_character(game, character_get_id(characters[i])) == id_left)
 				{
@@ -526,7 +529,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 		space = game_get_space(game, id_act);
 		if (space && space_is_discovered(space) == TRUE)
 		{
-			for (i = 0; i < MAX_CHARACTERS; i++)
+			for (i = 0; i < *game_get_n_characters(game); i++)
 			{
 				if (game_find_character(game, character_get_id(characters[i])) == id_act)
 				{
@@ -541,7 +544,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 		space = game_get_space(game, id_right);
 		if (space && space_is_discovered(space) == TRUE)
 		{
-			for (i = 0; i < MAX_CHARACTERS; i++)
+			for (i = 0; i < *game_get_n_characters(game); i++)
 			{
 				if (game_find_character(game, character_get_id(characters[i])) == id_right)
 				{
@@ -697,7 +700,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 		characters = game_get_character_array(game);
 		if (space && space_is_discovered(space) == TRUE)
 		{
-			for (i = 0; i < MAX_CHARACTERS; i++)
+			for (i = 0; i < *game_get_n_characters(game); i++)
 			{
 				if (game_find_character(game, character_get_id(characters[i])) == id_act)
 				{
@@ -712,7 +715,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 		space = game_get_space(game, id_left);
 		if (space && space_is_discovered(space) == TRUE)
 		{
-			for (i = 0; i < MAX_CHARACTERS; i++)
+			for (i = 0; i < *game_get_n_characters(game); i++)
 			{
 				if (game_find_character(game, character_get_id(characters[i])) == id_left)
 				{
@@ -822,7 +825,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 		characters = game_get_character_array(game);
 		if (space && space_is_discovered(space) == TRUE)
 		{
-			for (i = 0; i < MAX_CHARACTERS; i++)
+			for (i = 0; i < *game_get_n_characters(game); i++)
 			{
 				if (game_find_character(game, character_get_id(characters[i])) == id_next)
 				{
