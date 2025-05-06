@@ -122,85 +122,85 @@ Id game_get_space_id_at(Game *game, int position)
 Status game_load_objects(Game *game, char *filename)
 {
 	FILE *file = NULL;
-    char line[WORD_SIZE] = "";
-    char name[WORD_SIZE] = "";
-    char *toks = NULL;
-    Id id = NO_ID, location = NO_ID, dependency = NO_ID, open = NO_ID;
-    int health = 0, mov = -1;
-    Bool movable = FALSE;
-    Object *object = NULL;
+	char line[WORD_SIZE] = "";
+	char name[WORD_SIZE] = "";
+	char *toks = NULL;
+	Id id = NO_ID, location = NO_ID, dependency = NO_ID, open = NO_ID;
+	int health = 0, mov = -1;
+	Bool movable = FALSE;
+	Object *object = NULL;
 
-    if (!filename)
-    {
-        return ERROR;
-    }
+	if (!filename)
+	{
+		return ERROR;
+	}
 
-    file = fopen(filename, "r");
-    if (file == NULL)
-    {
-        return ERROR;
-    }
+	file = fopen(filename, "r");
+	if (file == NULL)
+	{
+		return ERROR;
+	}
 
-    while (fgets(line, WORD_SIZE, file))
-    {
-        if (strncmp("#o:", line, 3) == 0)
-        {
-            toks = strtok(line + 3, "|");
-            id = atol(toks); 
+	while (fgets(line, WORD_SIZE, file))
+	{
+		if (strncmp("#o:", line, 3) == 0)
+		{
+			toks = strtok(line + 3, "|");
+			id = atol(toks);
 
-            toks = strtok(NULL, "|");
-            strcpy(name, toks);
+			toks = strtok(NULL, "|");
+			strcpy(name, toks);
 
-            toks = strtok(NULL, "|");
-            location = atol(toks);
+			toks = strtok(NULL, "|");
+			location = atol(toks);
 
-            toks = strtok(NULL, "|");
-            health = atoi(toks);
+			toks = strtok(NULL, "|");
+			health = atoi(toks);
 
-            toks = strtok(NULL, "|");
-            mov = atoi(toks);
+			toks = strtok(NULL, "|");
+			mov = atoi(toks);
 
-            toks = strtok(NULL, "|");
-            dependency = atol(toks);
+			toks = strtok(NULL, "|");
+			dependency = atol(toks);
 
-            toks = strtok(NULL, "|\n");
-            open = atoi(toks); 
+			toks = strtok(NULL, "|\n");
+			open = atoi(toks);
 
 #ifdef DEBUG
-            printf("Leído: %ld|%s|%ld|%d|%d|%ld|%ld\n", id, name, location, health, movable, dependency, open);
+			printf("Leído: %ld|%s|%ld|%d|%d|%ld|%ld\n", id, name, location, health, movable, dependency, open);
 #endif
-            if (mov == 0)
+			if (mov == 0)
 			{
 				movable = FALSE;
-			} 
+			}
 			else if (mov == 1)
 			{
 				movable = TRUE;
-			} 
-			else 
+			}
+			else
 			{
 				fprintf(stderr, "Error: Invalid value for movable.\n");
 				fclose(file);
 				return ERROR;
 			}
 
-            object = object_create(id);
-            if (object != NULL)
-            {
-                object_set_name(object, name);
-                object_set_location(object, location);
-                object_set_health(object, health);
-                object_set_movable(object, movable);
-                object_set_dependency(object, dependency);
-                object_set_open(object, open);
+			object = object_create(id);
+			if (object != NULL)
+			{
+				object_set_name(object, name);
+				object_set_location(object, location);
+				object_set_health(object, health);
+				object_set_movable(object, movable);
+				object_set_dependency(object, dependency);
+				object_set_open(object, open);
 
-                if (game_add_objects(game, object) == ERROR)
-                {
-                    object_destroy(object);
-                    fprintf(stderr, "Error while adding object to game.\n");
-                }
-            }
-        }
+				if (game_add_objects(game, object) == ERROR)
+				{
+					object_destroy(object);
+					fprintf(stderr, "Error while adding object to game.\n");
+				}
+			}
+		}
 	}
 
 	return OK;
@@ -535,5 +535,58 @@ Status game_add_character(Game *game, Character *char_p, Id location)
 		space_add_character(current_space, char_p);
 	}
 
+	return OK;
+}
+
+Status game_management_save(Game *game, const char *filename)
+{
+	FILE *file = fopen(filename, "w");
+	int i, j;
+
+	if (!file || !game)
+	{
+		return ERROR;
+	}
+
+	fprintf(file, "# Players\n");
+	for (i = 0; i < game_get_n_players(game); i++)
+	{
+		Player *player = game_get_player_at(game, i);
+		Inventory *inventory = player_get_inventory(player);
+		int inventory_count = inventory_get_count(inventory);
+
+		fprintf(file, "#p:%ld|%d|%ld|",
+				player_get_id(player),
+				player_get_health(player),
+				player_get_location(player));
+
+		for (j = 0; j < inventory_count; j++)
+		{
+			Id obj_id = set_get_id_at(inventory_get_objects(inventory), j);
+			fprintf(file, "%ld", obj_id);
+			if (j < inventory_count - 1)
+			{
+				fprintf(file, ",");
+			}
+		}
+		fprintf(file, "\n");
+	}
+
+	fprintf(file, "# Characters\n");
+	for (i = 0; i < *game_get_n_characters(game); i++)
+	{
+		Character *character = game_get_character_array(game)[i];
+		fprintf(file, "#c:%ld|%d|%ld\n",
+				character_get_id(character),
+				character_get_health(character),
+				game_find_character(game, character_get_id(character)));
+	}
+
+	fclose(file);
+	return OK;
+}
+
+Status game_management_load(Game **game, const char *filename)
+{
 	return OK;
 }

@@ -101,6 +101,10 @@ Status game_actions_abandon(Game *game);
    Game actions implementation
 */
 
+Status game_actions_save(Game *game);
+
+Status game_actions_load(Game **game);
+
 Status game_actions_update(Game *game, Command *command)
 {
 	CommandCode cmd;
@@ -154,10 +158,19 @@ Status game_actions_update(Game *game, Command *command)
 		status = game_actions_abandon(game);
 		break;
 
+	case SAVE:
+		status = game_actions_save(game);
+		break;
+
+	case LOAD:
+		status = game_actions_load(&game);
+		break;
+		
 	default:
 		status = ERROR;
 		break;
 	}
+	
 
 	command_set_status(command, status);
 	return status;
@@ -746,5 +759,27 @@ Status game_actions_abandon(Game *game)
 		return ERROR;
 	}
 
+	return OK;
+}
+
+Status game_actions_save(Game *game)
+{
+	if (game_management_save(game, "save.dat") == ERROR)
+	{
+		game_set_temporal_feedback(game, "Error saving the game.");
+		return ERROR;
+	}
+	game_set_temporal_feedback(game, "Game saved successfully.");
+	return OK;
+}
+
+Status game_actions_load(Game **game)
+{
+	if (game_management_load(game, "save.dat") == ERROR)
+	{
+		game_set_temporal_feedback(*game, "Error loading the game.");
+		return ERROR;
+	}
+	
 	return OK;
 }
