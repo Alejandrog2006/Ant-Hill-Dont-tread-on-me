@@ -354,7 +354,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 		characters = game_get_character_array(game);
 		if (space && space_is_discovered(space) == TRUE)
 		{
-			for (i = 0; i < *game_get_n_characters(game); i++)
+			for (i = 0; i < MAX_CHARACTERS; i++)
 			{
 				if (game_find_character(game, character_get_id(characters[i])) == id_act)
 				{
@@ -366,7 +366,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
 		strcpy(ch1, "      ");
 
-		for (i = 0; i < *game_get_n_characters(game); i++)
+		for (i = 0; i < MAX_CHARACTERS; i++)
 		{
 			if (game_find_character(game, character_get_id(characters[i])) == id_right)
 			{
@@ -893,7 +893,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 	sprintf(str, " ");
 	screen_area_puts(ge->descript, str);
 
-	for (i = 0; i < *game_get_n_characters(game); i++)
+	for (i = 0; i < MAX_CHARACTERS; i++)
 	{
 		if (characters[i] != NULL && game_find_character(game, character_get_id(characters[i])) == player_location)
 		{
