@@ -174,42 +174,72 @@ void game_actions_exit(Game *game) {}
 Status game_actions_take(Game *game)
 {
 	Id object_id = NO_ID;
-	Id player_location_id = NO_ID;
-	const char *obj_name = NULL;
-	int i = 0;
-	Command *cmd = game_get_last_command(game);
+    Id player_location_id = NO_ID;
+    Id object_dependency = NO_ID;
+    const char *obj_name = NULL;
+    int i = 0;
+    Command *cmd = game_get_last_command(game);
 
-	if (!cmd)
-		return ERROR;
+    if (!cmd)
+        return ERROR;
 
-	obj_name = command_get_arg(cmd);
-	if (!obj_name || obj_name[0] == '\0')
-	{
-		return ERROR;
-	}
+    obj_name = command_get_arg(cmd);
+    if (!obj_name || obj_name[0] == '\0')
+    {
+        return ERROR;
+    }
 
-	player_location_id = game_get_player_location(game);
+    player_location_id = game_get_player_location(game);
 
-	for (i = 0; i < *(game_get_n_objects(game)); i++)
-	{
-		object_id = game_get_object_location(game, i);
+    for (i = 0; i < *(game_get_n_objects(game)); i++)
+    {
+        object_id = game_get_object_location(game, i);
+        object_dependency = object_get_dependency(game_get_objects(game)[i]);
 
-		if (object_id == player_location_id &&
-			strcasecmp(object_get_name(game_get_objects(game)[i]), obj_name) == 0)
-		{
-			if (player_add_object(game_get_player_at(game, game_get_turn(game)), object_get_id(game_get_objects(game)[i])) == OK)
-			{
-				game_set_object_location(game, NO_ID, i);
-				return OK;
-			}
-			else
-			{
-				return ERROR;
-			}
+		if (object_get_movable(game_get_objects(game)[i]) == FALSE){
+			game_set_temporal_feedback(game, "This object is not movable.");
 		}
-	}
 
-	return ERROR;
+        if (object_id == player_location_id &&
+            strcasecmp(object_get_name(game_get_objects(game)[i]), obj_name) == 0 &&
+            object_get_movable(game_get_objects(game)[i]) == TRUE)
+        {
+            if (object_dependency == NO_ID)
+            {
+                if (player_add_object(game_get_player_at(game, game_get_turn(game)), object_get_id(game_get_objects(game)[i])) == OK)
+                {
+                    game_set_object_location(game, NO_ID, i);
+                    return OK;
+                }
+                else
+                {
+                    return ERROR;
+                }
+            }
+            else
+            {
+                if (player_has_object(game_get_player_at(game, game_get_turn(game)), object_dependency) == TRUE)
+                {
+                    if (player_add_object(game_get_player_at(game, game_get_turn(game)), object_get_id(game_get_objects(game)[i])) == OK)
+                    {
+                        game_set_object_location(game, NO_ID, i);
+                        return OK;
+                    }
+                    else
+                    {
+                        return ERROR;
+                    }
+                }
+                else
+                {
+                    game_set_temporal_feedback(game, "You need another object to take this one.");
+                    return ERROR;
+                }
+            }
+        }
+    }
+
+    return ERROR;
 }
 
 Status game_actions_drop(Game *game)

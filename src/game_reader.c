@@ -122,59 +122,88 @@ Id game_get_space_id_at(Game *game, int position)
 Status game_load_objects(Game *game, char *filename)
 {
 	FILE *file = NULL;
-	char line[WORD_SIZE] = "";
-	char name[WORD_SIZE] = "";
-	char *toks = NULL;
-	Id id = NO_ID, location = NO_ID;
-	Object *object = NULL;
-	Status status = OK;
+    char line[WORD_SIZE] = "";
+    char name[WORD_SIZE] = "";
+    char *toks = NULL;
+    Id id = NO_ID, location = NO_ID, dependency = NO_ID, open = NO_ID;
+    int health = 0, mov = -1;
+    Bool movable = FALSE;
+    Object *object = NULL;
 
-	if (!filename)
-	{
-		return ERROR;
-	}
+    if (!filename)
+    {
+        return ERROR;
+    }
 
-	file = fopen(filename, "r");
-	if (file == NULL)
-	{
-		return ERROR;
-	}
+    file = fopen(filename, "r");
+    if (file == NULL)
+    {
+        return ERROR;
+    }
 
-	while (fgets(line, WORD_SIZE, file))
-	{
-		if (strncmp("#o:", line, 3) == 0)
-		{
-			toks = strtok(line + 3, "|");
-			id = atol(toks);
-			toks = strtok(NULL, "|");
-			strcpy(name, toks);
-			toks = strtok(NULL, "|");
-			location = atol(toks);
+    while (fgets(line, WORD_SIZE, file))
+    {
+        if (strncmp("#o:", line, 3) == 0)
+        {
+            toks = strtok(line + 3, "|");
+            id = atol(toks); 
+
+            toks = strtok(NULL, "|");
+            strcpy(name, toks);
+
+            toks = strtok(NULL, "|");
+            location = atol(toks);
+
+            toks = strtok(NULL, "|");
+            health = atoi(toks);
+
+            toks = strtok(NULL, "|");
+            mov = atoi(toks);
+
+            toks = strtok(NULL, "|");
+            dependency = atol(toks);
+
+            toks = strtok(NULL, "|\n");
+            open = atoi(toks); 
+
 #ifdef DEBUG
-			printf("Leído: %ld|%s|%ld\n", id, name, location);
+            printf("Leído: %ld|%s|%ld|%d|%d|%ld|%ld\n", id, name, location, health, movable, dependency, open);
 #endif
-			object = object_create(id);
-			if (object != NULL)
+            if (mov == 0)
 			{
-				object_set_name(object, name);
-				object_set_location(object, location);
-
-				if (game_add_objects(game, object) == ERROR)
-				{
-					object_destroy(object);
-					fprintf(stderr, "Error while adding object to game.\n");
-				}
+				movable = FALSE;
+			} 
+			else if (mov == 1)
+			{
+				movable = TRUE;
+			} 
+			else 
+			{
+				fprintf(stderr, "Error: Invalid value for movable.\n");
+				fclose(file);
+				return ERROR;
 			}
-		}
+
+            object = object_create(id);
+            if (object != NULL)
+            {
+                object_set_name(object, name);
+                object_set_location(object, location);
+                object_set_health(object, health);
+                object_set_movable(object, movable);
+                object_set_dependency(object, dependency);
+                object_set_open(object, open);
+
+                if (game_add_objects(game, object) == ERROR)
+                {
+                    object_destroy(object);
+                    fprintf(stderr, "Error while adding object to game.\n");
+                }
+            }
+        }
 	}
 
-	if (ferror(file))
-	{
-		status = ERROR;
-	}
-
-	fclose(file);
-	return status;
+	return OK;
 }
 
 Status game_add_objects(Game *game, Object *object)

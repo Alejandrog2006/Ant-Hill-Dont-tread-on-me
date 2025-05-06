@@ -47,7 +47,7 @@ Character *character_create(Id id)
 	newCharacter->id = id;
 	newCharacter->name[0] = '\0';
 	newCharacter->gdesc[0] = '\0';
-	newCharacter->health = 100;
+	newCharacter->health = 0;
 	newCharacter->friendly = TRUE;
 	newCharacter->message[0] = '\0';
 	newCharacter->following = NO_ID;
