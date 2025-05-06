@@ -25,6 +25,7 @@ struct _Character
 	int health;						/*!< Character's health points */
 	Bool friendly;					/*!< Whether character is friendly */
 	char message[MESSAGE_SIZE + 1]; /*!< Character's message */
+	Id location;					/*!< Character's location */
 	Id following;					/*!< Character's following id */
 };
 
@@ -47,9 +48,10 @@ Character *character_create(Id id)
 	newCharacter->id = id;
 	newCharacter->name[0] = '\0';
 	newCharacter->gdesc[0] = '\0';
-	newCharacter->health = 0;
+	newCharacter->health = 10;
 	newCharacter->friendly = TRUE;
 	newCharacter->message[0] = '\0';
+	newCharacter->location = NO_ID;
 	newCharacter->following = NO_ID;
 
 	return newCharacter;
@@ -185,6 +187,35 @@ const char *character_get_message(Character *character)
 	return character->message;
 }
 
+Status character_set_location(Character *character, Id location)
+{
+	if (!character || location == NO_ID)
+	{
+		return ERROR;
+	}
+
+	character->location = location;
+	return OK;
+}
+
+Id character_get_location(Character *character)
+{
+	if (!character)
+	{
+		return NO_ID;
+	}
+	return character->location;
+}
+
+Id *character_get_location_pointer(Character *character)
+{
+	if (!character)
+	{
+		return NULL;
+	}
+	return &(character->location);
+}
+
 Id character_get_following(Character *character)
 {
 	if (!character)
@@ -226,6 +257,7 @@ Status character_print(Character *character)
 	fprintf(stdout, "Health: %d\n", character->health);
 	fprintf(stdout, "Friendly: %s\n", character->friendly ? "YES" : "NO");
 	fprintf(stdout, "Message: %s\n", character->message);
+	fprintf(stdout, "Location: %ld\n", character->location);
 	fprintf(stdout, "Following: %ld\n", character->following);
 
 	return OK;

@@ -119,7 +119,7 @@ Status command_get_user_input(Command *command)
 
 		command_set_code(command, cmd);
 
-		if (cmd == TAKE || cmd == DROP || cmd == MOVE || cmd == INSPECT || cmd == RECRUIT || cmd == ABANDON || cmd == CHAT)
+		if (cmd == TAKE || cmd == DROP || cmd == MOVE || cmd == INSPECT || cmd == RECRUIT || cmd == ABANDON)
 		{
 			token = strtok(NULL, "\n");
 			if (token)
