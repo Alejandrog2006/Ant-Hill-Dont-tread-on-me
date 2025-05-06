@@ -184,7 +184,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 			}
 		}
 
-		strcpy(ch, "   ");
+		strcpy(ch, "      ");
 
 		space = game_get_space(game, id_back);
 		characters = game_get_character_array(game);
@@ -584,7 +584,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
 			sprintf(str, "  +---------------+   +---------------+   +---------------+");
 			screen_area_puts(ge->map, str);
-			sprintf(str, "  | %s %s %3d|   | %s %s %3d|   | %s %s %3d|", ply_w, ch, (int)id_left, plys[game_get_turn(game)], ch1, (int)id_act, ch2, ply_e, (int)id_right);
+			sprintf(str, "  | %s %s %3d|   | %s %s %3d|   | %s %s %3d|", ply_w, ch, (int)id_left, plys[game_get_turn(game)], ch1, (int)id_act, ply_e, ch2, (int)id_right);
 			screen_area_puts(ge->map, str);
 
 			for (i = 0; i < GDESC_ROWS; i++)
