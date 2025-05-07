@@ -1,4 +1,4 @@
-# 🐜 Anthropolis: The Rise of the Colony
+# 🐜 Anthill: Don't tread on me
 
 > *"In the underworld of soil and stone,  
 > lives a realm of toil unknown.  
