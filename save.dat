@@ -1,18 +1,18 @@
 #p:1|ant|m0^|11|5|3|
-#p:2|worm|mm0|122|5|3|
-#c:3|Spider|/\oo/\|123|10|0|I won't talk to you!|
+#p:2|worm|mm0|124|5|3|
+#c:3|Spider|/\oo/\|123|10|0||
 #c:4|Ant|^0m   |122|10|1|Watch out! There's a spider in the next room|
 #c:5|Paquito|:)    |122|10|1|Gaming|
 #s:11|Entry|-__- -__ |_/ \_/  -|o 0    --|mo'_0o8o-|__/ \ / \|
 #s:121|Corridor_1|    _    |\ \___   |\ mo' \_ |\ @ _ - -| \__/ \__|
 #s:122|Corridor_2|---+--- _|  0_+_0  |\--+++--/|_  +++  _|---+---\+|
 #s:123|Corridor_3|_/\__/\__|_\ --  /_|         |_ /   \ _|/  0+0  \|
-#s:124|Corridor_4|
-#s:125|Corridor_5|
-#s:126|Corridor_6|
-#s:127|Corridor_7|
-#s:13|Pantry|
-#s:14|Hole| m0^     |   ___   |  /   \  |  | O |  |  \___/  |
+#s:124|Corridor_4||||||
+#s:125|Corridor_5||||||
+#s:126|Corridor_6||||||
+#s:127|Corridor_7||||||
+#s:13|Pantry||||||
+#s:14|Hole| m0^     |   ___   |  /   \  |  | O |
 #s:15|Atic| *   +   |  _____  | /     \ | \ <o> / |  _____  |
 #o:21|Grain|11|-1|1|-1|13|
 #o:22|Crumb|11|1|0|-1|-1|

@@ -532,6 +532,14 @@ Status game_actions_move(Game *game)
 	{
 		dir = S;
 	}
+	else if (strcasecmp(arg, "U") == 0 || strcasecmp(arg, "UP") == 0) 
+	{
+		dir = U;
+	}
+	else if (strcasecmp(arg, "D") == 0 || strcasecmp(arg, "DOWN") == 0)
+	{
+		dir = D;
+	}
 	else
 	{
 		return ERROR;
