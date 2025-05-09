@@ -97,6 +97,15 @@ Status game_actions_recruit(Game *game);
  * @param game A pointer to the game structure.
  */
 Status game_actions_abandon(Game *game);
+
+/**
+ * @brief Handles the "pass" command.
+ * @author Daniel Martín Jaén
+ *
+ * @param game A pointer to the game struct
+ */
+Status game_actions_pass(Game *game);
+
 /**
    Game actions implementation
 */
@@ -166,6 +175,10 @@ Status game_actions_update(Game *game, Command *command)
 		status = game_actions_load(&game);
 		break;
 
+	case PASS:
+		status = game_actions_pass(game);
+		break;
+
 	default:
 		status = ERROR;
 		break;
@@ -210,7 +223,7 @@ Status game_actions_take(Game *game)
 
 		if (object_get_movable(game_get_objects(game)[i]) == FALSE)
 		{
-			game_set_temporal_feedback(game, "This object is not movable.");
+			game_set_last_message(game, "This object is not movable.");
 		}
 
 		if (object_id == player_location_id &&
@@ -245,7 +258,7 @@ Status game_actions_take(Game *game)
 				}
 				else
 				{
-					game_set_temporal_feedback(game, "You need another object to take this one.");
+					game_set_last_message(game, "You need another object to take this one.");
 					return ERROR;
 				}
 			}
@@ -323,6 +336,16 @@ Status game_actions_attack(Game *game)
 	char temp[WORD_SIZE];
 	Bool enemy_found = FALSE;
 
+	if (!game)
+	{
+		return ERROR;
+	}
+
+	if (game_get_actions(game) == 0)
+	{
+		game_set_last_message(game, " I'm too tired for that!");
+	}
+
 	player = game_get_player_at(game, game_get_turn(game));
 	if (!(character_array = game_get_character_array(game)))
 	{
@@ -367,12 +390,12 @@ Status game_actions_attack(Game *game)
 					if (character_get_health(character_array[i]) > 0)
 					{
 						sprintf(temp + strlen(temp), " - %d", damage);
-						game_set_temporal_feedback(game, temp);
+						game_set_last_message(game, temp);
 					}
 					else
 					{
 						strcat(temp, " is dead");
-						game_set_temporal_feedback(game, temp);
+						game_set_last_message(game, temp);
 					}
 				}
 				else if (character_get_health(character_array[i]) > 0)
@@ -381,7 +404,7 @@ Status game_actions_attack(Game *game)
 					if (target == 0)
 					{
 						player_set_health(player, player_get_health(player) - 1);
-						game_set_temporal_feedback(game, "Player - 1");
+						game_set_last_message(game, "Player - 1");
 					}
 					else
 					{
@@ -394,7 +417,7 @@ Status game_actions_attack(Game *game)
 								{
 									character_set_health(character_array[j], character_get_health(character_array[j]) - 1);
 									sprintf(temp, "%s - 1", character_get_name(character_array[j]));
-									game_set_temporal_feedback(game, temp);
+									game_set_last_message(game, temp);
 									break;
 								}
 							}
@@ -487,6 +510,12 @@ Status game_actions_move(Game *game)
 		return ERROR;
 	}
 
+	if (game_get_actions(game) == 0)
+	{
+		game_set_last_message(game, " I'm too tired for that!");
+		return OK;
+	}
+
 	cmd = game_get_last_command(game);
 	if (cmd == NULL)
 	{
@@ -532,6 +561,14 @@ Status game_actions_move(Game *game)
 	{
 		dir = S;
 	}
+	else if (strcasecmp(arg, "U") == 0 || strcasecmp(arg, "UP") == 0)
+	{
+		dir = U;
+	}
+	else if (strcasecmp(arg, "D") == 0 || strcasecmp(arg, "DOWN") == 0)
+	{
+		dir = D;
+	}
 	else
 	{
 		return ERROR;
@@ -544,17 +581,17 @@ Status game_actions_move(Game *game)
 	{
 		game_set_player_location(game, id_new);
 		space_set_discovered(game_get_space(game, id_new), TRUE);
-		game_set_temporal_feedback(game, " ");
+		game_set_last_message(game, " ");
 	}
 	else if (id_new != NO_ID && is_open == FALSE)
 	{
-		game_set_temporal_feedback(game, "The door is locked");
-		return OK;
+		game_set_last_message(game, " The door is locked.");
+		return ERROR;
 	}
 	else
 	{
-		game_set_temporal_feedback(game, "I can't do that");
-		return OK;
+		game_set_last_message(game, " I can't do that.");
+		return ERROR;
 	}
 
 	for (i = 0; i < *game_get_n_characters(game); i++)
@@ -682,12 +719,12 @@ Status game_actions_recruit(Game *game)
 		{
 			if (character_set_following(character_array[i], player_id) == OK)
 			{
-				game_set_temporal_feedback(game, "Character recruited successfully!");
+				game_set_last_message(game, "Character recruited successfully!");
 				return OK;
 			}
 		}
 	}
-	game_set_temporal_feedback(game, "You cannot recruit this character.");
+	game_set_last_message(game, "You cannot recruit this character.");
 	return ERROR;
 }
 
@@ -711,7 +748,7 @@ Status game_actions_abandon(Game *game)
 	character_name = command_get_arg(cmd);
 	if (character_name == NULL || character_name[0] == '\0')
 	{
-		game_set_temporal_feedback(game, "Invalid character name.");
+		game_set_last_message(game, "Invalid character name.");
 		return ERROR;
 	}
 
@@ -742,13 +779,13 @@ Status game_actions_abandon(Game *game)
 
 			if (character_set_following(character_array[i], NO_ID) == OK)
 			{
-				game_set_temporal_feedback(game, "Character abandoned successfully!");
+				game_set_last_message(game, "Character abandoned successfully!");
 				character_found = TRUE;
 				break;
 			}
 			else
 			{
-				game_set_temporal_feedback(game, "Failed to abandon the character.");
+				game_set_last_message(game, "Failed to abandon the character.");
 				return ERROR;
 			}
 		}
@@ -756,7 +793,7 @@ Status game_actions_abandon(Game *game)
 
 	if (!character_found)
 	{
-		game_set_temporal_feedback(game, "The character is not following you or is not in your location.");
+		game_set_last_message(game, "The character is not following you or is not in your location.");
 		return ERROR;
 	}
 
@@ -776,10 +813,10 @@ Status game_actions_save(Game *game)
 
 	if (game_management_save(game, filename) == ERROR)
 	{
-		game_set_temporal_feedback(game, "Error saving the game.");
+		game_set_last_message(game, "Error saving the game.");
 		return ERROR;
 	}
-	game_set_temporal_feedback(game, "Game saved successfully.");
+	game_set_last_message(game, "Game saved successfully.");
 	return OK;
 }
 
@@ -788,13 +825,13 @@ Status game_actions_load(Game **game)
 	const char *filename = NULL;
 	char *temp = NULL;
 	filename = command_get_arg(game_get_last_command(*game));
-	
+
 	if (filename == NULL || filename[0] == '\0')
 	{
 		temp = malloc(sizeof(char) * 11);
 		if (!temp)
 		{
-			game_set_temporal_feedback(*game, "Error loading the game");
+			game_set_last_message(*game, "Error loading the game");
 			return ERROR;
 		}
 
@@ -805,7 +842,7 @@ Status game_actions_load(Game **game)
 		temp = malloc(sizeof(char) * (strlen(filename) + 1));
 		if (!temp)
 		{
-			game_set_temporal_feedback(*game, "Error loading the game");
+			game_set_last_message(*game, "Error loading the game");
 			return ERROR;
 		}
 
@@ -815,11 +852,23 @@ Status game_actions_load(Game **game)
 	if (game_management_load(game, temp) == ERROR)
 	{
 		free(temp);
-		game_set_temporal_feedback(*game, "Error loading the game.");
+		game_set_last_message(*game, "Error loading the game.");
 		return ERROR;
 	}
 
 	free(temp);
-	game_set_temporal_feedback(*game, "Game loaded successfully.");
+	game_set_last_message(*game, "Game loaded successfully.");
+	return OK;
+}
+
+Status game_actions_pass(Game *game)
+{
+	if (!game)
+	{
+		return ERROR;
+	}
+
+	game_set_actions(game, MAX_ACTIONS);
+	game_set_pass(game, TRUE);
 	return OK;
 }

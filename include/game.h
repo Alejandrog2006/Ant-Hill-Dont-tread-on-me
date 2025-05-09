@@ -45,6 +45,11 @@
 #define MAX_PLAYERS 8
 
 /**
+ * @brief Maximum number of actions per turn
+ */
+#define MAX_ACTIONS 3
+
+/**
  * @brief Interface structure
  * 
  * This struct stores all of the additional information particular for each player
@@ -430,5 +435,43 @@ Id game_find_character(Game *game, Id id);
  * @return ERROR if something went wrong, OK if everything went correctly
  */
 Status game_change_character_location(Game *game, Character *char_p, Id new_location);
+
+/**
+ * @brief Returns the number of actions remaining in a player's turn
+ * @author Daniel Martín Jaén
+ * 
+ * @param game A pointer to the game struct
+ * @return A negative integer if something went wrong, the number of actions otherwise
+ */
+int game_get_actions(Game *game);
+
+/**
+ * @brief Changes the number of actions for the current player
+ * @author Daniel Martín Jaén
+ * 
+ * @param game A pointer to the game struct
+ * @param act The new number of actions
+ * @return OK if everything went correctly, ERROR otherwise
+ */
+Status game_set_actions(Game *game, int act);
+
+/**
+ * @brief Returns the current value of pass
+ * @author Daniel Martín Jaén
+ * 
+ * @param game A pointer to teh game struct
+ * @return TRUE if the turn is changing, FALSE otherwise
+ */
+Bool game_get_pass(Game *game);
+
+/**
+ * @brief Changes the current value of pass
+ * @author Daniel Martín Jaén
+ * 
+ * @param game A pointer to the game struct
+ * @param pass The new value of pass
+ * @return OK if everything went correctly, error otherwise
+ */
+Status game_set_pass(Game *game, Bool pass);
 
 #endif

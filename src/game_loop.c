@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    if (game_loop_run(&game, gengine, argv[2]) != 0)  
+    if (game_loop_run(&game, gengine, argv[2]) != 0)
     {
         game_loop_cleanup(game, gengine);
         return 1;
@@ -144,11 +144,12 @@ int game_loop_run(Game **game, Graphic_engine *gengine, char *log)
 
     while ((command_get_code(game_get_last_command(*game)) != EXIT) && (game_get_finished(*game) == FALSE))
     {
-        for (turn = 0; turn < game_get_n_players(*game) && command_get_code(game_get_last_command(*game)) != EXIT; turn++)
+        for (turn = 0; turn < (game_get_n_players(*game)) && command_get_code(game_get_last_command(*game)) != EXIT && game_get_last_command(*game) != NULL;)
         {
-            game_set_turn(*game, turn);
+            game_set_pass(*game, FALSE);
             last_cmd = game_get_last_command(*game);
             graphic_engine_paint_game(gengine, *game);
+            game_set_last_message(*game, " ");
             command_get_user_input(last_cmd);
 
             game_set_last_command(*game, last_cmd);
@@ -195,6 +196,11 @@ int game_loop_run(Game **game, Graphic_engine *gengine, char *log)
                 cmd_status = game_actions_update(*game, game_get_last_command(*game));
             }
 
+            if ((command_get_code(last_cmd) == MOVE || command_get_code(last_cmd) == ATTACK) && cmd_status == OK && game_get_actions(*game) > 0)
+            {
+                game_set_actions(*game, game_get_actions((*game)) - 1);
+            }
+
             game_loop_log(*game, f, last_cmd, cmd_status);
 
             command_set_status(game_get_last_command(*game), cmd_status);
@@ -202,6 +208,15 @@ int game_loop_run(Game **game, Graphic_engine *gengine, char *log)
             {
                 game_set_finished(*game, TRUE);
             }
+
+            if (game_get_pass(*game) == TRUE)
+            {
+                game_set_turn(*game, game_get_turn(*game) + 1);
+            }
+        }
+
+        if(command_get_code(game_get_last_command(*game)) != EXIT){
+            game_set_turn(*game, 0);
         }
     }
 

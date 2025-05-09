@@ -589,15 +589,14 @@ Status game_management_save(Game *game, const char *filename)
 
 	for (i = 0; i < n_characters; i++)
 	{
-		fprintf(file, "#c:%ld|%s|%s|%ld|%d|%d|%s|\n", 
-			character_get_id(character_array[i]),
-			character_get_name(character_array[i]),
-			character_get_gdesc(character_array[i]),
-			game_find_character(game, character_get_id(character_array[i])),
-			character_get_health(character_array[i]),
-			character_get_friendly(character_array[i]),
-			character_get_friendly(character_array[i]) ? character_get_message(character_array[i]) : ""
-		);
+		fprintf(file, "#c:%ld|%s|%s|%ld|%d|%d|%s|\n",
+				character_get_id(character_array[i]),
+				character_get_name(character_array[i]),
+				character_get_gdesc(character_array[i]),
+				game_find_character(game, character_get_id(character_array[i])),
+				character_get_health(character_array[i]),
+				character_get_friendly(character_array[i]),
+				character_get_friendly(character_array[i]) ? character_get_message(character_array[i]) : "");
 	}
 
 	space_array = game_get_spaces(game);
@@ -606,13 +605,13 @@ Status game_management_save(Game *game, const char *filename)
 		fprintf(stderr, "DEBUG -- Could not load space array");
 		return ERROR;
 	}
-	
+
 	for (i = 0; i < n_spaces; i++)
 	{
-		fprintf(file, "#s:%ld|%s", 
-			space_get_id(space_array[i]),
-			space_get_name(space_array[i]));
-		
+		fprintf(file, "#s:%ld|%s",
+				space_get_id(space_array[i]),
+				space_get_name(space_array[i]));
+
 		for (j = 0; j < GDESC_ROWS; j++)
 		{
 			fprintf(file, "|%s", space_get_gdesc_at(space_array[i], j));
@@ -636,8 +635,7 @@ Status game_management_save(Game *game, const char *filename)
 				object_get_health(object_array[i]),
 				object_get_movable(object_array[i]),
 				object_get_dependency(object_array[i]),
-				object_get_open(object_array[i])
-			);
+				object_get_open(object_array[i]));
 	}
 
 	link_array = game_get_links(game);
@@ -646,17 +644,16 @@ Status game_management_save(Game *game, const char *filename)
 		fprintf(stderr, "DEBUG -- Could not load link array");
 		return ERROR;
 	}
-	
+
 	for (i = 0; i < n_links; i++)
 	{
 		fprintf(file, "#l:%ld|%s|%ld|%ld|%d|%d|\n",
-			link_get_id(link_array[i]),
-			link_get_name(link_array[i]),
-			link_get_origin(link_array[i]),
-			link_get_destination(link_array[i]),
-			link_get_direction(link_array[i]),
-			link_get_open(link_array[i])
-		);
+				link_get_id(link_array[i]),
+				link_get_name(link_array[i]),
+				link_get_origin(link_array[i]),
+				link_get_destination(link_array[i]),
+				link_get_direction(link_array[i]),
+				link_get_open(link_array[i]));
 	}
 
 	fclose(file);
@@ -666,7 +663,7 @@ Status game_management_save(Game *game, const char *filename)
 Status game_management_load(Game **game, char *filename)
 {
 	Game *new_game = NULL;
-	
+
 	if (!game || !filename)
 	{
 		return ERROR;
@@ -679,6 +676,6 @@ Status game_management_load(Game **game, char *filename)
 	}
 
 	game_destroy(*game);
-    *game = new_game;
+	*game = new_game;
 	return OK;
 }

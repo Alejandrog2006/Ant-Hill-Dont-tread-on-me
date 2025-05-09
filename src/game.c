@@ -24,6 +24,7 @@ struct _InterfaceData
 {
 	Command *last_cmd;					 /**< Last command of a specific player */
 	char last_message[MESSAGE_SIZE + 1]; /**< Last message of a specific player */
+	int actions;						 /**< Actions of a specific player in his turn */
 };
 
 /**
@@ -31,20 +32,20 @@ struct _InterfaceData
  */
 struct _Game
 {
-	Player *players[MAX_PLAYERS];			  /**< Array of pointers to the players */
-	InterfaceData *interfaces[MAX_PLAYERS];	  /**< Array of pointers to the interfaces of each player */
-	Space *spaces[MAX_SPACES];				  /**< Array of spaces in the game. */
-	Object *objects[MAX_OBJECTS];			  /**< Array of objects in the game. */
-	Character *characters[MAX_CHARACTERS];	  /**< Array of characters in the game. */
-	Link *links[MAX_LINKS];					  /**< Array of links in the game */
-	int n_spaces;							  /**< Number of spaces in the game. */
-	int n_objects;							  /**< Number of objects in the game. */
-	int n_characters;						  /**< Number of characters in the game. */
-	int n_links;							  /**< Number of links in the game. */
-	int n_players;							  /**< Number of players in the game */
-	Bool finished;							  /**< Whether the game is finished or not. */
-	char temporal_feedback[MESSAGE_SIZE + 1]; /**< Temporal feedback message. */
-	int turn;								  /**< The position of the active player in the players array */
+	Player *players[MAX_PLAYERS];			/**< Array of pointers to the players */
+	InterfaceData *interfaces[MAX_PLAYERS]; /**< Array of pointers to the interfaces of each player */
+	Space *spaces[MAX_SPACES];				/**< Array of spaces in the game. */
+	Object *objects[MAX_OBJECTS];			/**< Array of objects in the game. */
+	Character *characters[MAX_CHARACTERS];	/**< Array of characters in the game. */
+	Link *links[MAX_LINKS];					/**< Array of links in the game */
+	int n_spaces;							/**< Number of spaces in the game. */
+	int n_objects;							/**< Number of objects in the game. */
+	int n_characters;						/**< Number of characters in the game. */
+	int n_links;							/**< Number of links in the game. */
+	int n_players;							/**< Number of players in the game */
+	Bool finished;							/**< Whether the game is finished or not. */
+	int turn;								/**< The position of the active player in the players array */
+	Bool pass;								/**< Wheter to change to the next turn or not */
 };
 
 InterfaceData *game_create_interface()
@@ -58,6 +59,7 @@ InterfaceData *game_create_interface()
 
 	new_interface->last_cmd = command_create();
 	new_interface->last_message[0] = '\0';
+	new_interface->actions = MAX_ACTIONS;
 	return new_interface;
 }
 
@@ -121,8 +123,9 @@ Status game_create(Game **game)
 		(*game)->links[i] = NULL;
 	}
 
-	(*game)->temporal_feedback[0] = '\0';
 	(*game)->turn = 0;
+
+	(*game)->pass = FALSE;
 
 	return OK;
 }
@@ -329,6 +332,11 @@ Status game_set_object_location(Game *game, Id id, int position)
 
 Command *game_get_last_command(Game *game)
 {
+	if (!game || game->turn > (game->n_players) - 1)
+	{
+		return NULL;
+	}
+
 	return game->interfaces[game->turn]->last_cmd;
 }
 
@@ -434,26 +442,6 @@ const char *game_get_last_message(Game *game)
 		return NULL;
 	}
 	return game->interfaces[game->turn]->last_message;
-}
-
-const char *game_get_temporal_feedback(Game *game)
-{
-	if (!game)
-	{
-		return NULL;
-	}
-	return game->temporal_feedback;
-}
-
-Status game_set_temporal_feedback(Game *game, const char *feedback)
-{
-	if (!game || !feedback)
-	{
-		return ERROR;
-	}
-	strncpy(game->temporal_feedback, feedback, MESSAGE_SIZE - 1);
-	game->temporal_feedback[MESSAGE_SIZE - 1] = '\0';
-	return OK;
 }
 
 Object *game_get_object_by_id(Game *game, Id id)
@@ -662,5 +650,47 @@ Status game_change_character_location(Game *game, Character *char_p, Id new_loca
 
 	space_add_character(game_get_space(game, new_location), char_p);
 
+	return OK;
+}
+
+int game_get_actions(Game *game)
+{
+	if (!game)
+	{
+		return -1;
+	}
+
+	return game->interfaces[game->turn]->actions;
+}
+
+Status game_set_actions(Game *game, int act)
+{
+	if (!game || act < 0)
+	{
+		return ERROR;
+	}
+
+	game->interfaces[game->turn]->actions = act;
+	return OK;
+}
+
+Bool game_get_pass(Game *game)
+{
+	if (!game)
+	{
+		return FALSE;
+	}
+
+	return game->pass;
+}
+
+Status game_set_pass(Game *game, Bool pass)
+{
+	if (!game)
+	{
+		return ERROR;
+	}
+
+	game->pass = pass;
 	return OK;
 }

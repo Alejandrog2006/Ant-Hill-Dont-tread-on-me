@@ -58,7 +58,9 @@
      N,  /**< Represents the North direction. */
      S,  /**< Represents the South direction. */
      E,  /**< Represents the East direction. */
-     W   /**< Represents the West direction. */
+     W,  /**< Represents the West direction. */
+     U,  /**< Represents the Up direction */
+     D   /**< Represents the Down direction */
  } Direction;
  
  #endif

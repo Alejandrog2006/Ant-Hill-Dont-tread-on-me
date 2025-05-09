@@ -25,7 +25,7 @@
  /**
   * @brief Number of available commands.
   */
- #define N_CMD 13
+ #define N_CMD 14
  
  /**
   * @brief Command type enumeration.
@@ -56,7 +56,8 @@
      RECRUIT,      /**< Recruit command. */
      ABANDON,       /**< Abandon command. */
      SAVE,        /**< Save command. */
-     LOAD        /**< Load command. */
+     LOAD,        /**< Load command. */
+     PASS          /**< Pass command. */
  } CommandCode;
  
  /**
