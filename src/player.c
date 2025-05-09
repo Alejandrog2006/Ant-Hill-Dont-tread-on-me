@@ -250,3 +250,20 @@ Status player_set_inventory(Player *player, Inventory *inv)
 	player->backpack = inv;
 	return OK;
 }
+
+int player_get_inventory_size(Player *player)
+{
+	int n = -1;
+
+	if (player == NULL)
+	{
+		return -1;
+	}
+
+	if ((n = inventory_get_size(player_get_inventory(player))) == -1)
+	{
+		return -1;
+	}
+	
+	return n;
+}

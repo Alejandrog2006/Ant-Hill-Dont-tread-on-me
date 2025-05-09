@@ -136,3 +136,13 @@ int inventory_get_count(Inventory *inventory)
 
 	return set_get_count(inventory->objs);
 }
+
+int inventory_get_size(Inventory *inventory)
+{
+	if (!inventory)
+	{
+		return -1;
+	}
+
+	return inventory->max_objs;
+}

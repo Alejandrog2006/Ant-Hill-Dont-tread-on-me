@@ -103,7 +103,7 @@ Status game_actions_abandon(Game *game);
 
 Status game_actions_save(Game *game);
 
-Status game_actions_load(Game **game);
+Status game_actions_load(Game *game);
 
 Status game_actions_update(Game *game, Command *command)
 {
@@ -163,7 +163,7 @@ Status game_actions_update(Game *game, Command *command)
 		break;
 
 	case LOAD:
-		status = game_actions_load(&game);
+		status = game_actions_load(game);
 		break;
 		
 	default:
@@ -773,11 +773,11 @@ Status game_actions_save(Game *game)
 	return OK;
 }
 
-Status game_actions_load(Game **game)
+Status game_actions_load(Game *game)
 {
 	if (game_management_load(game, "save.dat") == ERROR)
 	{
-		game_set_temporal_feedback(*game, "Error loading the game.");
+		game_set_temporal_feedback(game, "Error loading the game.");
 		return ERROR;
 	}
 	

@@ -179,3 +179,13 @@ void link_print(Link *link)
 	printf("Link direction: %d\n", link->direction);
 	printf("¿Is the Link open?: %s\n", link->open ? "Yes" : "No");
 }
+
+Id link_get_id(Link *link)
+{
+	if (!link)
+	{
+		return NO_ID;
+	}
+
+	return link->id;
+}

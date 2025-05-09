@@ -540,53 +540,136 @@ Status game_add_character(Game *game, Character *char_p, Id location)
 
 Status game_management_save(Game *game, const char *filename)
 {
-	FILE *file = fopen(filename, "w");
+	FILE *file = NULL;
+	Player **player_array = NULL;
+	Character **character_array = NULL;
+	Space **space_array = NULL;
+	Object **object_array = NULL;
+	Link **link_array = NULL;
+	const int n_players = game_get_n_players(game), n_characters = *game_get_n_characters(game);
+	const int n_spaces = *game_get_n_spaces(game), n_objects = *game_get_n_objects(game);
+	const int n_links = *game_get_n_links(game);
 	int i, j;
 
-	if (!file || !game)
+	if (!(file = fopen(filename, "w")))
 	{
+		fprintf(stderr, "DEBUG -- Could not open file");
 		return ERROR;
 	}
 
-	fprintf(file, "# Players\n");
-	for (i = 0; i < game_get_n_players(game); i++)
+	if (n_players <= 0 || !n_characters || !n_spaces || !n_objects || !n_links)
 	{
-		Player *player = game_get_player_at(game, i);
-		Inventory *inventory = player_get_inventory(player);
-		int inventory_count = inventory_get_count(inventory);
+		fprintf(stderr, "DEBUG -- Could not read load number of elements from game");
+		return ERROR;
+	}
 
-		fprintf(file, "#p:%ld|%d|%ld|",
-				player_get_id(player),
-				player_get_health(player),
-				player_get_location(player));
+	player_array = game_get_players(game);
+	if (player_array == NULL)
+	{
+		fprintf(stderr, "DEBUG -- Could not load player array");
+		return ERROR;
+	}
 
-		for (j = 0; j < inventory_count; j++)
+	for (i = 1; i <= n_players; i++)
+	{
+		fprintf(file, "#p:%d|%s|%s|%ld|%d|%d|\n", i,
+				player_get_name(player_array[i - 1]),
+				player_get_gdesc(player_array[i - 1]),
+				player_get_location(player_array[i - 1]),
+				player_get_health(player_array[i - 1]),
+				player_get_inventory_size(player_array[i - 1]));
+	}
+
+	character_array = game_get_character_array(game);
+	if (character_array == NULL)
+	{
+		fprintf(stderr, "DEBUG -- Could not load character array");
+		return ERROR;
+	}
+
+	for (i = 0; i < n_characters; i++)
+	{
+		fprintf(file, "#c:%ld|%s|%s|%ld|%d|%d|%s|\n", 
+			character_get_id(character_array[i]),
+			character_get_name(character_array[i]),
+			character_get_gdesc(character_array[i]),
+			game_find_character(game, character_get_id(character_array[i])),
+			character_get_health(character_array[i]),
+			character_get_friendly(character_array[i]),
+			character_get_friendly(character_array[i]) ? character_get_message(character_array[i]) : ""
+		);
+	}
+
+	space_array = game_get_spaces(game);
+	if (space_array == NULL)
+	{
+		fprintf(stderr, "DEBUG -- Could not load space array");
+		return ERROR;
+	}
+	
+	for (i = 0; i < n_spaces; i++)
+	{
+		fprintf(file, "#s:%ld|%s", 
+			space_get_id(space_array[i]),
+			space_get_name(space_array[i]));
+		
+		for (j = 0; j < GDESC_ROWS; j++)
 		{
-			Id obj_id = set_get_id_at(inventory_get_objects(inventory), j);
-			fprintf(file, "%ld", obj_id);
-			if (j < inventory_count - 1)
-			{
-				fprintf(file, ",");
-			}
+			fprintf(file, "|%s", space_get_gdesc_at(space_array[i], j));
 		}
-		fprintf(file, "\n");
+		fprintf(file, "|\n");
 	}
 
-	fprintf(file, "# Characters\n");
-	for (i = 0; i < *game_get_n_characters(game); i++)
+	object_array = game_get_objects(game);
+	if (object_array == NULL)
 	{
-		Character *character = game_get_character_array(game)[i];
-		fprintf(file, "#c:%ld|%d|%ld\n",
-				character_get_id(character),
-				character_get_health(character),
-				game_find_character(game, character_get_id(character)));
+		fprintf(stderr, "DEBUG -- Could not load object array");
+		return ERROR;
 	}
 
+	for (i = 0; i < n_objects; i++)
+	{
+		fprintf(file, "#o:%ld|%s|%ld|%d|%d|%ld|%ld|\n",
+				object_get_id(object_array[i]),
+				object_get_name(object_array[i]),
+				(object_get_location(object_array[i]) == -1 ? 0 : object_get_location(object_array[i])),
+				object_get_health(object_array[i]),
+				object_get_movable(object_array[i]),
+				object_get_dependency(object_array[i]),
+				object_get_open(object_array[i])
+			);
+	}
+
+	link_array = game_get_links(game);
+	if (link_array == NULL)
+	{
+		fprintf(stderr, "DEBUG -- Could not load link array");
+		return ERROR;
+	}
+	
+	for (i = 0; i < n_links; i++)
+	{
+		fprintf(file, "#l:%ld|%s|%ld|%ld|%d|%d|\n",
+			link_get_id(link_array[i]),
+			link_get_name(link_array[i]),
+			link_get_origin(link_array[i]),
+			link_get_destination(link_array[i]),
+			link_get_direction(link_array[i]),
+			link_get_open(link_array[i])
+		);
+	}
+	
 	fclose(file);
 	return OK;
 }
 
-Status game_management_load(Game **game, const char *filename)
+Status game_management_load(Game *game, const char *filename)
 {
+	if (!game || !filename)
+	{
+		fprintf(stderr, "DEBUG -- Could not find file");
+		return ERROR;
+	}
+	
 	return OK;
 }
