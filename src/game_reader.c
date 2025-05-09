@@ -658,18 +658,27 @@ Status game_management_save(Game *game, const char *filename)
 			link_get_open(link_array[i])
 		);
 	}
-	
+
 	fclose(file);
 	return OK;
 }
 
-Status game_management_load(Game *game, const char *filename)
+Status game_management_load(Game **game, char *filename)
 {
+	Game *new_game = NULL;
+	
 	if (!game || !filename)
 	{
-		fprintf(stderr, "DEBUG -- Could not find file");
 		return ERROR;
 	}
-	
+
+	if (game_create_from_file(&new_game, filename) == ERROR)
+	{
+		fprintf(stdout, "Error while loading game from file.\n");
+		return ERROR;
+	}
+
+	game_destroy(new_game);
+	fprintf(stdout, "ALL OK");
 	return OK;
 }
