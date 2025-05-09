@@ -158,4 +158,13 @@ Bool link_get_open(Link* link);
  */
 void link_print(Link* link);
 
+/**
+ * @brief Returns the id of a given link
+ * 
+ * @author Izan Robles
+ * @param link Id of the link or NO_ID if an error occurs
+ */
+Id link_get_id(Link *link);
+
+
 #endif

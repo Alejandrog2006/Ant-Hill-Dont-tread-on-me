@@ -104,4 +104,14 @@ Set* inventory_get_objects(Inventory* inventory);
  */
 int inventory_get_count(Inventory* inventory);
 
+/**
+ * @brief Gets the capacity of an invenytory
+ * @author Izan Robles
+ * 
+ * @param inventory a pointer to the inventory
+ * @return the maximum number of objects for the inventory or -1 if an erro 
+ */
+int inventory_get_size(Inventory *inventory);
+
+
 #endif

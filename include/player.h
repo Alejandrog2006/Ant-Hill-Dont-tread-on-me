@@ -200,4 +200,14 @@ Status player_set_location(Player *player, Id location);
  */
 Status player_set_inventory(Player *player, Inventory *inv);
 
+/**
+ * @brief Gives the maximum capacity of a player's inventory
+ * @author Izan Robles
+ * 
+ * @param player A pointer to the player struct
+ * @return Players inventory capacity or -1 if an error occurs. 
+ */
+int player_get_inventory_size(Player *player);
+
+
 #endif
