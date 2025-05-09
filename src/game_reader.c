@@ -678,7 +678,7 @@ Status game_management_load(Game **game, char *filename)
 		return ERROR;
 	}
 
-	game_destroy(new_game);
-	fprintf(stdout, "ALL OK");
+	game_destroy(*game);
+    *game = new_game;
 	return OK;
 }

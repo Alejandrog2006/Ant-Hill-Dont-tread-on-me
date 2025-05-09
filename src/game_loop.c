@@ -120,6 +120,8 @@ int game_loop_run(Game **game, Graphic_engine *gengine, char *log)
     Status cmd_status;
     int turn;
     FILE *f = NULL;
+    const char *filename = NULL;
+    char *temp = NULL;
 
     if (!gengine)
     {
@@ -158,7 +160,24 @@ int game_loop_run(Game **game, Graphic_engine *gengine, char *log)
             if (command_get_code(last_cmd) == LOAD)
             {
                 Game *new_game = NULL;
-                if (game_create_from_file(&new_game, "save.dat") == OK)
+                filename = command_get_arg(last_cmd);
+                if (filename == NULL || filename[0] == '\0')
+                {
+                    cmd_status = ERROR;
+                    break;
+                }
+                else
+                {
+                    temp = (char *)malloc(strlen(filename) + 1);
+                    if (temp == NULL)
+                    {
+                        cmd_status = ERROR;
+                        break;
+                    }
+                    strcpy(temp, filename);
+                }
+
+                if (game_create_from_file(&new_game, temp) == OK)
                 {
                     game_destroy(*game);
                     *game = new_game;
@@ -169,6 +188,7 @@ int game_loop_run(Game **game, Graphic_engine *gengine, char *log)
                 {
                     cmd_status = ERROR;
                 }
+                free(temp);
             }
             else
             {
