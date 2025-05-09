@@ -149,6 +149,6 @@ Status game_management_save(Game *game, const char *filename);
  * @param filename The name of the file containing the game state.
  * @return OK if successful, ERROR otherwise.
  */
-Status game_management_load(Game *game, const char *filename);
+Status game_management_load(Game **game, char *filename);
 
 #endif
