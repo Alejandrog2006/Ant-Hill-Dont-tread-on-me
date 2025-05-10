@@ -23,7 +23,7 @@
 /**
  * @brief Defines database for commands
  */
-char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"t", "Take"}, {"d", "Drop"}, {"a", "Attack"}, {"c", "Chat"}, {"m", "Move"}, {"i", "Inspect"}, {"r", "Recruit"}, {"ab", "Abandon"}, {"s", "Save"}, {"l", "Load"}, {"p", "Pass"}};
+char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"t", "Take"}, {"d", "Drop"}, {"a", "Attack"}, {"c", "Chat"}, {"m", "Move"}, {"i", "Inspect"}, {"r", "Recruit"}, {"ab", "Abandon"}, {"s", "Save"}, {"l", "Load"}, {"p", "Pass"}, {"o", "Open"}};
 
 /**
  * @brief Private implementation of command datatype
@@ -32,6 +32,7 @@ struct _Command
 {
 	CommandCode code;		/*!< Name of the command */
 	char arg[CMD_ARG_SIZE]; /*!< Argument of the command */
+	char arg2[CMD_ARG_SIZE]; /*!< Second argument of the command*/
 	Status command_status;	/*!< Status of the command */
 };
 
@@ -47,6 +48,7 @@ Command *command_create()
 
 	newCommand->code = NO_CMD;
 	newCommand->arg[0] = '\0';
+	newCommand->arg2[0] = '\0';
 	newCommand->command_status = ERROR;
 
 	return newCommand;
@@ -133,6 +135,14 @@ Status command_get_user_input(Command *command)
 				command_set_arg(command, "");
 			}
 		}
+		else if (cmd == OPEN) 
+		{
+			token = strtok(NULL, " ");
+			command_set_arg(command, token);
+			token = strtok(NULL, " ");
+			token = strtok(NULL, " \n");
+			command_set_arg2(command, token);
+		}
 
 		return OK;
 	}
@@ -148,6 +158,16 @@ const char *command_get_arg(Command *command)
 	return command->arg;
 }
 
+const char *command_get_arg2(Command *command)
+{
+	if (!command)
+	{
+		return NULL;
+	}
+
+	return command->arg2;
+}
+
 Status command_set_arg(Command *command, char *arg)
 {
 	if (!command || !arg)
@@ -161,6 +181,22 @@ Status command_set_arg(Command *command, char *arg)
 	}
 
 	strcpy(command->arg, arg);
+	return OK;
+}
+
+Status command_set_arg2(Command *command, char *arg2)
+{
+	if (!command || !arg2)
+	{
+		return ERROR;
+	}
+
+	if (strlen(arg2) >= CMD_ARG_SIZE)
+	{
+		return ERROR;
+	}
+
+	strcpy(command->arg2, arg2);
 	return OK;
 }
 

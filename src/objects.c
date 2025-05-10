@@ -30,7 +30,7 @@ struct _Object
 	int health;				      	 /*!< Health of the object */
 	Bool movable;				     /*!< Movable or not */
 	Id dependency;			         /*!< Id number of the object that depends on this one */
-	Id open;                         /*!< Id number of the object that opens this link */
+	Id open;                         /*!< Id of the link that's openned with this object*/
 };
 
 Object *object_create(Id id)

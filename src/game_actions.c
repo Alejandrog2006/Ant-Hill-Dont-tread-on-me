@@ -107,12 +107,32 @@ Status game_actions_abandon(Game *game);
 Status game_actions_pass(Game *game);
 
 /**
-   Game actions implementation
-*/
+ * @brief Handles the open command.
+ * @author Daniel Martín Jaén
+ * 
+ * @param game A pointer to the game struct
+ */
+Status game_actions_open(Game *game);
 
+/**
+ * @brief Handles the save command
+ * @author Izan Robles
+ * 
+ * @param game A pointer to the game struct
+ */
 Status game_actions_save(Game *game);
 
+/**
+ * @brief Handles the load command
+ * @author Izan Robles
+ * 
+ * @param game A pointer to a pointer to the game struct
+ */
 Status game_actions_load(Game **game);
+
+/**
+   Game actions implementation
+*/
 
 Status game_actions_update(Game *game, Command *command)
 {
@@ -177,6 +197,10 @@ Status game_actions_update(Game *game, Command *command)
 
 	case PASS:
 		status = game_actions_pass(game);
+		break;
+
+	case OPEN:
+		status = game_actions_open(game);
 		break;
 
 	default:
@@ -497,12 +521,13 @@ Status game_actions_move(Game *game)
 {
 	Command *cmd = NULL;
 	const char *arg = NULL;
-	Direction dir;
+	Direction dir, r_dir;
 	Id id_act, id_new;
 	Id player_id = NO_ID;
 	Id character_location_id = NO_ID;
 	Character **character_array = NULL;
 	Bool is_open = FALSE;
+	char feedback[30];
 	int i;
 
 	if (game == NULL)
@@ -548,26 +573,32 @@ Status game_actions_move(Game *game)
 	if (strcasecmp(arg, "N") == 0 || strcasecmp(arg, "NORTH") == 0)
 	{
 		dir = N;
+		r_dir = S;
 	}
 	else if (strcasecmp(arg, "E") == 0 || strcasecmp(arg, "EAST") == 0)
 	{
 		dir = E;
+		r_dir = W;
 	}
 	else if (strcasecmp(arg, "W") == 0 || strcasecmp(arg, "WEST") == 0)
 	{
 		dir = W;
+		r_dir = E;
 	}
 	else if (strcasecmp(arg, "S") == 0 || strcasecmp(arg, "SOUTH") == 0)
 	{
 		dir = S;
+		r_dir = N;
 	}
 	else if (strcasecmp(arg, "U") == 0 || strcasecmp(arg, "UP") == 0)
 	{
 		dir = U;
+		r_dir = D;
 	}
 	else if (strcasecmp(arg, "D") == 0 || strcasecmp(arg, "DOWN") == 0)
 	{
 		dir = D;
+		r_dir = U;
 	}
 	else
 	{
@@ -581,11 +612,18 @@ Status game_actions_move(Game *game)
 	{
 		game_set_player_location(game, id_new);
 		space_set_discovered(game_get_space(game, id_new), TRUE);
+
+		if(game_connection_is_open(game, id_new, r_dir) == FALSE)
+		{
+			link_set_open(game_get_link(game, id_new, r_dir), TRUE);
+		}
+
 		game_set_last_message(game, " ");
 	}
 	else if (id_new != NO_ID && is_open == FALSE)
 	{
-		game_set_last_message(game, " The door is locked.");
+		sprintf(feedback, "A %s blocks the way!", link_get_name(game_get_link(game, id_act, dir)));
+		game_set_last_message(game, feedback);
 		return ERROR;
 	}
 	else
@@ -668,7 +706,7 @@ Status game_actions_inspect(Game *game)
 		}
 	}
 
-	game_set_last_message(game, "You can't inspect that object.");
+	game_set_last_message(game, " You can't inspect that object.");
 	return ERROR;
 }
 
@@ -719,12 +757,12 @@ Status game_actions_recruit(Game *game)
 		{
 			if (character_set_following(character_array[i], player_id) == OK)
 			{
-				game_set_last_message(game, "Character recruited successfully!");
+				game_set_last_message(game, " Character recruited successfully!");
 				return OK;
 			}
 		}
 	}
-	game_set_last_message(game, "You cannot recruit this character.");
+	game_set_last_message(game, " You cannot recruit this character.");
 	return ERROR;
 }
 
@@ -748,7 +786,7 @@ Status game_actions_abandon(Game *game)
 	character_name = command_get_arg(cmd);
 	if (character_name == NULL || character_name[0] == '\0')
 	{
-		game_set_last_message(game, "Invalid character name.");
+		game_set_last_message(game, " Invalid character name.");
 		return ERROR;
 	}
 
@@ -779,13 +817,13 @@ Status game_actions_abandon(Game *game)
 
 			if (character_set_following(character_array[i], NO_ID) == OK)
 			{
-				game_set_last_message(game, "Character abandoned successfully!");
+				game_set_last_message(game, " Character abandoned successfully!");
 				character_found = TRUE;
 				break;
 			}
 			else
 			{
-				game_set_last_message(game, "Failed to abandon the character.");
+				game_set_last_message(game, " Failed to abandon the character.");
 				return ERROR;
 			}
 		}
@@ -793,7 +831,7 @@ Status game_actions_abandon(Game *game)
 
 	if (!character_found)
 	{
-		game_set_last_message(game, "The character is not following you or is not in your location.");
+		game_set_last_message(game, " The character is not following you or is not in your location.");
 		return ERROR;
 	}
 
@@ -831,7 +869,7 @@ Status game_actions_load(Game **game)
 		temp = malloc(sizeof(char) * 11);
 		if (!temp)
 		{
-			game_set_last_message(*game, "Error loading the game");
+			game_set_last_message(*game, " Error loading the game");
 			return ERROR;
 		}
 
@@ -842,7 +880,7 @@ Status game_actions_load(Game **game)
 		temp = malloc(sizeof(char) * (strlen(filename) + 1));
 		if (!temp)
 		{
-			game_set_last_message(*game, "Error loading the game");
+			game_set_last_message(*game, " Error loading the game");
 			return ERROR;
 		}
 
@@ -852,12 +890,12 @@ Status game_actions_load(Game **game)
 	if (game_management_load(game, temp) == ERROR)
 	{
 		free(temp);
-		game_set_last_message(*game, "Error loading the game.");
+		game_set_last_message(*game, " Error loading the game.");
 		return ERROR;
 	}
 
 	free(temp);
-	game_set_last_message(*game, "Game loaded successfully.");
+	game_set_last_message(*game, " Game loaded successfully.");
 	return OK;
 }
 
@@ -871,4 +909,77 @@ Status game_actions_pass(Game *game)
 	game_set_actions(game, MAX_ACTIONS);
 	game_set_pass(game, TRUE);
 	return OK;
+}
+
+Status game_actions_open(Game *game){
+	Command *cmd = NULL;
+	const char *arg1 = NULL, *arg2 = NULL;
+	char feedback[30];
+	Link *link_act = NULL;
+	Object **objects_p = NULL, *object_act = NULL;
+	Id id_act;
+	int i, n_objects;
+
+	if(!game) 
+	{
+		return ERROR;
+	}
+
+	cmd = game_get_last_command(game);
+	arg1 = command_get_arg(cmd);
+	arg2 = command_get_arg2(cmd);
+	id_act = game_get_player_location(game);
+	objects_p = game_get_objects(game);
+	n_objects = inventory_get_count(player_get_inventory(game_get_player_at(game, game_get_turn(game))));
+
+	if (arg1 == NULL || arg1[0] == '\0' || arg2 == NULL || arg2[0] == '\0' || id_act == NO_ID || objects_p == NULL)
+	{
+		return ERROR;
+	}
+
+	for(i = 0; i < n_objects; i++)
+	{
+		if(strcasecmp(arg2, object_get_name(objects_p[i])) == 0)
+		{
+			object_act = objects_p[i];
+			break;
+		}
+	}
+
+	if(i == n_objects)
+	{
+		game_set_last_message(game, " That object isn't in your inventory.");
+		return ERROR;
+	}
+
+	for (i = 0; i < 6; i++)
+	{
+		link_act = game_get_link(game, id_act, (Direction)i);
+
+		if(strcasecmp(link_get_name(link_act), arg1) == 0 && link_get_id(link_act) == object_get_open(object_act) && link_get_open(link_act) == FALSE && 
+						inventory_contains_object(player_get_inventory(game_get_player_at(game, game_get_turn(game))), object_get_id(object_act)) == TRUE)
+		{
+			link_set_open(link_act, TRUE);
+			sprintf(feedback, " %s is open now.", arg1);
+			game_set_last_message(game, feedback);
+			return OK;
+		} 
+		else if(link_get_open(link_act) == TRUE && strcasecmp(link_get_name(link_act), arg1) == 0)
+		{
+			sprintf(feedback, " %s is already open.", arg1);
+			game_set_last_message(game, feedback);
+			return ERROR;
+		}
+
+		else if(strcasecmp(link_get_name(link_act), arg1) == 0)
+		{
+			sprintf(feedback, " %s can't be used to open %s.", arg2 , arg1);
+			game_set_last_message(game, feedback);
+			return ERROR;
+		}
+	}
+
+	sprintf(feedback, " I can't do that.");
+	game_set_last_message(game, feedback);
+	return ERROR;
 }

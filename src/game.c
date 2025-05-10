@@ -171,12 +171,6 @@ Status game_create_from_file(Game **game, char *filename)
 	/* The player is located in the first space */
 	game_set_player_location(*game, player_get_location(game_get_player_at(*game, game_get_turn(*game))));
 	/*game_set_object_location(*game, game_get_space_id_at(*game, 0), 0);*/
-
-	object_set_description((*game)->objects[0], "A magic wand");
-	object_set_description((*game)->objects[1], "A book of magic.");
-	object_set_description((*game)->objects[2], "A magic potion.");
-	object_set_description((*game)->objects[3], "A magic ring.");
-
 	return OK;
 }
 
@@ -693,4 +687,27 @@ Status game_set_pass(Game *game, Bool pass)
 
 	game->pass = pass;
 	return OK;
+}
+
+Link *game_get_link(Game *game, Id orig_id, Direction dir)
+{
+	Link **links_p = NULL;
+	int i;
+
+	if (!game || orig_id == NO_ID || dir == NONE)
+	{
+		return NULL;
+	}
+
+	links_p = game_get_links(game);
+	
+	for (i = 0; i < *game_get_n_links(game); i++)
+	{
+		if (link_get_origin(links_p[i]) == orig_id && link_get_direction(links_p[i]) == dir)
+		{
+			return links_p[i];
+		}
+	}
+
+	return NULL;
 }

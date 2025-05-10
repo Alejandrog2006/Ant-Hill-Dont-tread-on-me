@@ -30,6 +30,7 @@ int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name);
  *
  * @param game The game structure.
  * @param gengine The graphic engine used to render the game.
+ * @param log A pointer to the 3rd argv argument
  * @return 0 if the game loop runs successfully, 1 otherwise.
  */
 int game_loop_run(Game **game, Graphic_engine *gengine, char *log);
@@ -306,10 +307,6 @@ void game_loop_log(Game *game, FILE *f, Command *last_cmd, Status status)
 
         case LOAD:
             fprintf(f, "Player %d: LOAD - %s\n", game_get_turn(game) + 1, char_stat);
-            break;
-
-        case PASS:
-            fprintf(f, "Player %d: PASS - %s\n", game_get_turn(game) + 1, char_stat);
             break;
 
         default:

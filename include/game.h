@@ -104,15 +104,6 @@ Status game_destroy(Game *game);
 Space *game_get_space(Game *game, Id id);
 
 /**
- * @brief Gets a space by its ID.
- * @author Profesores PPROG
- *
- * @param game A pointer to the game structure.
- * @return A pointer to the space, or NULL if the space is not found.
- */
-Player *game_get_player(Game *game);
-
-/**
  * @brief Gets the player's current location.
  * @author Profesores PPROG
  *
@@ -408,7 +399,7 @@ Player *game_get_player_at(Game *game, int position);
 
 /**
  * @brief Gets the number of characters in the game
- * @authro Daniel Martín Jaén
+ * @author Daniel Martín Jaén
  * 
  * @param game A pointer to the game struct
  * @return -1 if something went wrong, a positive integer otherwise
@@ -473,5 +464,16 @@ Bool game_get_pass(Game *game);
  * @return OK if everything went correctly, error otherwise
  */
 Status game_set_pass(Game *game, Bool pass);
+
+/**
+ * @brief Returns the link from a given origin id and direction
+ * @author Daniel Martín Jaén
+ * 
+ * @param game A pointer to the game struct
+ * @param orig_id The id of the starting space for the link
+ * @param dir The direction of the link
+ * @return NULL if something went wrong, a pointer to the link otherwise
+ */
+Link *game_get_link(Game *game, Id orig_id, Direction dir);
 
 #endif

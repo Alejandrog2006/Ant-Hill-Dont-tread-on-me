@@ -96,7 +96,6 @@ Status game_load_players(Game *game, char *filename);
  * @brief Returns the value of n_characters from the game struct
  * @author Daniel Martín Jaén
  * 
- * @param game A pointer to the game struct
  * @return A pointer to the n_characters value stored into the game struct NULL if there was an error
  */
 int *game_get_n_characters(Game *game);
@@ -107,6 +106,7 @@ int *game_get_n_characters(Game *game);
  * 
  * @param game A pointer to the game struct
  * @param char_p A pointer to the new charcter that's being added
+ * @param location The id of the location where the character is added
  * @return OK if everything went correctly, ERROR if something went wrong
  */
 Status game_add_character(Game *game, Character *char_p, Id location);
