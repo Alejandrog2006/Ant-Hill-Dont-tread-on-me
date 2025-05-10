@@ -124,6 +124,7 @@ Status game_load_objects(Game *game, char *filename)
 	FILE *file = NULL;
 	char line[WORD_SIZE] = "";
 	char name[WORD_SIZE] = "";
+	char desc[WORD_SIZE] = "";
 	char *toks = NULL;
 	Id id = NO_ID, location = NO_ID, dependency = NO_ID, open = NO_ID;
 	int health = 0, mov = -1;
@@ -163,8 +164,11 @@ Status game_load_objects(Game *game, char *filename)
 			toks = strtok(NULL, "|");
 			dependency = atol(toks);
 
-			toks = strtok(NULL, "|\n");
+			toks = strtok(NULL, "|");
 			open = atoi(toks);
+
+			toks = strtok(NULL, "|\n");
+			strcpy(desc, toks);
 
 #ifdef DEBUG
 			printf("Leído: %ld|%s|%ld|%d|%d|%ld|%ld\n", id, name, location, health, movable, dependency, open);
@@ -193,6 +197,7 @@ Status game_load_objects(Game *game, char *filename)
 				object_set_movable(object, movable);
 				object_set_dependency(object, dependency);
 				object_set_open(object, open);
+				object_set_description(object, desc);
 
 				if (game_add_objects(game, object) == ERROR)
 				{

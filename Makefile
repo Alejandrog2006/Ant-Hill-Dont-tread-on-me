@@ -139,14 +139,14 @@ clean:
 	@echo "--> project cleaned"
 
 run:
-	@./$(EXE) $(R_DIR)/anthill.dat
+	@./$(EXE) $(R_DIR)/adventure.dat
 	@echo "--> project executed"
 
 log:
 	@./$(EXE) $(R_DIR)/anthill.dat -l
 
 runv:
-	@valgrind --leak-check=full ./$(EXE) $(R_DIR)/anthill.dat
+	@valgrind --leak-check=full ./$(EXE) $(R_DIR)/adventure.dat
 	@echo "--> valgrind run completed"
 
 doc:

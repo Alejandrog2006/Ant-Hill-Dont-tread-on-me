@@ -25,7 +25,7 @@
  /**
   * @brief Number of available commands.
   */
- #define N_CMD 14
+ #define N_CMD 15
  
  /**
   * @brief Command type enumeration.
@@ -52,12 +52,13 @@
      ATTACK,       /**< Attack command. */
      CHAT,         /**< Chat command. */
      MOVE,         /**< Move command. */
-     INSPECT,       /**< Inspect command. */
+     INSPECT,      /**< Inspect command. */
      RECRUIT,      /**< Recruit command. */
-     ABANDON,       /**< Abandon command. */
-     SAVE,        /**< Save command. */
-     LOAD,        /**< Load command. */
-     PASS          /**< Pass command. */
+     ABANDON,      /**< Abandon command. */
+     SAVE,         /**< Save command. */
+     LOAD,         /**< Load command. */
+     PASS,         /**< Pass command. */
+     OPEN          /**< Open command. */ 
  } CommandCode;
  
  /**
@@ -122,6 +123,15 @@
   * @return The argument of the command.
   */
  const char* command_get_arg(Command* command);
+
+ /**
+  * @brief Gets the second argument from a given command.
+  * @author Daniel Martín Jaén
+  * 
+  * @param command A pointer to the command
+  * @return NULL if something went wrong, a pointer to the argument otherwise.
+  */
+ const char *command_get_arg2(Command *command);
  
  /**
   * @brief Sets the argument for a given command.
@@ -152,5 +162,15 @@
   *  @return OK if the status was successfully set, ERROR otherwise.
   */
  Status command_set_status(Command *command, Status status);
+
+ /**
+  * @brief Sets a new value for the second arguemnt of a command.
+  * @author Daniel Martín Jaén
+  * 
+  * @param command A pointer to the command
+  * @param arg2 A pointer to the argument that's being added
+  * @return OK if everything went correctly, ERROR otherwise
+  */
+ Status command_set_arg2(Command *command, char *arg2);
 
  #endif
