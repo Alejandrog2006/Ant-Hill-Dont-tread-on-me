@@ -25,14 +25,9 @@
 #define MAX_SPACES 100
 
 /**
- * @brief Maximum of objects per game
- */
-#define MAX_OBJECTS 10
-
-/**
  * @brief Maximum of characters per game
  */
-#define MAX_CHARACTERS 5
+#define MAX_CHARACTERS 7
 
 /**
  * @brief Maximum of links per game
@@ -48,6 +43,11 @@
  * @brief Maximum number of actions per turn
  */
 #define MAX_ACTIONS 3
+
+/**
+ * @brief Number of defined events in the game
+ */
+#define N_DEF_EVENTS 6
 
 /**
  * @brief Interface structure
@@ -475,5 +475,14 @@ Status game_set_pass(Game *game, Bool pass);
  * @return NULL if something went wrong, a pointer to the link otherwise
  */
 Link *game_get_link(Game *game, Id orig_id, Direction dir);
+
+/**
+ * @brief Checks if all the players are dead
+ * @author Daniel Martín Jaén
+ * 
+ * @param game A pointer to the game struct
+ * @return TRUE if all players are dead, FALSE otherwise
+ */
+Bool game_all_players_dead(Game *game);
 
 #endif

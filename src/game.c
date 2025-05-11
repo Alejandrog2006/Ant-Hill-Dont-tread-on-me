@@ -46,6 +46,7 @@ struct _Game
 	Bool finished;							/**< Whether the game is finished or not. */
 	int turn;								/**< The position of the active player in the players array */
 	Bool pass;								/**< Wheter to change to the next turn or not */
+	Bool events[N_DEF_EVENTS];							/**< Wheter a specific event has been played or not */
 };
 
 InterfaceData *game_create_interface()
@@ -109,6 +110,11 @@ Status game_create(Game **game)
 	for (i = 0; i < MAX_OBJECTS; i++)
 	{
 		(*game)->objects[i] = NULL;
+	}
+
+	for (i = 0; i < N_DEF_EVENTS; i++)
+	{
+		(*game)->events[i] = FALSE;
 	}
 	/*(*game)->object[0] = object_create(NO_ID);
 	if ((*game)->object[0] == NULL) {
@@ -710,4 +716,32 @@ Link *game_get_link(Game *game, Id orig_id, Direction dir)
 	}
 
 	return NULL;
+}
+
+Bool game_all_players_dead(Game *game)
+{
+	int i, n_dead;
+	Player **players_p = NULL;
+
+	if (!game)
+	{
+		return TRUE;
+	}
+
+	players_p = game_get_players(game);
+
+	for (i = 0, n_dead = 0; i < game_get_n_players(game); i++)
+	{
+		if (player_get_health(players_p[i]) <= 0)
+		{
+			n_dead++;
+		}
+	} 
+
+	if(n_dead == game_get_n_players(game))
+	{
+		return TRUE;
+	}
+
+	return FALSE;
 }

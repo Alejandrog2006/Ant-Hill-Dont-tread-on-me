@@ -633,14 +633,15 @@ Status game_management_save(Game *game, const char *filename)
 
 	for (i = 0; i < n_objects; i++)
 	{
-		fprintf(file, "#o:%ld|%s|%ld|%d|%d|%ld|%ld|\n",
+		fprintf(file, "#o:%ld|%s|%ld|%d|%d|%ld|%ld|%s|\n",
 				object_get_id(object_array[i]),
 				object_get_name(object_array[i]),
 				(object_get_location(object_array[i]) == -1 ? 0 : object_get_location(object_array[i])),
 				object_get_health(object_array[i]),
 				object_get_movable(object_array[i]),
 				object_get_dependency(object_array[i]),
-				object_get_open(object_array[i]));
+				object_get_open(object_array[i]),
+				object_get_description(object_array[i]));
 	}
 
 	link_array = game_get_links(game);

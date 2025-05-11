@@ -29,7 +29,7 @@ typedef struct _Object Object;
 /**
  * @brief Maximum number of  objects
  */
-#define MAX_OBJECTS 10
+#define MAX_OBJECTS 40
 
 /**
  * @brief It creates a new object, allocating memory and initializing its members

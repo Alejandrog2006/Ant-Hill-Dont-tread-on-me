@@ -122,6 +122,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 	extern char *cmd_to_str[N_CMD][N_CMDT];
 	int i;
 	int game_n_objects = *(game_get_n_objects(game));
+	int char_health;
 	const char *message = NULL;
 	Character **characters;
 	Id player_location;
@@ -512,7 +513,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 				}
 
 				space = game_get_space(game, id_right);
-				if (gdesc_r[0] == '\0' || space_is_discovered(space = FALSE))
+				if (gdesc_r[0] == '\0' || space_is_discovered(space) == FALSE)
 				{
 					strcat(str, "|                |");
 				}
@@ -1002,8 +1003,19 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 		{
 			sprintf(str, "  %s:", character_get_name(characters[i]));
 			screen_area_puts(ge->descript, str);
-			sprintf(str, "  Health: %d", character_get_health(characters[i]));
-			screen_area_puts(ge->descript, str);
+			char_health = character_get_health(characters[i]);
+
+			if (char_health > 0) 
+			{
+				sprintf(str, "  Health: %d", character_get_health(characters[i]));
+				screen_area_puts(ge->descript, str);
+			}
+			else
+			{
+				sprintf(str, "  %s is dead", character_get_name(characters[i]));
+				screen_area_puts(ge->descript, str);
+			}
+
 			friendly = character_get_friendly(characters[i]);
 			if (friendly == TRUE)
 			{
