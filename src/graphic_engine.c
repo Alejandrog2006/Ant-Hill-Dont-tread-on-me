@@ -12,6 +12,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 #include "command.h"
 #include "libscreen.h"
@@ -34,7 +36,7 @@
 /**
  * @brief Defines map heigh
  */
-#define HEIGHT_MAP 30
+#define HEIGHT_MAP 40
 /**
  * @brief Defines banner heigh
  */
@@ -1133,4 +1135,65 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
 	screen_paint(game_get_turn(game));
 	printf("prompt:> ");
+}
+
+void graphic_engine_show_image(const char *image_path)
+{
+    SDL_Window *window = NULL;
+    SDL_Renderer *renderer = NULL;
+    SDL_Texture *texture = NULL;
+
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    {
+        fprintf(stderr, "SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+        return;
+    }
+
+    window = SDL_CreateWindow("Anthropolis", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
+    if (!window)
+    {
+        fprintf(stderr, "Window could not be created! SDL_Error: %s\n", SDL_GetError());
+        SDL_Quit();
+        return;
+    }
+
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (!renderer)
+    {
+        fprintf(stderr, "Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return;
+    }
+
+    texture = IMG_LoadTexture(renderer, image_path);
+    if (!texture)
+    {
+        fprintf(stderr, "Unable to load image %s! SDL_image Error: %s\n", image_path, IMG_GetError());
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return;
+    }
+
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
+    SDL_RenderPresent(renderer);
+
+    SDL_Delay(3000);
+
+    SDL_DestroyTexture(texture);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+}
+
+void graphic_engine_show_intro()
+{
+    graphic_engine_show_image("resources/intro_image.png");
+}
+
+void graphic_engine_show_end()
+{
+    graphic_engine_show_image("resources/end_image.png");
 }
