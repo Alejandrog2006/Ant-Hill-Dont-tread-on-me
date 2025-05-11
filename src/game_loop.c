@@ -14,6 +14,7 @@
 #include "game_actions.h"
 #include "graphic_engine.h"
 #include "game_reader.h"
+#include "game_rules.h"
 
 /**
  * @brief Initializes the game loop.
@@ -148,6 +149,17 @@ int game_loop_run(Game **game, Graphic_engine *gengine, char *log)
         for (turn = 0; turn < (game_get_n_players(*game)) && command_get_code(game_get_last_command(*game)) != EXIT && game_get_last_command(*game) != NULL;)
         {
             game_set_pass(*game, FALSE);
+
+            if(player_get_health(game_get_player_at(*game, game_get_turn(*game))) <= 0)
+            {
+                game_set_pass(*game, TRUE);
+            }
+
+            if (game_get_pass(*game) == TRUE)
+            {
+                game_set_turn(*game, game_get_turn(*game) + 1);
+            }
+
             last_cmd = game_get_last_command(*game);
             graphic_engine_paint_game(gengine, *game);
             game_set_last_message(*game, " ");
@@ -205,9 +217,12 @@ int game_loop_run(Game **game, Graphic_engine *gengine, char *log)
             game_loop_log(*game, f, last_cmd, cmd_status);
 
             command_set_status(game_get_last_command(*game), cmd_status);
-            if (player_get_health(game_get_player_at(*game, game_get_turn(*game))) <= 0)
+
+            game_rules_event(*game, last_cmd);
+
+            if(player_get_health(game_get_player_at(*game, game_get_turn(*game))) <= 0)
             {
-                game_set_finished(*game, TRUE);
+                game_set_pass(*game, TRUE);
             }
 
             if (game_get_pass(*game) == TRUE)
@@ -216,8 +231,14 @@ int game_loop_run(Game **game, Graphic_engine *gengine, char *log)
             }
         }
 
-        if(command_get_code(game_get_last_command(*game)) != EXIT){
+        if (command_get_code(game_get_last_command(*game)) != EXIT)
+        {
             game_set_turn(*game, 0);
+        }
+
+        if (game_all_players_dead(*game) == TRUE)
+        {
+            game_set_finished(*game, TRUE);
         }
     }
 
@@ -312,7 +333,7 @@ void game_loop_log(Game *game, FILE *f, Command *last_cmd, Status status)
         case PASS:
             fprintf(f, "Player %d: PASS - %s\n", game_get_turn(game) + 1, char_stat);
             break;
-            
+
         default:
             break;
         }

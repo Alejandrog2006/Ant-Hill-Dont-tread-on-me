@@ -1,10 +1,11 @@
-#p:1|Ant|A0A|15|10|3|
-#p:2|Beetle|B0B|12|8|3|
+#p:1|Ant|A0A|15|100|3|
+#p:2|Beetle|B0B|12|100|3|
 
-#c:3|Spider|/\oo/\|13|10|0|I am watching you!|
+#c:3|Spider|/\oo/\|13|1|0|I am watching you!|
 #c:4|Ladybug| oOo  |14|8|1|Hello, friend!|
 #c:5|Worm| 8o8  |15|6|1|I love digging tunnels!|
 #c:6|Butterfly| ><>  |16|7|0|Flying is my passion!|
+#c:7|Traitor ant| !^0m |22|5|0| |
 
 #s:11|Nest    | ^_^     | /_\     |/   \    |  o  *   |
 #s:12|Tunnel_1|  ___    | /   \   | 8   8   | \___/   |
@@ -16,30 +17,40 @@
 #s:18|River   |  ===    | l   L   |  -  -   |  ===    |
 #s:19|Cave    |  ###    | o    o  |    {}   |  ##     |
 #s:20|Exit    |  !!     |         |         |  !!!    |
+#s:21|Surface |m0^ __^0m|  . - .- | _______ |/       \|
+#s:22|Hall    | / / \ \ | -     - | -     - |         |
+#s:23|Storage |!-------!|!-------!|!-------!|!-------!|
+#s:24|Secret passage| _______ |/       \|  _____  | /      \ |
+#s:25|Secret passage| _______ |/       \|  _____  | /      \ |
 
-#o:21|Key|15|-1|1|-1|209| A hand crafted key|
-#o:22|Crumb|11|1|0|-1|-1| A tasty snack for ants|
-#o:23|Leaf|12|0|1|-1|-1| A tasty snack for worms|
-#o:24|Nut|13|2|1|23|-1| A small nut covered in a hard shell|
-#o:25|Stick|14|0|1|-1|-1| A wooden stick used in construction|
-#o:26|Rock|15|0|1|-1|-1| |
-#o:27|Flower|16|0|1|-1|-1| |
-#o:28|Water|17|0|1|-1|-1| |
-#o:29|Mush|18|0|0|-1|-1| |
-#o:30|Berry|19|0|0|-1|-1| |
-#o:31|Seed|20|0|1|-1|-1| |
-#o:32|Pebble|12|0|0|-1|-1| |
-#o:33|Twig|13|-1|0|-1|-1| |
-#o:34|Shell|20|0|1|-1|-1| |
-#o:35|Feather|14|0|0|-1|-1| |
-#o:36|Honey|15|2|1|-1|-1| |
-#o:37|Dew|16|0|0|-1|-1| |
-#o:38|Acorn|17|0|0|-1|-1| |
-#o:39|Cone|18|-1|1|-1|-1| |
-#o:40|Stone|19|0|1|26|-1| |
+#o:100|Key|15|-1|1|-1|209| A hand crafted key|
+#o:101|Crumb|11|1|0|-1|-1| A tasty snack for ants|
+#o:102|Leaf|12|0|1|-1|-1| A tasty snack for worms|
+#o:103|Nut|13|2|1|23|-1| A small nut covered in a hard shell|
+#o:104|Stick|14|0|1|-1|-1| A wooden stick used as a support|
+#o:105|Rock|15|0|1|-1|-1| |
+#o:106|Flower|16|0|1|-1|-1| |
+#o:107|Water|17|0|1|-1|-1| |
+#o:108|Mush|18|0|0|-1|-1| |
+#o:109|Berry|19|0|0|-1|-1| |
+#o:110|Seed|20|0|1|-1|-1| |
+#o:111|Pebble|12|0|0|-1|-1| |
+#o:112|Twig|13|-1|0|-1|-1| |
+#o:113|Shell|20|0|1|-1|-1| |
+#o:114|Feather|14|0|0|-1|-1| |
+#o:115|Honey|15|2|1|-1|-1| |
+#o:116|Dew|16|0|0|-1|-1| |
+#o:117|Acorn|17|0|0|-1|-1| |
+#o:118|Cone|18|-1|1|-1|-1| |
+#o:119|Stone|19|0|1|26|-1| |
 
-#l:200|Nest_1|11|12|0|1|
-#l:201|Nest_2|11|20|1|1|
+N = 0
+S = 1
+E = 2
+W = 3
+U = 4
+D = 5
+ 
 #l:202|Tunnel_1|12|13|0|1|
 #l:203|Tunnel_2|12|11|1|1|
 #l:204|Tunnel_3|13|14|0|1|
@@ -58,3 +69,15 @@
 #l:217|Cave_2|19|18|1|1|
 #l:218|Exit_1|20|11|0|1|
 #l:219|Exit_2|20|19|1|1|
+#l:220|Ladder_1|15|21|4|1|
+#l:221|Ladder_2|21|15|5|1|
+#l:222|Gate_in|18|22|3|1|
+#l:223|Gate_out|22|18|2|1|
+#l:224|Door|22|23|3|0|
+#l:225|Door_out|23|22|2|1|
+#l:226|Secret_Passage_1|24|25|2|1|
+#l:227|Secret_Passage_2|25|24|3|1|
+#l:228|Secret_Passage_3|25|23|5|1|
+#l:229|Secret_Passage_4|24|14|5|1|
+#l:230|Nest_1|11|20|1|1|
+#l:231|Nest_2|11|12|0|1|

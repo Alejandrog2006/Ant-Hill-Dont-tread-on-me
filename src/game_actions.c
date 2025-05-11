@@ -245,9 +245,10 @@ Status game_actions_take(Game *game)
 		object_id = game_get_object_location(game, i);
 		object_dependency = object_get_dependency(game_get_objects(game)[i]);
 
-		if (object_get_movable(game_get_objects(game)[i]) == FALSE)
+		if (object_get_movable(game_get_objects(game)[i]) == FALSE && object_id == player_location_id
+				&& strcasecmp(object_get_name(game_get_objects(game)[i]), obj_name) == 0)
 		{
-			game_set_last_message(game, "This object is not movable.");
+			game_set_last_message(game, " This object is not movable.");
 		}
 
 		if (object_id == player_location_id &&
@@ -368,6 +369,7 @@ Status game_actions_attack(Game *game)
 	if (game_get_actions(game) == 0)
 	{
 		game_set_last_message(game, " I'm too tired for that!");
+		return ERROR;
 	}
 
 	player = game_get_player_at(game, game_get_turn(game));
@@ -408,11 +410,11 @@ Status game_actions_attack(Game *game)
 
 				if (random == 0)
 				{
-					damage = 1 + followers_count;
-					character_set_health(character_array[i], character_get_health(character_array[i]) - damage);
-					strcpy(temp, character_get_name(character_array[i]));
 					if (character_get_health(character_array[i]) > 0)
 					{
+						damage = 1 + followers_count;
+						character_set_health(character_array[i], character_get_health(character_array[i]) - damage);
+						strcpy(temp, character_get_name(character_array[i]));
 						sprintf(temp + strlen(temp), " - %d", damage);
 						game_set_last_message(game, temp);
 					}

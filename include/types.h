@@ -51,7 +51,7 @@
  /**
   * @brief Direction type definition.
   *
-  * This enumeration defines the possible cardinal directions: North, South, East, and West.
+  * This enumeration defines the possible directions: North, West, East, Sout, Up, Down
   */
  typedef enum { 
      NONE = -1, /**< Represents no direction. */
@@ -63,4 +63,5 @@
      D   /**< Represents the Down direction */
  } Direction;
  
+
  #endif
