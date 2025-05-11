@@ -131,6 +131,14 @@ Status game_actions_save(Game *game);
 Status game_actions_load(Game **game);
 
 /**
+ * @brief Handles the use command
+ * @author Alejandro Gonzalez
+ * 
+ * @param game A pointer to the game struct
+ */
+Status game_actions_use(Game *game);
+
+/**
    Game actions implementation
 */
 
@@ -201,6 +209,10 @@ Status game_actions_update(Game *game, Command *command)
 
 	case OPEN:
 		status = game_actions_open(game);
+		break;
+
+	case USE:
+		status = game_actions_use(game);
 		break;
 
 	default:
@@ -984,4 +996,96 @@ Status game_actions_open(Game *game){
 	sprintf(feedback, " I can't do that.");
 	game_set_last_message(game, feedback);
 	return ERROR;
+}
+
+Status game_actions_use(Game *game)
+{
+    Command *cmd = NULL;
+    const char *obj_name = NULL, *chr_name = NULL;
+    Object *object = NULL;
+    Character **character_array = NULL;
+    Character *target_character = NULL;
+    Player *player = NULL;
+    Id player_location = NO_ID, obj_id = NO_ID;
+    int i;
+
+    if (!game)
+    {
+        return ERROR;
+    }
+
+    cmd = game_get_last_command(game);
+    if (!cmd)
+    {
+        return ERROR;
+    }
+
+    obj_name = command_get_arg(cmd);
+    chr_name = command_get_arg2(cmd);
+
+    if (!obj_name || obj_name[0] == '\0')
+    {
+        game_set_last_message(game, " You must specify an object to use.");
+        return ERROR;
+    }
+
+    player = game_get_player_at(game, game_get_turn(game));
+    player_location = game_get_player_location(game);
+
+    for (i = 0; i < inventory_get_count(player_get_inventory(player)); i++)
+    {
+        obj_id = set_get_id_at(inventory_get_objects(player_get_inventory(player)), i);
+        object = game_get_object_by_id(game, obj_id);
+
+        if (object && strcasecmp(object_get_name(object), obj_name) == 0)
+        {
+            break;
+        }
+    }
+
+    if (!object || strcasecmp(object_get_name(object), obj_name) != 0)
+    {
+        game_set_last_message(game, " You don't have that object.");
+        return ERROR;
+    }
+
+    if (object_get_health(object) == 0)
+    {
+        game_set_last_message(game, " This object cannot be used.");
+        return ERROR;
+    }
+
+    if (chr_name && chr_name[0] != '\0')
+    {
+        character_array = game_get_character_array(game);
+        for (i = 0; i < MAX_CHARACTERS; i++)
+        {
+            if (character_array[i] &&
+                strcasecmp(character_get_name(character_array[i]), chr_name) == 0 &&
+                character_get_following(character_array[i]) == player_get_id(player))
+            {
+                target_character = character_array[i];
+                break;
+            }
+        }
+
+        if (!target_character)
+        {
+            game_set_last_message(game, " That character is not following you.");
+            return ERROR;
+        }
+
+        character_set_health(target_character, character_get_health(target_character) + object_get_health(object));
+        game_set_last_message(game, " Object used on character successfully.");
+    }
+    else
+    {
+        player_set_health(player, player_get_health(player) + object_get_health(object));
+        game_set_last_message(game, " Object used successfully.");
+    }
+
+    player_del_object(player, object_get_id(object));
+    game_set_object_location(game, NO_ID, object_get_id(object));
+
+    return OK;
 }

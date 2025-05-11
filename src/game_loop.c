@@ -339,6 +339,10 @@ void game_loop_log(Game *game, FILE *f, Command *last_cmd, Status status)
             fprintf(f, "Player %d: PASS - %s\n", game_get_turn(game) + 1, char_stat);
             break;
 
+        case USE:
+            fprintf(f, "Player %d: USE - %s\n", game_get_turn(game) + 1, char_stat);
+            break;
+            
         default:
             break;
         }
