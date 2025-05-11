@@ -73,6 +73,8 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    graphic_engine_show_intro();
+    
     if (game_loop_init(&game, &gengine, argv[1]) != 0)
     {
         game_loop_cleanup(game, gengine);
@@ -86,6 +88,9 @@ int main(int argc, char *argv[])
     }
 
     game_loop_cleanup(game, gengine);
+
+    graphic_engine_show_end();
+    
     return 0;
 }
 
