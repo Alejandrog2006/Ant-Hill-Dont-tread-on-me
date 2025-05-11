@@ -982,6 +982,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 			sprintf(str, "                      |%-15s |", obj);
 			screen_area_puts(ge->map, str);
 			sprintf(str, "                      +----------------+");
+			screen_area_puts(ge->map, str);
 			space = game_get_space(game, id_act);
 		}
 	}
