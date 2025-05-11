@@ -72,8 +72,6 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Use: %s <game_data_file>\n", argv[0]);
         return 1;
     }
-
-    graphic_engine_show_intro();
     
     if (game_loop_init(&game, &gengine, argv[1]) != 0)
     {
@@ -88,8 +86,6 @@ int main(int argc, char *argv[])
     }
 
     game_loop_cleanup(game, gengine);
-
-    graphic_engine_show_end();
     
     return 0;
 }
@@ -337,6 +333,10 @@ void game_loop_log(Game *game, FILE *f, Command *last_cmd, Status status)
 
         case PASS:
             fprintf(f, "Player %d: PASS - %s\n", game_get_turn(game) + 1, char_stat);
+            break;
+
+        case USE:
+            fprintf(f, "Player %d: USE - %s\n", game_get_turn(game) + 1, char_stat);
             break;
 
         default:

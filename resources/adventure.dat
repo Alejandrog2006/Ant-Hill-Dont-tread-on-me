@@ -20,8 +20,8 @@
 #s:21|Surface |m0^ __^0m|  . - .- | _______ |/       \|
 #s:22|Hall    | / / \ \ | -     - | -     - |         |
 #s:23|Storage |!-------!|!-------!|!-------!|!-------!|
-#s:24|Secret passage| _______ |/       \|  _____  | /      \ |
-#s:25|Secret passage| _______ |/       \|  _____  | /      \ |
+#s:24|Secret passage| _______ |/       \|  _____  | /     \ |
+#s:25|Secret passage| _______ |/       \|  _____  | /     \ |
 
 #o:100|Key|15|-1|1|-1|209| A hand crafted key|
 #o:101|Crumb|11|1|0|-1|-1| A tasty snack for ants|

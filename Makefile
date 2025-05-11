@@ -12,7 +12,7 @@ D_DIR = ./docs
 DOXYGEN = doxygen
 DOXYFILE = docs/Doxyfile
 
-LIBS = -Lresources -lscreen -lSDL2 -lSDL2_image -lm
+LIBS = -Lresources -lscreen -lm
 
 ##########  General rules  ##########
 all: new_folder $(EXE) space_test set_test character_test inventory_test link_test player_test object_test

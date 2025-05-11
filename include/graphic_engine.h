@@ -53,30 +53,4 @@ void graphic_engine_destroy(Graphic_engine *ge);
  */
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game);
 
-/**
- * @brief Displays an image using SDL2.
- * @author Alejandro Gonzalez
- *
- * This function loads and displays an image using SDL2.
- *
- * @param image_path Path to the image file.
- */
-void graphic_engine_show_image(const char *image_path);
-
-/**
- * @brief Displays the intro screen of the game.
- * @author Alejandro Gonzalez
- *
- * This function displays the intro screen of the game using SDL2. 
- */
-void graphic_engine_show_intro();
-
-/**
- * @brief Displays the end screen of the game.
- * @author Alejandro Gonzalez
- *
- * This function displays the end screen of the game using SDL2.
- */
-void graphic_engine_show_end();
-
 #endif

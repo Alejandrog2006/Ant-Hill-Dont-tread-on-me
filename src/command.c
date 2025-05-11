@@ -23,7 +23,7 @@
 /**
  * @brief Defines database for commands
  */
-char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"t", "Take"}, {"d", "Drop"}, {"a", "Attack"}, {"c", "Chat"}, {"m", "Move"}, {"i", "Inspect"}, {"r", "Recruit"}, {"ab", "Abandon"}, {"s", "Save"}, {"l", "Load"}, {"p", "Pass"}, {"o", "Open"}};
+char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"t", "Take"}, {"d", "Drop"}, {"a", "Attack"}, {"c", "Chat"}, {"m", "Move"}, {"i", "Inspect"}, {"r", "Recruit"}, {"ab", "Abandon"}, {"s", "Save"}, {"l", "Load"}, {"p", "Pass"}, {"o", "Open"}, {"u", "Use"}};
 
 /**
  * @brief Private implementation of command datatype
@@ -89,7 +89,7 @@ CommandCode command_get_code(Command *command)
 
 Status command_get_user_input(Command *command)
 {
-	char input[CMD_LENGHT] = "", *token = NULL;
+	char input[CMD_LENGHT] = "", *token = NULL, *newline = NULL;
 	int i = UNKNOWN - NO_CMD + 1;
 	CommandCode cmd;
 
@@ -142,6 +142,41 @@ Status command_get_user_input(Command *command)
 			token = strtok(NULL, " ");
 			token = strtok(NULL, " \n");
 			command_set_arg2(command, token);
+		}
+		else if (cmd == USE)
+		{
+			token = strtok(NULL, " ");
+			if (token)
+			{
+				newline = strchr(token, '\n');
+				if (newline)
+				{
+					*newline = '\0';
+				}
+				command_set_arg(command, token);
+			}
+			else
+			{
+				command_set_arg(command, "");
+			}
+
+			token = strtok(NULL, " ");
+			if (token && strcasecmp(token, "over") == 0)
+			{
+				token = strtok(NULL, " \n");
+				if (token)
+				{
+					command_set_arg2(command, token);
+				}
+				else
+				{
+					command_set_arg2(command, "");
+				}
+			}
+			else
+			{
+				command_set_arg2(command, "");
+			}
 		}
 
 		return OK;
