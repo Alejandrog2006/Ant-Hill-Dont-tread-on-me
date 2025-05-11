@@ -25,7 +25,7 @@
  /**
   * @brief Number of available commands.
   */
- #define N_CMD 15
+ #define N_CMD 16
  
  /**
   * @brief Command type enumeration.
@@ -58,7 +58,8 @@
      SAVE,         /**< Save command. */
      LOAD,         /**< Load command. */
      PASS,         /**< Pass command. */
-     OPEN          /**< Open command. */ 
+     OPEN,         /**< Open command. */ 
+     USE           /** Use command. */ 
  } CommandCode;
  
  /**
